@@ -1,15 +1,21 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../stores/Auth";
+import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 function LoginPage() {
+    const navigate = useNavigate();
+    const login = useAuth((state) => state.login);
+
     // Response message after clicking submiting, Like Invalid credentials
     const [resMsg, setResMsg] = useState(null);
 
     const {
         register,
         handleSubmit,
-        watch,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -38,6 +44,12 @@ function LoginPage() {
                     "refreshtToken",
                     JSON.stringify(refreshToken),
                 );
+                login();
+
+                // reset form values after logged in
+                reset();
+                navigate("/home");
+                toast.success(res.data.message);
 
                 /*if login success and  there was resMsg ,
                  * setting it to null
@@ -45,6 +57,7 @@ function LoginPage() {
                 if (resMsg) setResMsg(null);
             })
             .catch((err) => {
+                console.log(err.message);
                 setResMsg(err.response.data.message);
             });
     };
