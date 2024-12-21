@@ -9,6 +9,7 @@ function SignupPage() {
         formState: { errors },
     } = useForm();
 
+    // create structured payload and hit endpoint
     const onSubmit = (data) => {
         const payload = {
             name: {
@@ -38,6 +39,10 @@ function SignupPage() {
                     id="firstName"
                     {...register("firstName", {
                         required: "First name is required",
+                        pattern: {
+                            value: /^[A-Za-z]+$/,
+                            message: "First name should only contain letters",
+                        },
                     })}
                     className="border-2 border-black"
                 />
@@ -51,6 +56,10 @@ function SignupPage() {
                     type="text"
                     id="lastName"
                     {...register("lastName", {
+                        pattern: {
+                            value: /^[A-Za-z]+$/,
+                            message: "Last name should only contain letters",
+                        },
                         required: "Last name is required",
                     })}
                     className="border-2 border-black"
@@ -64,7 +73,14 @@ function SignupPage() {
                 <input
                     type="text"
                     id="email"
-                    {...register("email", { required: "Email is required" })}
+                    {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                            value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/,
+
+                            message: "Invalid email address format",
+                        },
+                    })}
                     className="border-2 border-black"
                 />
                 {errors.email && (
@@ -78,6 +94,18 @@ function SignupPage() {
                     id="password"
                     {...register("password", {
                         required: "Password is required",
+                        minLength: {
+                            value: 8,
+                            message: "Password must be 8 characters long",
+                        },
+                        maxLength: {
+                            value: 16,
+                            message: "Password must be below 16 characters",
+                        },
+
+                        validate: (value) =>
+                            value.trim() !== "" ||
+                            "Password cannot contain only spaces",
                     })}
                     className="border-2 border-black"
                 />
