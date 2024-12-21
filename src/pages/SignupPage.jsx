@@ -74,7 +74,7 @@ function SignupPage() {
                     type="text"
                     id="email"
                     {...register("email", {
-                        required: "Email is required",
+                        required: "Email address is required",
                         pattern: {
                             value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/,
 
