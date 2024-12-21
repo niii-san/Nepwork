@@ -26,8 +26,18 @@ function LoginPage() {
                  * If login success
                  * Handling tokens, keeping them at local storage
                  * */
+                const accessToken = res.data.data.tokens.accessToken;
+                const refreshToken = res.data.data.tokens.refreshToken;
 
-                console.log(res);
+                localStorage.setItem(
+                    "accessToken",
+                    JSON.stringify(accessToken),
+                );
+
+                localStorage.setItem(
+                    "refreshtToken",
+                    JSON.stringify(refreshToken),
+                );
 
                 /*if login success and  there was resMsg ,
                  * setting it to null
