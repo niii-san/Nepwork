@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 function SignupPage() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
-        watch,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -23,10 +26,14 @@ function SignupPage() {
         axios
             .post(`${import.meta.env.VITE_API_ENDPOINT}/user/signup`, payload)
             .then((res) => {
-                console.log(res);
+                toast.success(`${res.data.message}, Please proceed to Login`, {
+                    duration: 3000,
+                });
+                reset();
+                navigate("/login");
             })
             .catch((err) => {
-                console.log(err.response);
+                toast.error(err.response.data.message);
             });
     };
 
@@ -74,7 +81,7 @@ function SignupPage() {
                     type="text"
                     id="email"
                     {...register("email", {
-                        required: "Email is required",
+                        required: "Email address is required",
                         pattern: {
                             value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/,
 
