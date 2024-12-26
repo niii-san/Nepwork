@@ -128,6 +128,13 @@ function SignupPage() {
                     Submit
                 </button>
             </form>
+
+            <p
+                onClick={() => navigate("/login")}
+                className="hover:underline cursor-pointer"
+            >
+                have an account? Login here
+            </p>
         </>
     );
 }
