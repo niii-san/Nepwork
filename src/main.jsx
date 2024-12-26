@@ -12,6 +12,7 @@ import {
     Profile,
     SignupPage,
 } from "./pages/index.js";
+import { Protected } from "./components";
 
 createRoot(document.getElementById("root")).render(
     //  <StrictMode>
@@ -20,9 +21,31 @@ createRoot(document.getElementById("root")).render(
             <Route path="/" element={<Layout />}>
                 <Route index element={<Navigate to="/home" replace />} />
                 <Route path="home" element={<Home />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="notifications" element={<Notifications />} />
-                <Route path="profile" element={<Profile />} />
+                <Route
+                    path="dashboard"
+                    element={
+                        <Protected>
+                            {" "}
+                            <Dashboard />{" "}
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="notifications"
+                    element={
+                        <Protected>
+                            <Notifications />
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="profile"
+                    element={
+                        <Protected>
+                            <Profile />
+                        </Protected>
+                    }
+                />
                 <Route path="signup" element={<SignupPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="logout" element={<Logout />} />
