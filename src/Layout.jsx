@@ -7,7 +7,6 @@ import api from "./utils/api";
 function Layout() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const login = useAuth((state) => state.login);
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
         api.get("/user/verify-token")
             .then((res) => {
@@ -15,9 +14,7 @@ function Layout() {
                     login();
                 }
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch((_) => { });
     }
     return (
         <>
