@@ -41,7 +41,7 @@ function LoginPage() {
                 );
 
                 localStorage.setItem(
-                    "refreshtToken",
+                    "refreshToken",
                     JSON.stringify(refreshToken),
                 );
                 login();
