@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import logout from "./logout";
+import { logoutHelper } from "./logoutHelper";
 
 const refreshAcessToken = async () => {
     try {
@@ -16,11 +16,11 @@ const refreshAcessToken = async () => {
     } catch (error) {
         if (
             error.response.data.message ===
-            "Refresh token expired! Login again" &&
+                "Refresh token expired! Login again" &&
             error.response.status == 401
         ) {
             toast.error("Session Expired! Please Login again");
-            logout();
+            logoutHelper();
         }
 
         return Promise.reject(error);
@@ -33,22 +33,22 @@ const api = axios.create({
 
 // Sending Access token with every request in Authorization header
 api.interceptors.request.use(
-    function(config) {
+    function (config) {
         const accessToken = JSON.parse(localStorage.getItem("accessToken"));
         config.headers.Authorization = `Bearer ${accessToken}`;
         return config;
     },
-    function(error) {
+    function (error) {
         return Promise.reject(error);
     },
 );
 
 // Refreshing access token and logging out if refresh token is also expired
 api.interceptors.response.use(
-    function(response) {
+    function (response) {
         return response;
     },
-    async function(error) {
+    async function (error) {
         // refreshing access token
         if (
             error.response &&
