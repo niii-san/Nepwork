@@ -82,6 +82,15 @@ function NavBar() {
                 >
                     Join
                 </NavLink>
+
+                <NavLink
+                    to={"/login"}
+                    className={({ isActive }) =>
+                        isActive ? activeNavItemStyle : inActiveNavItemStyle
+                    }
+                >
+                    Login
+                </NavLink>
             </div>
         </>
     );
