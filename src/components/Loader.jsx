@@ -1,9 +1,12 @@
-import React from 'react'
-
+import React from "react";
 function Loader() {
-  return (
-    <div>Loading... Please wait...</div>
-  )
+    return (
+        <>
+            <div className="h-[500px] w-full bg-black text-white ">
+                Loading................
+            </div>
+        </>
+    );
 }
 
-export default Loader
+export default Loader;

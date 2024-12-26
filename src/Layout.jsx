@@ -2,48 +2,44 @@ import { Outlet } from "react-router";
 import { NavBar, Footer, Loader } from "./components";
 import { Toaster } from "react-hot-toast";
 import api from "./utils/api";
-import { useAuth, useLoading } from "./stores";
-import { useEffect } from "react";
+import { useAuth } from "./stores";
+import { useEffect, useState } from "react";
 
 function Layout() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const login = useAuth((state) => state.login);
 
-    const loading = useLoading((state) => state.loading);
-    const enableLoading = useLoading((state) => state.enableLoading);
-    const disableLoading = useLoading((state) => state.disableLoading);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        enableLoading();
         if (!isLoggedIn) {
             api.get("/user/verify-token")
                 .then((res) => {
                     if (res.data.success) {
                         login();
-                        disableLoading();
+
+                        setLoading(false);
                     }
                 })
                 .catch((_) => {
-                    disableLoading();
+                    setLoading(false);
                 })
-                .finally(disableLoading());
+                .finally(setLoading(false));
         } else {
-            disableLoading();
+            setLoading(false);
         }
     }, []);
 
-    if (loading) {
-        return <Loader />;
-    } else {
-        return (
-            <>
-                <Toaster />
-                <NavBar />
-                <Outlet />
-                <Footer />
-            </>
-        );
-    }
+    return loading ? (
+        <Loader />
+    ) : (
+        <>
+            <Toaster />
+            <NavBar />
+            <Outlet />
+            <Footer />
+        </>
+    );
 }
 
 export default Layout;
