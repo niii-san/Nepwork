@@ -7,13 +7,13 @@ function Home() {
     if (isLoggedIn) {
         return (
             <>
-                <div>You're Logged in </div>
+                <div className="mt-52 text-center">You're Logged in </div>
             </>
         );
     } else {
         return (
             <>
-                <div>You're not Logged in</div>
+                <div className="mt-52 text-center">You're not Logged in</div>
             </>
         );
     }

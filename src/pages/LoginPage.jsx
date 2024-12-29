@@ -63,51 +63,77 @@ function LoginPage() {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="email">Email</label>
-                <input
-                    type="text"
-                    id="email"
-                    {...register("email", {
-                        required: "Email address is required",
-                    })}
-                    className="border-2 border-black"
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+                <img
+                    src="src/Images/NepWorkLogo.png"
+                    alt="NepWork Logo"
+                    className="w-40 mx-auto mb-4"
                 />
-                {errors.email && (
-                    <p className="text-red-500">{errors.email.message}</p>
-                )}
-                <br />
-                <br />
-                <label htmlFor="password">Password</label>
-                <input
-                    type="text"
-                    id="password"
-                    {...register("password", {
-                        required: "Password is required",
-                    })}
-                    className="border-2 border-black"
-                />
-
-                {/* This is form validation error message, like password is required*/}
-                {errors.password && (
-                    <p className="text-red-500">{errors.password.message}</p>
-                )}
-
-                {/*Error msg thats comming from server, like user not fount, invalid credentials*/}
-                {resMsg && <p className="text-red-500">{resMsg}</p>}
-
-                <br />
-                <br />
-
-                <button
-                    type="submit"
-                    className="border-2 border-black px-10 py-2"
-                >
+                <h2 className="text-2xl font-bold text-center text-greentext mb-4">
                     Login
-                </button>
-            </form>
-        </>
+                </h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            {...register("email", {
+                                required: "Email address is required",
+                            })}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                        {errors.email && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.email.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            {...register("password", {
+                                required: "Password is required",
+                            })}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                        {errors.password && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.password.message}
+                            </p>
+                        )}
+                        {resMsg && (
+                            <p className="text-sm text-red-500 mt-1">{resMsg}</p>
+                        )}
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-green_button text-whitetext py-2 rounded-md hover:bg-hover_button"
+                    >
+                        LOGIN
+                    </button>
+                </form>
+                <p
+                    onClick={() => navigate("/signup")}
+                    className="text-center text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
+                >
+                    Don’t have an account? Sign up here
+                </p>
+            </div>
+        </div>
     );
 }
 

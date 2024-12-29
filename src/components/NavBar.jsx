@@ -1,20 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router";
 import { useAuth } from "../stores/Auth";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 function NavBar() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
     // Styling for active nav item
-    const activeNavItemStyle = "text-green-700";
+    const activeNavItemStyle = "text-greentext";
 
     // Styling for inactive nav items
-    const inActiveNavItemStyle = "text-black";
+    const inActiveNavItemStyle = "text-blacktext";
 
     if (isLoggedIn) {
         return (
             <>
-                <div className="h-[60px] bg-gray-300 flex items-center justify-evenly">
+                <div className="h-[60px]  bg-light_background flex items-center justify-evenly">
                     <NavLink
                         to={"/home"}
                         className={({ isActive }) =>
@@ -55,7 +56,7 @@ function NavBar() {
                         to={"/logout"}
                         className="cursor-pointer hover:underline"
                     >
-                        Logout
+                        <RiLogoutBoxRLine className=""/>
                     </NavLink>
                 </div>
             </>
@@ -64,11 +65,11 @@ function NavBar() {
 
     return (
         <>
-            <div className="h-[60px] bg-gray-300 flex items-center justify-evenly">
+            <div className="font-semibold shadow-custom_shadow border border-nav_border_color fixed top-0 left-0 w-full h-[60px] bg-light_background shadow-3xl flex items-center justify-evenly z-50">
                 <NavLink
                     to={"/home"}
                     className={({ isActive }) =>
-                        isActive ? activeNavItemStyle : inActiveNavItemStyle
+                        isActive ? `${activeNavItemStyle}` : inActiveNavItemStyle
                     }
                 >
                     Home
@@ -80,7 +81,7 @@ function NavBar() {
                         isActive ? activeNavItemStyle : inActiveNavItemStyle
                     }
                 >
-                    Join
+                    SignUp
                 </NavLink>
 
                 <NavLink
