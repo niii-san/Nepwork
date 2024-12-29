@@ -9,6 +9,7 @@ export default {
     },
     colors: {
       'green_button':'#009400',
+      'green_border':'#009400',
       'hover_button':'#4CB44C',
       'error_color':'',
       'focus_color':'#4CB44C',

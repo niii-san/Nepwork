@@ -2,6 +2,9 @@ import React from "react";
 import { NavLink } from "react-router";
 import { useAuth } from "../stores/Auth";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { IoNotifications } from "react-icons/io5";
+import { IoSettingsSharp } from "react-icons/io5";
+
 
 function NavBar() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
@@ -49,7 +52,11 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
-                        Notifications
+                        <IoNotifications />
+                    </NavLink>
+
+                    <NavLink>
+                        <IoSettingsSharp />
                     </NavLink>
 
                     <NavLink
