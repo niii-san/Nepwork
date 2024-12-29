@@ -5,7 +5,6 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoNotifications } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 
-
 function NavBar() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
@@ -55,7 +54,12 @@ function NavBar() {
                         <IoNotifications />
                     </NavLink>
 
-                    <NavLink>
+                    <NavLink
+                        to={"/settings"}
+                        className={({ isActive }) =>
+                            isActive ? activeNavItemStyle : inActiveNavItemStyle
+                        }
+                    >
                         <IoSettingsSharp />
                     </NavLink>
 
@@ -63,7 +67,7 @@ function NavBar() {
                         to={"/logout"}
                         className="cursor-pointer hover:underline"
                     >
-                        <RiLogoutBoxRLine className=""/>
+                        <RiLogoutBoxRLine className="" />
                     </NavLink>
                 </div>
             </>
@@ -76,7 +80,9 @@ function NavBar() {
                 <NavLink
                     to={"/"}
                     className={({ isActive }) =>
-                        isActive ? `${activeNavItemStyle}` : inActiveNavItemStyle
+                        isActive
+                            ? `${activeNavItemStyle}`
+                            : inActiveNavItemStyle
                     }
                 >
                     Home
