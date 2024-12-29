@@ -6,6 +6,8 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
 import Settings from "./Settings";
+import VerifyEmail from "./VerifyEmail";
+import Kyc from "./Kyc";
 
 export {
     Home,
@@ -16,4 +18,6 @@ export {
     Profile,
     Notifications,
     Settings,
+    VerifyEmail,
+    Kyc,
 };

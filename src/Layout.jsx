@@ -1,27 +1,27 @@
 import { Outlet, useLocation } from "react-router";
 import { NavBar, Footer, Loader } from "./components";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import api from "./utils/api";
-import { useAuth } from "./stores";
+import { useAuth, useUser } from "./stores";
 import { useEffect, useState } from "react";
 
 function Layout() {
     const location = useLocation();
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const login = useAuth((state) => state.login);
+    const setUserData = useUser((state) => state.setUserData);
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("layout runned");
         api.get("/user/verify-token")
             .then((res) => {
                 if (res.data.success && res.data.isAuthenticated) {
+                    setUserData();
                     login();
                     setLoading(false);
                 }
             })
-            .catch((err) => {
+            .catch((_) => {
                 setLoading(false);
             })
             .finally(() => setLoading(false));
