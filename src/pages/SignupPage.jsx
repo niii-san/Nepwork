@@ -69,7 +69,7 @@ function SignupPage() {
                                     "First name should only contain letters",
                             },
                         })}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-focus_color focus:border-focus_color"
+                        className="peer mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                     />
                     {errors.firstName && (
                         <p className="text-sm text-red-500 mt-1">
@@ -95,7 +95,7 @@ function SignupPage() {
                                     "Last name should only contain letters",
                             },
                         })}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-focus_color focus:border-focus_color"
+                        className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                     />
                     {errors.lastName && (
                         <p className="text-sm text-red-500 mt-1">
@@ -120,7 +120,7 @@ function SignupPage() {
                                 message: "Invalid email address format",
                             },
                         })}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-focus_color focus:border-focus_color"
+                        className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                     />
                     {errors.email && (
                         <p className="text-sm text-red-500 mt-1">
@@ -154,7 +154,7 @@ function SignupPage() {
                                 value.trim() !== "" ||
                                 "Password cannot contain only spaces",
                         })}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-focus_color focus:border-focus_color"
+                        className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                     />
                     {errors.password && (
                         <p className="text-sm text-red-500 mt-1">
