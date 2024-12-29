@@ -11,6 +11,9 @@ import {
     Notifications,
     Profile,
     SignupPage,
+    Settings,
+    VerifyEmail,
+    Kyc,
 } from "./pages/index.js";
 import { Protected } from "./components";
 
@@ -19,10 +22,9 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Layout />}>
-                <Route index element={<Navigate to="/home" replace />} />
-                <Route path="home" element={<Home />} />
+                <Route path="" element={<Home />} />
                 <Route
-                    path="dashboard"
+                    path="/dashboard"
                     element={
                         <Protected>
                             {" "}
@@ -31,7 +33,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="notifications"
+                    path="/notifications"
                     element={
                         <Protected>
                             <Notifications />
@@ -39,16 +41,42 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="profile"
+                    path="/profile"
                     element={
                         <Protected>
                             <Profile />
                         </Protected>
                     }
                 />
-                <Route path="signup" element={<SignupPage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="logout" element={<Logout />} />
+                <Route
+                    path="/settings"
+                    element={
+                        <Protected>
+                            <Settings />
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="/settings/kyc"
+                    element={
+                        <Protected>
+                            {" "}
+                            <Kyc />{" "}
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="/settings/verify-email"
+                    element={
+                        <Protected>
+                            {" "}
+                            <VerifyEmail />{" "}
+                        </Protected>
+                    }
+                />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/logout" element={<Logout />} />
             </Route>
         </Routes>
     </BrowserRouter>,

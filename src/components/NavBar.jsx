@@ -17,7 +17,7 @@ function NavBar() {
             <>
                 <div className="h-[60px]  bg-light_background flex items-center justify-evenly">
                     <NavLink
-                        to={"/home"}
+                        to={"/"}
                         className={({ isActive }) =>
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
@@ -67,7 +67,7 @@ function NavBar() {
         <>
             <div className="font-semibold shadow-custom_shadow border border-nav_border_color fixed top-0 left-0 w-full h-[60px] bg-light_background shadow-3xl flex items-center justify-evenly z-50">
                 <NavLink
-                    to={"/home"}
+                    to={"/"}
                     className={({ isActive }) =>
                         isActive ? `${activeNavItemStyle}` : inActiveNavItemStyle
                     }

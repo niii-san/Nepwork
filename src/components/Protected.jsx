@@ -9,13 +9,12 @@ function Protected({ children }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!isLoggedIn && true) {
-            navigate("/home");
-            setLoading(false);
-            return;
+        if (!isLoggedIn) {
+            navigate("/login");
         }
+
         setLoading(false);
-    }, []);
+    }, [isLoggedIn, navigate]);
 
     return loading ? <Loader /> : <>{children}</>;
 }

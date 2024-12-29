@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../stores/Auth";
+import { useAuth, useUser } from "../stores";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 function LoginPage() {
     const navigate = useNavigate();
     const login = useAuth((state) => state.login);
+
+    const setUserData = useUser((state) => state.setUserData);
 
     // Response message after clicking submiting, Like Invalid credentials
     const [resMsg, setResMsg] = useState(null);
@@ -48,8 +50,15 @@ function LoginPage() {
 
                 // reset form values after logged in
                 reset();
-                navigate("/home");
+                navigate("/");
+                //set user data after successfull login
+
+                setUserData()
+
+
+                //send notification after login
                 toast.success(res.data.message);
+
 
                 /*if login success and  there was resMsg ,
                  * setting it to null
