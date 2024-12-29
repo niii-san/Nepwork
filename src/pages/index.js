@@ -5,6 +5,7 @@ import Logout from "./Logout";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
+import Settings from "./Settings";
 
 export {
     Home,
@@ -14,4 +15,5 @@ export {
     Dashboard,
     Profile,
     Notifications,
+    Settings,
 };

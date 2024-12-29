@@ -48,7 +48,7 @@ function LoginPage() {
 
                 // reset form values after logged in
                 reset();
-                navigate("/home");
+                navigate("/");
                 toast.success(res.data.message);
 
                 /*if login success and  there was resMsg ,
