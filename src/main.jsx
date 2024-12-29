@@ -12,6 +12,8 @@ import {
     Profile,
     SignupPage,
     Settings,
+    VerifyEmail,
+    Kyc,
 } from "./pages/index.js";
 import { Protected } from "./components";
 
@@ -51,6 +53,24 @@ createRoot(document.getElementById("root")).render(
                     element={
                         <Protected>
                             <Settings />
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="/settings/kyc"
+                    element={
+                        <Protected>
+                            {" "}
+                            <Kyc />{" "}
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="/settings/verify-email"
+                    element={
+                        <Protected>
+                            {" "}
+                            <VerifyEmail />{" "}
                         </Protected>
                     }
                 />
