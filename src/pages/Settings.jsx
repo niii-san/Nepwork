@@ -3,7 +3,7 @@ import { Link } from "react-router";
 function Settings() {
     return (
         <>
-            <div>This is Settings</div>
+            <div className="min-h-[800px]">This is Settings</div>
             <br />
             <Link to={"/settings/verify-email"}>Verify Email</Link>
             <br />

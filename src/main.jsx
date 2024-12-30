@@ -1,16 +1,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout.jsx";
 import {
     Dashboard,
     Home,
-    LoginPage,
+    Login,
     Logout,
     Notifications,
     Profile,
-    SignupPage,
+    Signup,
     Settings,
     VerifyEmail,
     Kyc,
@@ -74,8 +74,8 @@ createRoot(document.getElementById("root")).render(
                         </Protected>
                     }
                 />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/logout" element={<Logout />} />
             </Route>
         </Routes>

@@ -2,7 +2,7 @@ import React from 'react'
 
 function Dashboard() {
   return (
-    <div>This is dashboard</div>
+    <div className='min-h-[800px]'>This is dashboard</div>
   )
 }
 

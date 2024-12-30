@@ -3,7 +3,7 @@ import React from 'react'
 
 function Profile() {
   return (
-    <div>Profile section BOOM!</div>
+    <div className='min-h-[800px]'>Profile section BOOM!</div>
   )
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 function Notifications() {
   return (
-    <div>Here goes notification</div>
+    <div className='min-h-[800px]'>Here goes notification</div>
   )
 }
 
