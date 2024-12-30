@@ -3,14 +3,13 @@ import { useForm } from "react-hook-form";
 import api from "../utils/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-import { Loader, UserCard } from "../components";
+import { Button, Loader, UserCard } from "../components";
 import { useUser } from "../stores";
 
 function Kyc() {
     const navigate = useNavigate();
     const userData = useUser((state) => state.data);
     const invalidateUserData = useUser((state) => state.setUserData);
-    console.log(userData);
     const {
         register,
         handleSubmit,
@@ -20,8 +19,10 @@ function Kyc() {
 
     const [resErrMsg, setResErrMsg] = useState(null);
     const currentYear = new Date().getFullYear() + 57;
+    const [uploading, setUploading] = useState(false);
 
     const onSubmit = (data) => {
+        setUploading(true);
         // create structured payload and hit endpoint
         const payload = new FormData();
         //loading name
@@ -48,9 +49,6 @@ function Kyc() {
         payload.append("documentId", data.documentId);
         payload.append("documentType", data.documentType);
         payload.append("documentFile", data.documentFile[0]);
-        console.log(payload)
-        console.log(data.documentFile)
-        console.log(payload.get("documentFile"))
 
         api.post("/user/upload-kyc", payload)
             .then((res) => {
@@ -59,9 +57,10 @@ function Kyc() {
             })
             .catch((err) => {
                 setResErrMsg(err.response.data.message);
+            })
+            .finally(() => {
+                setUploading(false);
             });
-
-        console.log(payload);
     };
 
     const inputStyling = "border border-black";
@@ -101,7 +100,6 @@ function Kyc() {
                     <br />
                     <form
                         onSubmit={handleSubmit(onSubmit)}
-                        
                         encType="multipart/form-data"
                     >
                         <h1>Name</h1>
@@ -426,7 +424,13 @@ function Kyc() {
                             <p className="text-red-500">{resErrMsg}</p>
                         )}
                         <br />
-                        <button type="submit">Submit Kyc</button>
+                        <Button
+                            type="submit"
+                            style="filled"
+                            disabled={uploading}
+                        >
+                            {uploading ? "Uploading..." : "Submit Kyc"}
+                        </Button>
                     </form>
                 </div>
             </>
