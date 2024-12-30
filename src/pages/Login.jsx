@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth, useUser } from "../stores";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { Button } from "../components";
 
 function Login() {
     const navigate = useNavigate();
@@ -128,12 +129,7 @@ function Login() {
                             </p>
                         )}
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-green_button text-whitetext py-2 rounded-md hover:bg-hover_button"
-                    >
-                        LOGIN
-                    </button>
+                    <Button type="submit">Login</Button>
                 </form>
                 <p
                     onClick={() => navigate("/signup")}
