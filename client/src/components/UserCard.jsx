@@ -9,12 +9,14 @@ const UserCard = ({ userData }) => {
         kycStatus === "pending"
             ? "bg-yellow-500"
             : kycStatus === "verified"
-              ? "bg-green-500"
-              : "bg-red-500";
+                ? "bg-green-500"
+                : "bg-red-500";
 
     return (
         <div className="max-w-md rounded overflow-hidden shadow-lg border p-6 min-w-[400px] my-[60px]">
-            <h2 className="text-xl font-bold mb-4">User Card</h2>
+            <h2 className="text-xl font-bold mb-4">
+                {name?.firstName} {name ? name.lastName : "User"} Kyc form
+            </h2>
 
             <div className="mb-4">
                 <p>
@@ -71,6 +73,16 @@ const UserCard = ({ userData }) => {
                 <p>
                     <strong>Document Type:</strong> {document?.type}
                 </p>
+                <p>
+                    <strong>
+                        User {document ? document.type : "document"}
+                    </strong>
+                </p>
+                <img
+                    src={document?.url}
+                    alt="User document image"
+                    className="h-[100px] w-[100px]"
+                />
             </div>
 
             <div className="text-center mt-4">
@@ -80,8 +92,8 @@ const UserCard = ({ userData }) => {
                     {kycStatus === "pending"
                         ? "Pending"
                         : kycStatus === "verified"
-                          ? "Approved"
-                          : "Failed"}
+                            ? "Approved"
+                            : "Failed"}
                 </span>
             </div>
         </div>
