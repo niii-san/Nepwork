@@ -1,6 +1,6 @@
 import Home from "./Home";
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
+import Login from "./Login";
+import Signup from "./Signup";
 import Logout from "./Logout";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
@@ -11,8 +11,8 @@ import Kyc from "./Kyc";
 
 export {
     Home,
-    LoginPage,
-    SignupPage,
+    Login,
+    Signup,
     Logout,
     Dashboard,
     Profile,

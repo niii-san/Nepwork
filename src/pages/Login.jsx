@@ -5,7 +5,7 @@ import { useAuth, useUser } from "../stores";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
-function LoginPage() {
+function Login() {
     const navigate = useNavigate();
     const login = useAuth((state) => state.login);
 
@@ -53,12 +53,10 @@ function LoginPage() {
                 navigate("/");
                 //set user data after successfull login
 
-                setUserData()
-
+                setUserData();
 
                 //send notification after login
                 toast.success(res.data.message);
-
 
                 /*if login success and  there was resMsg ,
                  * setting it to null
@@ -72,10 +70,10 @@ function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className=" min-h-[800px] flex items-center justify-center">
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
                 <img
-                    src="src/Images/NepWorkLogo.png"
+                    src="src/assets/logo.svg"
                     alt="NepWork Logo"
                     className="w-40 mx-auto mb-4"
                 />
@@ -125,7 +123,9 @@ function LoginPage() {
                             </p>
                         )}
                         {resMsg && (
-                            <p className="text-sm text-red-500 mt-1">{resMsg}</p>
+                            <p className="text-sm text-red-500 mt-1">
+                                {resMsg}
+                            </p>
                         )}
                     </div>
                     <button
@@ -146,4 +146,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default Login;

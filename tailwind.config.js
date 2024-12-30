@@ -6,6 +6,10 @@ export default {
             boxShadow: {
                 custom_shadow: "4px 0px 2px 0px rgba(0, 0, 0, 0.3)",
             },
+            screens: {
+                tablet: "640px",
+                pc: "1400px",
+            },
             colors: {
                 green_button: "#009400",
                 green_border: "#009400",
