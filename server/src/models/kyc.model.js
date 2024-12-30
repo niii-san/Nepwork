@@ -17,7 +17,7 @@ const kycSchema = new mongoose.Schema(
             day: { type: Number, required: true },
         },
         document: {
-            file: {
+            url: {
                 type: String,
                 required: true,
             },
@@ -63,7 +63,7 @@ const kycSchema = new mongoose.Schema(
             },
         },
 
-        verfied: {
+        verified: {
             type: Boolean,
             default: false,
         },
