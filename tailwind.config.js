@@ -11,13 +11,17 @@ export default {
                 pc: "1400px",
             },
             colors: {
-                primary:"#009400",
-                secondary:"#FFFFFF",
-                tertiray:"#EFEFEF",
-                primaryText:"#FFFFFF",
-                secondaryText:"#505050",
-                
-
+                //green
+                primary: "#009400",
+                //gray
+                secondary: "#EDEDED",
+                //white
+                tertiray: "#FFFFFF",
+                //red
+                danger: "#d64343",
+                //white text
+                primaryText: "#FFFFFF",
+                secondaryText: "#505050",
 
                 green_button: "#009400",
                 green_border: "#009400",

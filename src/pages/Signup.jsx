@@ -2,6 +2,9 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { Button } from "../components";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 function Signup() {
     const navigate = useNavigate();
@@ -9,9 +12,22 @@ function Signup() {
         register,
         handleSubmit,
         reset,
+        watch,
         formState: { errors },
     } = useForm();
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const handleShowPassword = () => {
+        setShowPassword((prev) => !prev);
+    };
+
+    const handleConfirmShowPassword = () => {
+        setShowConfirmPassword((prev) => !prev);
+    };
+
+    const password = watch("password", "");
     // create structured payload and hit endpoint
     const onSubmit = (data) => {
         const payload = {
@@ -21,6 +37,7 @@ function Signup() {
             },
             email: data.email,
             password: data.password,
+            confirmPassword: data.confirmPassword,
         };
 
         axios
@@ -38,7 +55,7 @@ function Signup() {
     };
 
     return (
-        <div className="min-h-[600px] bg-light_background flex items-center justify-center">
+        <div className="min-h-[800px] bg-light_background flex items-center justify-center">
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
                 <div className="flex justify-center mb-4">
                     <img
@@ -48,7 +65,7 @@ function Signup() {
                     />
                 </div>
                 <h2 className="text-2xl font-bold text-center text-greentext mb-4">
-                    Sign Up
+                    Sign up
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
@@ -128,15 +145,15 @@ function Signup() {
                             </p>
                         )}
                     </div>
+                    <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Password
+                    </label>
                     <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Password
-                        </label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             id="password"
                             {...register("password", {
                                 required: "Password is required",
@@ -154,20 +171,66 @@ function Signup() {
                                     value.trim() !== "" ||
                                     "Password cannot contain only spaces",
                             })}
-                            className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                            className="mt-1 p-2 bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                         />
+                        {showPassword ? (
+                            <FaRegEye
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleShowPassword}
+                            />
+                        ) : (
+                            <FaRegEyeSlash
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleShowPassword}
+                            />
+                        )}
                         {errors.password && (
                             <p className="text-sm text-red-500 mt-1">
                                 {errors.password.message}
                             </p>
                         )}
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-green_button text-whitetext py-2 rounded-md hover:bg-hover_button"
-                    >
-                        SIGN UP
-                    </button>
+
+                    <div>
+                        <label
+                            htmlFor="confirmPassword"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Confirm Password
+                        </label>
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            id="confirmPassword"
+                            className="mt-1 peer p-2 bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                            {...register("confirmPassword", {
+                                required: "Confirm password is required",
+                                validate: (value) =>
+                                    value === password ||
+                                    "Passwords do not match",
+                            })}
+                        />
+                        {showConfirmPassword ? (
+                            <FaRegEye
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleConfirmShowPassword}
+                            />
+                        ) : (
+                            <FaRegEyeSlash
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleConfirmShowPassword}
+                            />
+                        )}
+
+                        {errors.confirmPassword && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.confirmPassword.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <Button type="submit" style="filled" className="w-full">
+                        Signup
+                    </Button>
                 </form>
                 <p
                     onClick={() => navigate("/login")}

@@ -12,10 +12,10 @@ function NavBar() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
     // Styling for active nav item
-    const activeNavItemStyle = "text-greentext flex gap-1 items-center";
+    const activeNavItemStyle = "text-primary flex gap-1 items-center";
 
     // Styling for inactive nav items
-    const inActiveNavItemStyle = "text-blacktext flex gap-1 items-center";
+    const inActiveNavItemStyle = "text-black flex gap-1 items-center";
 
     if (isLoggedIn) {
         return (
@@ -27,7 +27,7 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
-                        <GoHome/>
+                        <GoHome />
                         Home
                     </NavLink>
 
@@ -69,13 +69,6 @@ function NavBar() {
                     >
                         <IoSettingsOutline />
                         Settings
-                    </NavLink>
-
-                    <NavLink
-                        to={"/logout"}
-                        className="cursor-pointer hover:underline"
-                    >
-                        <RiLogoutBoxRLine className="" />
                     </NavLink>
                 </div>
             </>

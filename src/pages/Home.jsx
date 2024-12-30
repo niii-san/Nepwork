@@ -7,7 +7,7 @@ function Home() {
     if (isLoggedIn) {
         return (
             <>
-                <div className="mt-52 text-center min-h-[600px]">
+                <div className="bg-secondary text-center min-h-[800px]">
                     You're Logged in{" "}
                 </div>
             </>
@@ -15,7 +15,7 @@ function Home() {
     } else {
         return (
             <>
-                <div className="mt-52 text-center min-h-[600px]">
+                <div className="bg-secondary text-center min-h-[800px]">
                     You're not Logged in
                 </div>
             </>

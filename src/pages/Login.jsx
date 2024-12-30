@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth, useUser } from "../stores";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Button } from "../components";
 
 function Login() {
@@ -14,6 +15,11 @@ function Login() {
 
     // Response message after clicking submiting, Like Invalid credentials
     const [resMsg, setResMsg] = useState(null);
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleShowPassword = () => {
+        setShowPassword((prev) => !prev);
+    };
 
     const {
         register,
@@ -71,7 +77,7 @@ function Login() {
     };
 
     return (
-        <div className=" min-h-[800px] flex items-center justify-center">
+        <div className="bg-secondary min-h-[800px] flex items-center justify-center">
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
                 <img
                     src="src/assets/logo.svg"
@@ -111,13 +117,24 @@ function Login() {
                             Password
                         </label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             id="password"
                             {...register("password", {
                                 required: "Password is required",
                             })}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1  p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
+                        {showPassword ? (
+                            <FaRegEye
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleShowPassword}
+                            />
+                        ) : (
+                            <FaRegEyeSlash
+                                className="inline-block ml-4 text-2xl"
+                                onClick={handleShowPassword}
+                            />
+                        )}
                         {errors.password && (
                             <p className="text-sm text-red-500 mt-1">
                                 {errors.password.message}
@@ -129,13 +146,19 @@ function Login() {
                             </p>
                         )}
                     </div>
-                    <Button type="submit">Login</Button>
+                    <Button
+                        type="submit"
+                        style="filled"
+                        className="mx-auto w-full"
+                    >
+                        Login
+                    </Button>
                 </form>
                 <p
                     onClick={() => navigate("/signup")}
                     className="text-center text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
                 >
-                    Don’t have an account? Sign up here
+                    Don’t have an account? Signup here
                 </p>
             </div>
         </div>
