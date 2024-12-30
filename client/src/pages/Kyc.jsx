@@ -23,35 +23,34 @@ function Kyc() {
 
     const onSubmit = (data) => {
         // create structured payload and hit endpoint
-        const payload = {
-            name: {
-                firstName: data.firstName.trim(),
-                middleName: data.middleName || "",
-                lastName: data.lastName,
-            },
-            dob: {
-                year: data.year,
-                month: data.month,
-                day: data.day,
-            },
-            address: {
-                temporary: {
-                    country: data.temporaryCountry,
-                    state: data.temporaryState,
-                    city: data.temporaryCity,
-                },
-                permanent: {
-                    country: data.permanentCountry,
-                    state: data.permanentState,
-                    city: data.permanentCity,
-                },
-            },
-            document: {
-                file: data.documentFile,
-                id: data.documentId,
-                type: data.documentType,
-            },
-        };
+        const payload = new FormData();
+        //loading name
+        payload.append("firstName", data.firstName);
+        payload.append("middleName", data.middleName || "");
+        payload.append("lastName", data.lastName);
+
+        //loading dob
+
+        payload.append("dobYear", data.year);
+        payload.append("dobMonth", data.month);
+        payload.append("dobDay", data.day);
+
+        // loading address
+        payload.append("temporaryCountry", data.temporaryCountry);
+        payload.append("temporaryState", data.temporaryState);
+        payload.append("temporaryCity", data.temporaryCity);
+
+        payload.append("permanentCountry", data.permanentCountry);
+        payload.append("permanentState", data.permanentState);
+        payload.append("permanentCity", data.permanentCity);
+
+        // loading documents
+        payload.append("documentId", data.documentId);
+        payload.append("documentType", data.documentType);
+        payload.append("documentFile", data.documentFile[0]);
+        console.log(payload)
+        console.log(data.documentFile)
+        console.log(payload.get("documentFile"))
 
         api.post("/user/upload-kyc", payload)
             .then((res) => {
@@ -100,7 +99,11 @@ function Kyc() {
                         submit
                     </div>
                     <br />
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        
+                        encType="multipart/form-data"
+                    >
                         <h1>Name</h1>
                         <div>
                             <label htmlFor="firstName">First name</label>
