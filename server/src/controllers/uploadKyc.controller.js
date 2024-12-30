@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import multer from "multer";
 import { cloudinary } from "../utils/cloudinary.js";
+import fs from "fs";
 
 export const upload = multer({ dest: "uploads/" });
 
@@ -178,12 +179,35 @@ export const uploadKyc = asyncHandler(async (req, res) => {
         const response = await cloudinary.uploader.upload(documentPath);
         documentUrl = response.url;
 
-        //TODO: delete after uploaded
+        fs.unlink(documentPath, (err) => {
+            if (err) {
+                console.log(
+                    "Error removing file from local system after uploading to cloudinary",
+                );
+            } else {
+                console.log(
+                    "Removed file from local system after uploading to cloudinary",
+                );
+            }
+        });
     } catch (error) {
-        console.log("sometghin went wrong while uploading document");
-        console.log(err);
+        fs.unlink(documentPath, (err) => {
+            if (err) {
+                console.log(
+                    "Error removing file from local system after failed upload to cloudinary",
+                );
+            } else {
+                console.log(
+                    "Removed file from local system after failed upload to cloudinary",
+                );
+            }
+        });
 
-        //TODO: delete if failed to upload
+        return res
+            .status(400)
+            .json(
+                new ApiError(400, true, "Failed to upload document, Try again"),
+            );
     }
 
     const kyc = await Kyc.create({
