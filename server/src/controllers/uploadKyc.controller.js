@@ -3,48 +3,37 @@ import { Kyc } from "../models/kyc.model.js";
 import { User } from "../models/user.model.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
+import multer from "multer";
+import { cloudinary } from "../utils/cloudinary.js";
+import fs from "fs";
+
+export const upload = multer({ dest: "uploads/" });
 
 export const uploadKyc = asyncHandler(async (req, res) => {
     const body = req.body;
+    const documentPath = req.file.path;
 
-    /*
-     * Validation for Name
-     * */
-    if (!body.name) {
-        return res
-            .status(400)
-            .json(new ApiError(400, true, "Name object not provided"));
-    }
     //Name
-    const firstName = (body.name.firstName || "").trim();
-    const middleName = (body.name.middleName || "").trim();
-    const lastName = (body.name.lastName || "").trim();
+    const firstName = (body.firstName || "").trim();
+    const middleName = (body.middleName || "").trim();
+    const lastName = (body.lastName || "").trim();
 
     if (!firstName) {
         return res
             .status(400)
-            .json(new ApiError(400, true, "NAME: First name not provided"));
+            .json(new ApiError(400, true, "First name not provided"));
     }
 
     if (!lastName) {
         return res
             .status(400)
-            .json(new ApiError(400, true, "NAME: Last name not provided"));
+            .json(new ApiError(400, true, "Last name not provided"));
     }
 
-    /*
-     * Validation for DOB
-     * */
-
-    if (!body.dob) {
-        return res
-            .status(400)
-            .json(new ApiError(400, true, "DOB object not provided"));
-    }
     // Date of birth
-    const year = body.dob.year || 0;
-    const month = body.dob.month || 0;
-    const day = body.dob.day || 0;
+    const year = body.dobYear || 0;
+    const month = body.dobMonth || 0;
+    const day = body.dobDay || 0;
 
     if (!year) {
         return res
@@ -67,38 +56,20 @@ export const uploadKyc = asyncHandler(async (req, res) => {
      * Validation for document
      * */
 
-    if (!body.document) {
-        return res
-            .status(400)
-            .json(new ApiError(400, true, "Document object not provided"));
-    }
-
-    //TODO: handle document uplaod
-    const documentIdNumber = body.document.id || 0;
-    const documentType = (body.document.type || "").trim().toLowerCase();
-
-    //TODO: handle this for now random string
-    // const documentFile = body.document.file
-    const documentFile = "randomfordemo";
+    const documentIdNumber = body.documentId || 0;
+    const documentType = (body.documentType || "").trim().toLowerCase();
+    let documentUrl;
 
     if (!documentIdNumber) {
         return res
             .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "DOCUMENT: Document id number not provided",
-                ),
-            );
+            .json(new ApiError(400, true, "DocumentId not provided"));
     }
 
     if (!documentType) {
         return res
             .status(400)
-            .json(
-                new ApiError(400, true, "DOCUMENT: Document type not provided"),
-            );
+            .json(new ApiError(400, true, "Document type not provided"));
     }
 
     const allowedDocTypes = ["citizenship", "passport", "driving_license"];
@@ -116,122 +87,58 @@ export const uploadKyc = asyncHandler(async (req, res) => {
     }
 
     /*
-     * Validation for address
-     * */
-    if (!body.address) {
-        return res
-            .status(400)
-            .json(new ApiError(400, true, "Address object not provided"));
-    }
-
-    /*
      * Validation for temporary address
      * */
-    if (!body.address.temporary) {
-        return res
-            .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "Temporary address object not provided",
-                ),
-            );
-    }
 
-    const tempCountry = (body.address.temporary.country || "")
-        .trim()
-        .toLowerCase();
+    const tempCountry = (body.temporaryCountry || "").trim().toLowerCase();
 
-    const tempState = body.address.temporary.state || 0;
+    const tempState = body.temporaryState || 0;
 
-    const tempCity = (body.address.temporary.city || "").trim().toLowerCase();
+    const tempCity = (body.temporaryCity || "").trim().toLowerCase();
 
     if (!tempCountry) {
         return res
             .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "TEMPORARY ADDRESS: country not provided",
-                ),
-            );
+            .json(new ApiError(400, true, "Temporary country not provided"));
     }
 
     if (!tempState) {
         return res
             .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "TEMPORARY ADDRESS: state not provided",
-                ),
-            );
+            .json(new ApiError(400, true, "Temporary state not provided"));
     }
     if (!tempCity) {
         return res
             .status(400)
-            .json(
-                new ApiError(400, true, "TEMPORARY ADDRESS: city not provided"),
-            );
+            .json(new ApiError(400, true, "Temporary city not provided"));
     }
 
     /*
      * Validation for permanent address
      * */
 
-    if (!body.address.permanent) {
-        return res
-            .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "Permanent address object not provided",
-                ),
-            );
-    }
+    const permanCountry = (body.permanentCountry || "").trim().toLowerCase();
 
-    const permanCountry = (body.address.permanent.country || "")
-        .trim()
-        .toLowerCase();
+    const permanState = body.permanentState || 0;
 
-    const permanState = body.address.permanent.state || 0;
-
-    const permanCity = (body.address.permanent.city || "").trim().toLowerCase();
+    const permanCity = (body.permanentCity || "").trim().toLowerCase();
 
     if (!permanCountry) {
         return res
             .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "PERMANENT ADDRESS: country not provided",
-                ),
-            );
+            .json(new ApiError(400, true, "Permanent country not provided"));
     }
 
     if (!permanState) {
         return res
             .status(400)
-            .json(
-                new ApiError(
-                    400,
-                    true,
-                    "PERMANENT ADDRESS: state not provided",
-                ),
-            );
+            .json(new ApiError(400, true, "Permanent state not provided"));
     }
 
     if (!permanCity) {
         return res
             .status(400)
-            .json(
-                new ApiError(400, true, "PERMANENT ADDRESS: city not provided"),
-            );
+            .json(new ApiError(400, true, "Permanent city not provided"));
     }
 
     const user = await User.findById(req.user.id);
@@ -256,12 +163,59 @@ export const uploadKyc = asyncHandler(async (req, res) => {
             .json(new ApiError(400, true, "Your kyc is already verified"));
     }
 
+    if (!documentPath) {
+        return res
+            .status(400)
+            .json(
+                new ApiError(
+                    400,
+                    true,
+                    "Something wen wrong while image was uploading, Try again",
+                ),
+            );
+    }
+
+    try {
+        const response = await cloudinary.uploader.upload(documentPath);
+        documentUrl = response.url;
+
+        fs.unlink(documentPath, (err) => {
+            if (err) {
+                console.log(
+                    "Error removing file from local system after uploading to cloudinary",
+                );
+            } else {
+                console.log(
+                    "Removed file from local system after uploading to cloudinary",
+                );
+            }
+        });
+    } catch (error) {
+        fs.unlink(documentPath, (err) => {
+            if (err) {
+                console.log(
+                    "Error removing file from local system after failed upload to cloudinary",
+                );
+            } else {
+                console.log(
+                    "Removed file from local system after failed upload to cloudinary",
+                );
+            }
+        });
+
+        return res
+            .status(400)
+            .json(
+                new ApiError(400, true, "Failed to upload document, Try again"),
+            );
+    }
+
     const kyc = await Kyc.create({
         user: user,
         name: { firstName, middleName, lastName },
         dob: { year, month, day },
         document: {
-            file: documentFile,
+            url: documentUrl,
             id: documentIdNumber,
             type: documentType,
         },

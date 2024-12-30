@@ -18,7 +18,7 @@ function Settings() {
                     <Button
                         style="filled"
                         theme="danger"
-                        className="flex justify-center items-center gap-1 bg-danger"
+                        className="flex justify-center items-center gap-1 bg-danger hover:bg-danger border-danger"
                     >
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
