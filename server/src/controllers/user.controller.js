@@ -42,6 +42,7 @@ export const signup = asyncHandler(async (req, res) => {
     const lastName = (data.name.lastName || "").trim();
     const email = (data.email || "").trim().toLowerCase();
     const password = data.password || "";
+    const confirmPassword = data.confirmPassword || "";
 
     console.log("user signedup", data);
 
@@ -60,17 +61,37 @@ export const signup = asyncHandler(async (req, res) => {
     if (!password) {
         return res
             .status(400)
-            .json(new ApiError(400, false, "Password is required", null));
+            .json(new ApiError(400, false, "Password is required"));
     }
+
+    if (!confirmPassword) {
+        return res
+            .status(400)
+            .json(new ApiError(400, false, "Confirm password is required"));
+    }
+
+    if (password !== confirmPassword) {
+        return res
+            .status(400)
+            .json(
+                new ApiError(
+                    400,
+                    false,
+                    "Password and confirm password did not matched",
+                ),
+            );
+    }
+
     if (password.length < 8) {
         return res
             .status(400)
-            .json(new ApiError(400, false, "Password too short", null));
+            .json(new ApiError(400, false, "Password too short"));
     }
+
     if (!email) {
         return res
             .status(400)
-            .json(new ApiError(400, false, "Email is required", null));
+            .json(new ApiError(400, false, "Email is required"));
     }
 
     const alreadyExists = await User.findOne({ email });

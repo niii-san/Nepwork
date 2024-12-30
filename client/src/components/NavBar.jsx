@@ -5,7 +5,6 @@ import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
-import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoMdNotificationsOutline } from "react-icons/io";
 
 function NavBar() {
