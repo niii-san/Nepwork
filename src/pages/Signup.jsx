@@ -38,7 +38,7 @@ function Signup() {
     };
 
     return (
-        <div className="min-h-[600px] bg-gray-100 flex items-center justify-center">
+        <div className="min-h-[600px] bg-light_background flex items-center justify-center">
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
                 <div className="flex justify-center mb-4">
                     <img

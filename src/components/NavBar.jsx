@@ -1,29 +1,33 @@
 import React from "react";
 import { NavLink } from "react-router";
 import { useAuth } from "../stores/Auth";
+import { GoHome } from "react-icons/go";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { LuUserRound } from "react-icons/lu";
+import { IoSettingsOutline } from "react-icons/io5";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { IoNotifications } from "react-icons/io5";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 function NavBar() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
     // Styling for active nav item
-    const activeNavItemStyle = "text-greentext";
+    const activeNavItemStyle = "text-greentext flex gap-1 items-center";
 
     // Styling for inactive nav items
-    const inActiveNavItemStyle = "text-blacktext";
+    const inActiveNavItemStyle = "text-blacktext flex gap-1 items-center";
 
     if (isLoggedIn) {
         return (
             <>
-                <div className="h-[60px]  bg-light_background flex items-center justify-evenly">
+                <div className="h-[60px]  bg-whitetext flex items-center justify-evenly">
                     <NavLink
                         to={"/"}
                         className={({ isActive }) =>
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
+                        <GoHome/>
                         Home
                     </NavLink>
 
@@ -33,6 +37,7 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
+                        <MdOutlineSpaceDashboard />
                         Dashboard
                     </NavLink>
 
@@ -42,6 +47,7 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
+                        <LuUserRound />
                         Profile
                     </NavLink>
 
@@ -51,7 +57,8 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
-                        <IoNotifications />
+                        <IoMdNotificationsOutline />
+                        Notification
                     </NavLink>
 
                     <NavLink
@@ -60,7 +67,8 @@ function NavBar() {
                             isActive ? activeNavItemStyle : inActiveNavItemStyle
                         }
                     >
-                        <IoSettingsSharp />
+                        <IoSettingsOutline />
+                        Settings
                     </NavLink>
 
                     <NavLink
@@ -76,7 +84,7 @@ function NavBar() {
 
     return (
         <>
-            <div className="font-semibold shadow-custom_shadow border border-nav_border_color sticky top-0 left-0 w-full h-[60px] bg-light_background shadow-3xl flex items-center justify-evenly z-50">
+            <div className="sticky top-0  w-full h-[60px] bg-white flex items-center justify-evenly">
                 <NavLink
                     to={"/"}
                     className={({ isActive }) =>
@@ -85,6 +93,7 @@ function NavBar() {
                             : inActiveNavItemStyle
                     }
                 >
+                    <GoHome />
                     Home
                 </NavLink>
 
