@@ -1,23 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import Button from "./Button";
+import api from "../utils/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 function EnterEmailOtp({ email, setShowOtpModal }) {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(e.target.one);
-    };
-
+    const navigate = useNavigate();
     const [otp, setOtp] = useState(new Array(6).fill(""));
     const inputNames = ["one", "two", "three", "four", "five", "six"];
 
+    const [errMsg, setErrMsg] = useState(null);
+
     const inputRefs = useRef([]);
-    console.log(inputRefs);
 
     const handleInputChange = (e, i) => {
         const value = e.target.value.trim();
         if (!isNaN(value)) {
             const newOtp = [...otp];
             newOtp[i] = value.substring(value.length - 1);
-            console.log(value);
             setOtp(newOtp);
 
             if (value && i < 5 && inputRefs.current[i]) {
@@ -41,7 +40,29 @@ function EnterEmailOtp({ email, setShowOtpModal }) {
         }
     };
 
-    console.log(otp);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const payload = {
+            email: email,
+            otpCode: otp.join(""),
+        };
+        if (payload.otpCode.length != 6) {
+            setErrMsg("Otp is required");
+            return;
+        }
+        setErrMsg(null);
+
+        api.post("/user/verify-email", payload)
+            .then((res) => {
+                if (res.data.success) {
+                    toast.success("Email verified");
+                    navigate("/settings");
+                }
+            })
+            .catch((err) => {
+                setErrMsg(err.response.data.message)
+            });
+    };
 
     useEffect(() => {
         if (inputRefs.current[0]) {
@@ -79,6 +100,13 @@ function EnterEmailOtp({ email, setShowOtpModal }) {
                                 />
                             );
                         })}
+                    </div>
+                    <div className="h-4">
+                    {errMsg && (
+                        <p className="text-red-500 text-center mt-1">
+                            {errMsg}
+                        </p>
+                    )}
                     </div>
                     <div className="flex justify-evenly mt-6 gap-x-2">
                         <Button style="filled" type="submit">
