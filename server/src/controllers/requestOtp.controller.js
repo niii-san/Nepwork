@@ -14,6 +14,18 @@ export const requestOtp = asyncHandler(async (req, res) => {
             .json(new ApiError(400, true, "Email not provided for otp"));
     }
 
+    if (email !== req.user.email) {
+        return res
+            .status(400)
+            .json(
+                new ApiError(
+                    400,
+                    true,
+                    "Failed, email doesnot match with linked email",
+                ),
+            );
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -23,7 +35,7 @@ export const requestOtp = asyncHandler(async (req, res) => {
                 new ApiError(
                     404,
                     false,
-                    "Failed to send OTP, No any user with this email",
+                    "Failed, No any user with this email",
                 ),
             );
     }

@@ -15,12 +15,30 @@ export const verifyEmail = asyncHandler(async (req, res) => {
         return res
             .status(400)
             .json(
-                new ApiError(400, true, "Email is required for email verification"),
+                new ApiError(
+                    400,
+                    true,
+                    "Email is required for email verification",
+                ),
+            );
+    }
+
+    if (email !== req.user.email) {
+        return res
+            .status(400)
+            .json(
+                new ApiError(
+                    400,
+                    true,
+                    "Email doesn't matches with linked email",
+                ),
             );
     }
 
     if (!otpCode) {
-        return res.status(400).json(new ApiError(400, true, "Please provide OTP"));
+        return res
+            .status(400)
+            .json(new ApiError(400, true, "Please provide OTP"));
     }
 
     const otp = await Otp.findOne({ email });

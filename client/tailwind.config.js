@@ -2,13 +2,14 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
+        screens: {
+            tablet: "640px",
+            // => @media (min-width: 640px)
+            pc: "1200px",
+        },
         extend: {
             boxShadow: {
                 custom_shadow: "4px 0px 2px 0px rgba(0, 0, 0, 0.3)",
-            },
-            screens: {
-                tablet: "640px",
-                pc: "1400px",
             },
             colors: {
                 //green

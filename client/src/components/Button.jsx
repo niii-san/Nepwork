@@ -61,12 +61,4 @@ Button.propTypes = {
     children: PropTypes.node.isRequired, // Ensures children are passed
 };
 
-Button.defaultProps = {
-    type: "button",
-    className: "",
-    disabled: false,
-    style: "outline",
-    onClick: undefined,
-};
-
 export default Button;
