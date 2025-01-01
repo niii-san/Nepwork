@@ -14,8 +14,11 @@ import {
     Settings,
     VerifyEmail,
     Kyc,
+    AdminLogin,
+    AdminDashboard,
 } from "./pages/index.js";
 import { Protected } from "./components";
+import AdminLayout from "./AdminLayout.jsx";
 
 createRoot(document.getElementById("root")).render(
     //  <StrictMode>
@@ -24,7 +27,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/" element={<Layout />}>
                 <Route path="" element={<Home />} />
                 <Route
-                    path="/dashboard"
+                    path="dashboard"
                     element={
                         <Protected>
                             {" "}
@@ -33,7 +36,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="/notifications"
+                    path="notifications"
                     element={
                         <Protected>
                             <Notifications />
@@ -41,7 +44,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="/profile"
+                    path="profile"
                     element={
                         <Protected>
                             <Profile />
@@ -49,7 +52,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="/settings"
+                    path="settings"
                     element={
                         <Protected>
                             <Settings />
@@ -57,7 +60,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="/settings/kyc"
+                    path="settings/kyc"
                     element={
                         <Protected>
                             {" "}
@@ -66,7 +69,7 @@ createRoot(document.getElementById("root")).render(
                     }
                 />
                 <Route
-                    path="/settings/verify-email"
+                    path="settings/verify-email"
                     element={
                         <Protected>
                             {" "}
@@ -77,6 +80,11 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/logout" element={<Logout />} />
+            </Route>
+            {/*Admin layout*/}
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route path="login" element={<AdminLogin />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
             </Route>
         </Routes>
     </BrowserRouter>,

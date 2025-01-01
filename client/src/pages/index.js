@@ -8,6 +8,8 @@ import Notifications from "./Notifications";
 import Settings from "./Settings";
 import VerifyEmail from "./VerifyEmail";
 import Kyc from "./Kyc";
+import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
 
 export {
     Home,
@@ -20,4 +22,6 @@ export {
     Settings,
     VerifyEmail,
     Kyc,
+    AdminLogin,
+    AdminDashboard,
 };
