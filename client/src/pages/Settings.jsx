@@ -1,8 +1,12 @@
 import { Link } from "react-router";
-import { Button } from "../components";
+import { Button, Loader } from "../components";
 import { TbLogout } from "react-icons/tb";
+import { useUser } from "../stores";
 
 function Settings() {
+    const userData = useUser((state) => state.data);
+
+    if (!userData) return <Loader />;
     return (
         <div className="min-h-[800px] bg-secondary">
             <h1>This is Settings</h1>
@@ -23,6 +27,12 @@ function Settings() {
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
                 </Link>
+
+                {userData.role === "admin" && (
+                    <Link to={"/admin/login"}>
+                        <Button>Admin</Button>
+                    </Link>
+                )}
             </div>
         </div>
     );
