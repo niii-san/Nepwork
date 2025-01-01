@@ -18,7 +18,7 @@ function VerifyEmail() {
             email: data.email,
         };
         api.post("/user/request-otp", payload)
-            .then((res) => {
+            .then((_) => {
                 toast.success("OTP was sent");
                 setShowOtpModal(true);
                 setResErrMsg(null);
@@ -30,7 +30,7 @@ function VerifyEmail() {
     };
 
     const userData = useUser((state) => state.data);
-    const [showOtpModal, setShowOtpModal] = useState(true);
+    const [showOtpModal, setShowOtpModal] = useState(false);
     const [sending, setSending] = useState(false);
     const [resErrMsg, setResErrMsg] = useState(null);
 
