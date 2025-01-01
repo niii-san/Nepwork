@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "../components";
+import React, { useState } from "react";
+import { Button, Loader, EnterEmailOtp } from "../components";
 import { useUser } from "../stores";
-import { Loader } from "../components";
 import { useForm } from "react-hook-form";
 import api from "../utils/api";
 import toast from "react-hot-toast";
@@ -20,11 +19,8 @@ function VerifyEmail() {
         };
         api.post("/user/request-otp", payload)
             .then((res) => {
-                /*
-                 * TODO:After otp sent open a modal to enter OTP
-                 *
-                 * */
                 toast.success("OTP was sent");
+                setShowOtpModal(true);
                 setResErrMsg(null);
             })
             .catch((err) => {
@@ -53,10 +49,10 @@ function VerifyEmail() {
     return (
         <>
             {showOtpModal && (
-                <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50 h-[500px] w-[500px] bg-red-400">
-<h1>Enter OTP</h1>
-
-                </div>
+                <EnterEmailOtp
+                    email={userData?.email}
+                    setShowOtpModal={setShowOtpModal}
+                />
             )}
             <div className="bg-secondary min-h-[800px]">
                 This is verify email page
@@ -82,6 +78,9 @@ function VerifyEmail() {
                         disabled={sending}
                     >
                         {sending ? "Sending..." : "Send OTP"}
+                    </Button>
+                    <Button onClick={() => setShowOtpModal(true)}>
+                        Enter OTP
                     </Button>
                 </form>
             </div>
