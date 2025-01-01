@@ -16,6 +16,7 @@ function Layout() {
         api.get("/user/verify-token")
             .then((res) => {
                 if (res.data.success && res.data.isAuthenticated) {
+                    console.log("user data invalidated")
                     setUserData();
                     login();
                     setLoading(false);
