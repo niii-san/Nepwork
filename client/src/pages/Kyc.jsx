@@ -164,6 +164,14 @@ function Kyc() {
                                 </p>
                             )}
                         </div>
+                        <div>
+                            <h1>Gender</h1>
+                            <select name="gender" id="">
+                                <option value="">Male</option>
+                                <option value="">Female</option>
+                                <option value="">Others</option>
+                            </select>
+                        </div>
                         <h1>Date of Birth (Bikram Sambat - BS)</h1>
                         {/* Year Input */}
                         <div>
