@@ -63,7 +63,12 @@ function Kyc() {
             });
     };
 
-    const inputStyling = "border border-black";
+    // custom styling for input fields
+    const inputStyling =
+        "peer mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md";
+
+    // styling for bold header
+    const headerStyle = "text-lg font-semibold";
 
     // Invalidating user info before any operation here
     useEffect(() => {
@@ -92,354 +97,410 @@ function Kyc() {
     if (userData.kycStatus === "not_uploaded") {
         return (
             <>
-                <div className="min-h-[800px] bg-secondary">
+                <div className="flex justify-center items-center flex-col min-h-[800px] bg-secondary">
                     <div>
                         You have not submited Kyc form, Please fill up and
                         submit
                     </div>
                     <br />
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        encType="multipart/form-data"
-                    >
-                        <h1>Name</h1>
-                        <div>
-                            <label htmlFor="firstName">First name</label>
-                            <input
-                                type="text"
-                                id="firstName"
-                                {...register("firstName", {
-                                    required: "First name is required",
-                                    pattern: {
-                                        value: /^[A-Za-z]+$/,
-                                        message: "Can only contain letters",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-
-                            {errors.firstName && (
-                                <p className="text-red-500">
-                                    {errors.firstName.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="middleName">Middle name</label>
-                            <input
-                                type="text"
-                                id="middleName"
-                                {...register("middleName", {
-                                    pattern: {
-                                        value: /^[A-Za-z]+$/,
-                                        message: "Can only contain letters",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.middleName && (
-                                <p className="text-red-500">
-                                    {errors.middleName.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="lastName">Last name</label>
-                            <input
-                                type="text"
-                                id="lastName"
-                                {...register("lastName", {
-                                    required: "Last name is required",
-                                    pattern: {
-                                        value: /^[A-Za-z]+$/,
-                                        message: "Can only contain letters",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-
-                            {errors.lastName && (
-                                <p className="text-red-500">
-                                    {errors.lastName.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <h1>Gender</h1>
-                            <select name="gender" id="">
-                                <option value="">Male</option>
-                                <option value="">Female</option>
-                                <option value="">Others</option>
-                            </select>
-                        </div>
-                        <h1>Date of Birth (Bikram Sambat - BS)</h1>
-                        {/* Year Input */}
-                        <div>
-                            <label htmlFor="year">Year</label>
-                            <input
-                                type="number"
-                                id="year"
-                                {...register("year", {
-                                    required: "Year is required",
-                                    valueAsNumber: true,
-                                    min: {
-                                        value: 1980,
-                                        message: "Year must be 1980 or later",
-                                    },
-                                    max: {
-                                        value: currentYear,
-                                        message: `Year cannot be later than ${currentYear}`,
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.year && (
-                                <p className="text-red-500">
-                                    {errors.year.message}
-                                </p>
-                            )}
-                        </div>
-                        {/* Month Input */}
-                        <div>
-                            <label htmlFor="month">Month</label>
-                            <input
-                                type="number"
-                                id="month"
-                                {...register("month", {
-                                    required: "Month is required",
-                                    valueAsNumber: true,
-                                    validate: (value) =>
-                                        (value >= 1 && value <= 12) ||
-                                        "Enter a valid month (1-12)",
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.month && (
-                                <p className="text-red-500">
-                                    {errors.month.message}
-                                </p>
-                            )}
-                        </div>
-                        {/* Day Input */}
-                        <div>
-                            <label htmlFor="day">Day</label>
-                            <input
-                                type="number"
-                                id="day"
-                                {...register("day", {
-                                    required: "Day is required",
-                                    valueAsNumber: true,
-                                    min: {
-                                        value: 1,
-                                        message: "Day must be at least 1",
-                                    },
-                                    max: {
-                                        value: 32,
-                                        message: `Invalid day, too high?`,
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.day && (
-                                <p className="text-red-500">
-                                    {errors.day.message}
-                                </p>
-                            )}
-                        </div>
-                        {/*Permanent address*/}
-                        <h1>Permanent address</h1>
-                        <div>
-                            <label htmlFor="permanentCountry">Country</label>
-                            <input
-                                type="text"
-                                id="permanentCountry"
-                                {...register("permanentCountry", {
-                                    required: "Country is required",
-                                })}
-                                className={inputStyling}
-                            />{" "}
-                            {errors.permanentCountry && (
-                                <p className="text-red-500">
-                                    {errors.permanentCountry.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="permanentState">State</label>
-                            <input
-                                type="text"
-                                id="permanentState"
-                                {...register("permanentState", {
-                                    required: "State is required",
-                                    pattern: {
-                                        value: /^[0-9]+$/,
-                                        message: "Can only contain number",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.permanentState && (
-                                <p className="text-red-500">
-                                    {errors.permanentState.message}
-                                </p>
-                            )}{" "}
-                        </div>
-                        <div>
-                            <label htmlFor="permanentCity">City</label>
-                            <input
-                                type="text"
-                                id="permanentCity"
-                                {...register("permanentCity", {
-                                    required: "City is required",
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.permanentCity && (
-                                <p className="text-red-500">
-                                    {errors.permanentCity.message}
-                                </p>
-                            )}
-                        </div>
-                        {/* Temporary address */}
-                        <h1>Temporary Address</h1>
-                        <div>
-                            <label htmlFor="temporaryCountry">Country</label>
-                            <input
-                                type="text"
-                                id="temporaryCountry"
-                                {...register("temporaryCountry", {
-                                    required: "Country is required",
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.temporaryCountry && (
-                                <p className="text-red-500">
-                                    {errors.temporaryCountry.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="temporaryState">State</label>
-                            <input
-                                type="text"
-                                id="temporaryState"
-                                {...register("temporaryState", {
-                                    required: "State is required",
-                                    pattern: {
-                                        value: /^[0-9]+$/,
-                                        message: "Can only contain number",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.temporaryState && (
-                                <p className="text-red-500">
-                                    {errors.temporaryState.message}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="temporaryCity">City</label>
-                            <input
-                                type="text"
-                                id="temporaryCity"
-                                {...register("temporaryCity", {
-                                    required: "City is required",
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.temporaryCity && (
-                                <p className="text-red-500">
-                                    {errors.temporaryCity.message}
-                                </p>
-                            )}
-                        </div>
-                        {/*Documents*/}
-                        <div>
-                            <label htmlFor="documentType">Document Type</label>
-                            <select
-                                id="documentType"
-                                {...register("documentType", {
-                                    required: "Type is required",
-                                })}
-                                className={inputStyling}
-                            >
-                                <option value="citizenship">Citizenship</option>
-                                <option value="driving_license">
-                                    Driving license
-                                </option>
-                                <option value="passport">Passport</option>
-                            </select>
-                            {errors.documentType && (
-                                <p className="text-red-500">
-                                    {errors.documentType.message}
-                                </p>
-                            )}
-                        </div>
-                        {/* Document ID Number */}
-                        <div>
-                            <label htmlFor="documentId">
-                                Document ID Number
-                            </label>
-                            <input
-                                type="text"
-                                id="documentId"
-                                {...register("documentId", {
-                                    required: "Document Id is required",
-                                    pattern: {
-                                        value: /^[0-9]+$/,
-                                        message: "Id must only contain numbers",
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.documentId && (
-                                <p className="text-red-500">
-                                    {errors.documentId.message}
-                                </p>
-                            )}
-                        </div>{" "}
-                        <div>
-                            <label htmlFor="documentFile">
-                                Document (front and back both)
-                            </label>
-                            <input
-                                type="file"
-                                id="documentFile"
-                                {...register("documentFile", {
-                                    required: "Document photo is required",
-                                    validate: (file) => {
-                                        if (
-                                            file &&
-                                            !file[0]?.type.startsWith("image/")
-                                        ) {
-                                            return "Only image files are allowed";
-                                        }
-                                        return true;
-                                    },
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.documentFile && (
-                                <p className="text-red-500">
-                                    {errors.documentFile.message}
-                                </p>
-                            )}
-                        </div>
-                        <br />
-                        <br />
-                        {resErrMsg && (
-                            <p className="text-red-500">{resErrMsg}</p>
-                        )}
-                        <br />
-                        <Button
-                            type="submit"
-                            style="filled"
-                            disabled={uploading}
+                    <div className="min-h-[800px] max-w-[700px] min-w-[350px] bg-tertiray w-[80%] flex items-center justify-center shadow-md rounded-lg p-6">
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            encType="multipart/form-data"
+                            className=""
                         >
-                            {uploading ? "Uploading..." : "Submit Kyc"}
-                        </Button>
-                    </form>
+                            <h1 className={`${headerStyle}`}>Name</h1>
+                            <div className="bg-secondary p-6 rounded-lg">
+                                <div>
+                                    <label htmlFor="firstName">
+                                        First name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        {...register("firstName", {
+                                            required: "First name is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message:
+                                                    "Can only contain letters",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+
+                                    {errors.firstName && (
+                                        <p className="text-red-500">
+                                            {errors.firstName.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label htmlFor="middleName">
+                                        Middle name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="middleName"
+                                        {...register("middleName", {
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message:
+                                                    "Can only contain letters",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.middleName && (
+                                        <p className="text-red-500">
+                                            {errors.middleName.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label htmlFor="lastName">Last name</label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        {...register("lastName", {
+                                            required: "Last name is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message:
+                                                    "Can only contain letters",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+
+                                    {errors.lastName && (
+                                        <p className="text-red-500">
+                                            {errors.lastName.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <h1 className={`${headerStyle}`}>Gender</h1>
+                            <div className="bg-secondary p-6 rounded-lg">
+                                <div>
+                                    <select name="gender" id="">
+                                        <option value="">Male</option>
+                                        <option value="">Female</option>
+                                        <option value="">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <h1 className={`${headerStyle}`}>
+                                Date of Birth (Bikram Sambat - BS)
+                            </h1>
+                            {/* Year Input */}
+                            <div className="bg-secondary p-6 rounded-lg">
+                                <div>
+                                    <label htmlFor="year">Year</label>
+                                    <input
+                                        type="number"
+                                        id="year"
+                                        {...register("year", {
+                                            required: "Year is required",
+                                            valueAsNumber: true,
+                                            min: {
+                                                value: 1980,
+                                                message:
+                                                    "Year must be 1980 or later",
+                                            },
+                                            max: {
+                                                value: currentYear,
+                                                message: `Year cannot be later than ${currentYear}`,
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.year && (
+                                        <p className="text-red-500">
+                                            {errors.year.message}
+                                        </p>
+                                    )}
+                                </div>
+                                {/* Month Input */}
+                                <div>
+                                    <label htmlFor="month">Month</label>
+                                    <input
+                                        type="number"
+                                        id="month"
+                                        {...register("month", {
+                                            required: "Month is required",
+                                            valueAsNumber: true,
+                                            validate: (value) =>
+                                                (value >= 1 && value <= 12) ||
+                                                "Enter a valid month (1-12)",
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.month && (
+                                        <p className="text-red-500">
+                                            {errors.month.message}
+                                        </p>
+                                    )}
+                                </div>
+                                {/* Day Input */}
+                                <div>
+                                    <label htmlFor="day">Day</label>
+                                    <input
+                                        type="number"
+                                        id="day"
+                                        {...register("day", {
+                                            required: "Day is required",
+                                            valueAsNumber: true,
+                                            min: {
+                                                value: 1,
+                                                message:
+                                                    "Day must be at least 1",
+                                            },
+                                            max: {
+                                                value: 32,
+                                                message: `Invalid day, too high?`,
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.day && (
+                                        <p className="text-red-500">
+                                            {errors.day.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            {/*Permanent address*/}
+                            <h1 className={`${headerStyle}`}>
+                                Permanent address
+                            </h1>
+                            <div className="bg-secondary p-6 rounded-lg">
+                                <div>
+                                    <label htmlFor="permanentCountry">
+                                        Country
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="permanentCountry"
+                                        {...register("permanentCountry", {
+                                            required: "Country is required",
+                                        })}
+                                        className={inputStyling}
+                                    />{" "}
+                                    {errors.permanentCountry && (
+                                        <p className="text-red-500">
+                                            {errors.permanentCountry.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label htmlFor="permanentState">
+                                        State
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="permanentState"
+                                        {...register("permanentState", {
+                                            required: "State is required",
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message:
+                                                    "Can only contain number",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.permanentState && (
+                                        <p className="text-red-500">
+                                            {errors.permanentState.message}
+                                        </p>
+                                    )}{" "}
+                                </div>
+                                <div>
+                                    <label htmlFor="permanentCity">City</label>
+                                    <input
+                                        type="text"
+                                        id="permanentCity"
+                                        {...register("permanentCity", {
+                                            required: "City is required",
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.permanentCity && (
+                                        <p className="text-red-500">
+                                            {errors.permanentCity.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            {/* Temporary address */}
+                            <h1 className={`${headerStyle}`}>
+                                Temporary Address
+                            </h1>
+                            <div className="bg-secondary p-6 rounded-lg">
+                                <div>
+                                    <label htmlFor="temporaryCountry">
+                                        Country
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="temporaryCountry"
+                                        {...register("temporaryCountry", {
+                                            required: "Country is required",
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryCountry && (
+                                        <p className="text-red-500">
+                                            {errors.temporaryCountry.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label htmlFor="temporaryState">
+                                        State
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="temporaryState"
+                                        {...register("temporaryState", {
+                                            required: "State is required",
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message:
+                                                    "Can only contain number",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryState && (
+                                        <p className="text-red-500">
+                                            {errors.temporaryState.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label htmlFor="temporaryCity">City</label>
+                                    <input
+                                        type="text"
+                                        id="temporaryCity"
+                                        {...register("temporaryCity", {
+                                            required: "City is required",
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryCity && (
+                                        <p className="text-red-500">
+                                            {errors.temporaryCity.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            {/*Documents*/}
+                            <div>
+                                <h1 className={`${headerStyle}`}>
+                                    Document Verification
+                                </h1>
+                                <div className="bg-secondary p-6 rounded-lg">
+                                    <div>
+                                        <label htmlFor="documentType">
+                                            Document Type
+                                        </label>
+                                        <select
+                                            id="documentType"
+                                            {...register("documentType", {
+                                                required: "Type is required",
+                                            })}
+                                            className={inputStyling}
+                                        >
+                                            <option value="citizenship">
+                                                Citizenship
+                                            </option>
+                                            <option value="driving_license">
+                                                Driving license
+                                            </option>
+                                            <option value="passport">
+                                                Passport
+                                            </option>
+                                        </select>
+                                        {errors.documentType && (
+                                            <p className="text-red-500">
+                                                {errors.documentType.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                    {/* Document ID Number */}
+                                    <div>
+                                        <label htmlFor="documentId">
+                                            Document ID Number
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="documentId"
+                                            {...register("documentId", {
+                                                required:
+                                                    "Document Id is required",
+                                                pattern: {
+                                                    value: /^[0-9]+$/,
+                                                    message:
+                                                        "Id must only contain numbers",
+                                                },
+                                            })}
+                                            className={inputStyling}
+                                        />
+                                        {errors.documentId && (
+                                            <p className="text-red-500">
+                                                {errors.documentId.message}
+                                            </p>
+                                        )}
+                                    </div>{" "}
+                                    <div>
+                                        <label htmlFor="documentFile">
+                                            Document (front and back both)
+                                        </label>
+                                        <input
+                                            type="file"
+                                            id="documentFile"
+                                            {...register("documentFile", {
+                                                required:
+                                                    "Document photo is required",
+                                                validate: (file) => {
+                                                    if (
+                                                        file &&
+                                                        !file[0]?.type.startsWith(
+                                                            "image/",
+                                                        )
+                                                    ) {
+                                                        return "Only image files are allowed";
+                                                    }
+                                                    return true;
+                                                },
+                                            })}
+                                            className={inputStyling}
+                                        />
+                                    </div>
+                                    {errors.documentFile && (
+                                        <p className="text-red-500">
+                                            {errors.documentFile.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            {resErrMsg && (
+                                <p className="text-red-500">{resErrMsg}</p>
+                            )}
+                            <br />
+                            <Button
+                                type="submit"
+                                style="filled"
+                                disabled={uploading}
+                            >
+                                {uploading ? "Uploading..." : "Submit Kyc"}
+                            </Button>
+                        </form>
+                    </div>
                 </div>
             </>
         );
