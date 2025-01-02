@@ -4,6 +4,7 @@ import { useUser } from "../stores";
 import { useForm } from "react-hook-form";
 import api from "../utils/api";
 import toast from "react-hot-toast";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 function VerifyEmail() {
     const {
@@ -34,6 +35,10 @@ function VerifyEmail() {
     const [sending, setSending] = useState(false);
     const [resErrMsg, setResErrMsg] = useState(null);
 
+    const animationStyle = {
+        animation: "scaleUp 1s ease-in-out forwards",
+    };
+
     if (!userData) {
         return <Loader />;
     }
@@ -41,7 +46,25 @@ function VerifyEmail() {
     if (userData.emailVerified) {
         return (
             <>
-                <div>Your email is already verified!</div>
+                <div className="bg-secondary min-h-[800px] flex gap-5 items-center justify-center">
+                    <h1 className="block text-4xl font-bold">
+                        Your Email is Verified!
+                    </h1>
+                    <div>
+                        <style>
+                            {`
+          @keyframes scaleUp {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1.5); }
+          }
+        `}
+                        </style>
+                        <IoMdCheckmarkCircleOutline
+                            style={animationStyle}
+                            className="text-5xl text-primary"
+                        />
+                    </div>
+                </div>
             </>
         );
     }

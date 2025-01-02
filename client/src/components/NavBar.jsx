@@ -31,7 +31,7 @@ function NavBar() {
         return (
             <>
                 <div
-                    className={`w-[310px] tablet:w-[500px] pc:w-[600px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto`}
+                    className={`w-[310px] tablet:w-[500px] pc:w-[600px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto z-50`}
                 >
                     <NavLink
                         to="/"
@@ -115,60 +115,62 @@ function NavBar() {
                 </div>
             </>
         );
+    } else {
+        return (
+            <>
+                <div className="w-[310px] tablet:w-[500px] pc:w-[600px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto z-50">
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) => {
+                            if (isActive) {
+                                setHome(true);
+                                return activeNavItemStyle;
+                            } else {
+                                setHome(false);
+                                return inActiveNavItemStyle;
+                            }
+                        }}
+                    >
+                        <GoHome className="text-xl" />
+                        {home && "Home"}
+                    </NavLink>
+
+                    <NavLink
+                        to="/signup"
+                        className={({ isActive }) => {
+                            if (isActive) {
+                                setSignup(true);
+                                return activeNavItemStyle;
+                            } else {
+                                setSignup(false);
+                                return inActiveNavItemStyle;
+                            }
+                        }}
+                    >
+                        <RiUserSharedLine />
+                        {signup && "Signup"}
+                    </NavLink>
+
+                    <NavLink
+                        to="/login"
+                        className={({ isActive }) => {
+                            if (isActive) {
+                                setLogin(true);
+                                return activeNavItemStyle;
+                            } else {
+                                setLogin(false);
+                                return inActiveNavItemStyle;
+                            }
+                        }}
+                    >
+                        <IoIosLogIn />
+
+                        {login && "Login"}
+                    </NavLink>
+                </div>
+            </>
+        );
     }
-
-    return (
-        <>
-            <div className="w-[350px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto">
-                <NavLink
-                    to="/"
-                    className={({ isActive }) => {
-                        if (isActive) {
-                            setHome(true);
-                            return activeNavItemStyle;
-                        } else {
-                            setHome(false);
-                            return inActiveNavItemStyle;
-                        }
-                    }}
-                >
-                    <GoHome className="text-xl" />
-                    {home && "Home"}
-                </NavLink>
-                <NavLink
-                    to="/signup"
-                    className={({ isActive }) => {
-                        if (isActive) {
-                            setSignup(true);
-                            return activeNavItemStyle;
-                        } else {
-                            setSignup(false);
-                            return inActiveNavItemStyle;
-                        }
-                    }}
-                >
-                    <RiUserSharedLine />
-                    {signup && "Signup"}
-                </NavLink>
-                <NavLink
-                    to="/login"
-                    className={({ isActive }) => {
-                        if (isActive) {
-                            setLogin(true);
-                            return activeNavItemStyle;
-                        } else {
-                            setLogin(false);
-                            return inActiveNavItemStyle;
-                        }
-                    }}
-                >
-                    <IoIosLogIn />
-
-                    {login && "Login"}
-                </NavLink>{" "}
-            </div>
-        </>
-    );
 }
 
 export default NavBar;
