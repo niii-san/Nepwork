@@ -20,17 +20,19 @@ function NavBar() {
   const inActiveNavItemStyle =
     "text-black gap-1 flex justify-center items-center";
 
-  //Styling for desktop
+  //Styling for Tablet
+  const tabletStyle = "tablet:max-w-[600px]"
 
+  //Styling for desktop
   const desktopStyle =
-    "sticky top-0 justify-between lg:px-10 lg:bg-white w-[80%] rounded-b-xl";
+    "   pc:max-w-[1100px] pc:justify-between pc:px-10 pc:rounded-b-xl";
 
   if (isLoggedIn) {
     return (
       <>
         <div className="lg:bg-secondary flex sticky top-0 justify-center items-center">
           <div
-            className={`sticky top-0 w-[90%] h-[60px] bg-white flex items-center justify-evenly ${desktopStyle}`}
+            className={`sticky min-w-[320px] max-w-[320px] bg-green-500 top-0 w-[90%] h-[60px] flex items-center justify-evenly ${tabletStyle} ${desktopStyle}`}
           >
             <NavLink
               to={"/"}
