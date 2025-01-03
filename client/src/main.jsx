@@ -14,11 +14,8 @@ import {
     Settings,
     VerifyEmail,
     Kyc,
-    AdminDashboard,
-    AdminLogin,
 } from "./pages/index.js";
-import { Protected, AdminOnly } from "./components";
-import AdminLayout from "./AdminLayout.jsx";
+import { Protected } from "./components";
 
 createRoot(document.getElementById("root")).render(
     //  <StrictMode>
@@ -77,18 +74,6 @@ createRoot(document.getElementById("root")).render(
                 <Route path="signup" element={<Signup />} />
                 <Route path="login" element={<Login />} />
                 <Route path="logout" element={<Logout />} />
-            </Route>
-            {/*Admin layout*/}
-            <Route path="/admin" element={<AdminLayout />}>
-                <Route path="login" element={<AdminLogin />} />
-                <Route
-                    path="dashboard"
-                    element={
-                        <AdminOnly>
-                            <AdminDashboard />
-                        </AdminOnly>
-                    }
-                />
             </Route>
         </Routes>
     </BrowserRouter>,
