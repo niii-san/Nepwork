@@ -33,5 +33,9 @@ app.use(cookieParser());
 import { userRoute } from "./routes/user.route.js";
 app.use("/api/v1/user", userRoute);
 
+// Admin Route
+import { adminRouter } from "./routes/admin.route.js";
+app.use("/api/v1/admin", adminRouter);
+
 //* Error handling
 app.use(errorHandler);
