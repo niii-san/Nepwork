@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../stores/Auth";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
@@ -10,162 +10,125 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { RiUserSharedLine } from "react-icons/ri";
 
 function NavBar() {
+    const navigate = useNavigate()
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
-    // Styling for active nav item
-    const activeNavItemStyle =
-        "text-primary gap-1 flex justify-center items-center rounded-xl px-2 py-1 bg-primary text-primaryText transition duration-300 ease-in ";
-    // Styling for inactive nav items
-    const inActiveNavItemStyle =
-        "text-black gap-1 flex justify-center items-center transition duration-300  ease-out";
-
-    const [signup, setSignup] = useState(false);
-    const [login, setLogin] = useState(false);
-    const [home, setHome] = useState(false);
-    const [dashboard, setDashboard] = useState(false);
-    const [profile, setProfile] = useState(false);
-    const [notifications, setNotifications] = useState(false);
-    const [settings, setSettings] = useState(false);
+    const activeNavItemStyle = "text-primary";
+    const inactiveNavItemStyle = "";
+    const navItemStyle = "flex justify-center items-center gap-1";
 
     if (isLoggedIn) {
         return (
             <>
-                <div
-                    className={`w-[310px] tablet:w-[500px] pc:w-[600px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto z-50`}
-                >
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setHome(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setHome(false);
-                                return inActiveNavItemStyle;
-                            }
-                        }}
+                <div className="bg-tertiray  h-[60px] flex justify-between">
+                    <div
+                        id="logo"
+                        className="w-1/4 flex items-center justify-center"
                     >
-                        <GoHome className="text-xl" />
-                        {home && "Home"}
-                    </NavLink>
+                        <img
+                            src="src/assets/logo.svg"
+                            alt="logo"
+                            className="p-2 h-full cursor-pointer"
+                            onClick={()=>navigate("/")}
+                        />
+                    </div>
+                    <div
+                        id="navItems"
+                        className="flex justify-evenly items-center w-3/4"
+                    >
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
+                            }
+                        >
+                            <GoHome className="text-xl" />
+                            <p className="hidden tablet:inline-block">Home</p>
+                        </NavLink>
 
-                    <NavLink
-                        to="/dashboard"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setDashboard(true);
-                                return `flex gap-1 justify-center items-center ${activeNavItemStyle}`;
-                            } else {
-                                setDashboard(false);
-                                return `flex gap-1 justify-center items-center ${inActiveNavItemStyle}`;
+                        <NavLink
+                            to="/dashboard"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
-                        }}
-                    >
-                        <MdOutlineSpaceDashboard className="text-xl" />
-                        {dashboard && "Dashboard"}
-                    </NavLink>
+                        >
+                            <MdOutlineSpaceDashboard className="text-xl" />
+                            <p className="hidden tablet:inline-block">
+                                Dashboard
+                            </p>
+                        </NavLink>
 
-                    <NavLink
-                        to="/profile"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setProfile(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setProfile(false);
-                                return inActiveNavItemStyle;
+                        <NavLink
+                            to="/profile"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
-                        }}
-                    >
-                        <LuUserRound className="text-xl" />
-                        {profile && "Profile"}
-                    </NavLink>
+                        >
+                            <LuUserRound className="text-xl" />
+                            <p className="hidden tablet:inline-block">
+                                Profile
+                            </p>
+                        </NavLink>
 
-                    <NavLink
-                        to="/notifications"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setNotifications(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setNotifications(false);
-                                return inActiveNavItemStyle;
+                        <NavLink
+                            to="/notifications"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
-                        }}
-                    >
-                        <IoMdNotificationsOutline className="text-xl" />
-                        {notifications && "Notification"}
-                    </NavLink>
+                        >
+                            <IoMdNotificationsOutline className="text-xl" />
+                            <p className="hidden tablet:inline-block">
+                                Notification
+                            </p>
+                        </NavLink>
 
-                    <NavLink
-                        to="/settings"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setSettings(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setSettings(false);
-                                return inActiveNavItemStyle;
+                        <NavLink
+                            to="/settings"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
-                        }}
-                    >
-                        <IoSettingsOutline className="text-xl" />
-                        {settings && "Settings"}
-                    </NavLink>
+                        >
+                            <IoSettingsOutline className="text-xl" />
+                            <p className="hidden tablet:inline-block">
+                                Settings
+                            </p>
+                        </NavLink>
+                    </div>
                 </div>
             </>
         );
     } else {
         return (
             <>
-                <div className="w-[310px] tablet:w-[500px] pc:w-[600px] h-[60px] bg-tertiray border-b rounded-bl-xl rounded-br-xl sticky top-0 left-0 flex items-center justify-evenly mx-auto z-50">
+                <div className="">
                     <NavLink
                         to="/"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setHome(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setHome(false);
-                                return inActiveNavItemStyle;
-                            }
-                        }}
+                        className={({ isActive }) =>
+                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
+                        }
                     >
                         <GoHome className="text-xl" />
-                        {home && "Home"}
+                        <p className="hidden tablet:inline-block">Home</p>
                     </NavLink>
 
                     <NavLink
                         to="/signup"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setSignup(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setSignup(false);
-                                return inActiveNavItemStyle;
-                            }
-                        }}
+                        className={({ isActive }) =>
+                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
+                        }
                     >
                         <RiUserSharedLine />
-                        {signup && "Signup"}
+                        <p className="hidden tablet:inline-block">Join</p>
                     </NavLink>
 
                     <NavLink
                         to="/login"
-                        className={({ isActive }) => {
-                            if (isActive) {
-                                setLogin(true);
-                                return activeNavItemStyle;
-                            } else {
-                                setLogin(false);
-                                return inActiveNavItemStyle;
-                            }
-                        }}
+                        className={({ isActive }) =>
+                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
+                        }
                     >
                         <IoIosLogIn />
-
-                        {login && "Login"}
+                        <p className="hidden tablet:inline-block">Login</p>
                     </NavLink>
                 </div>
             </>

@@ -14,7 +14,6 @@ import {
     Settings,
     VerifyEmail,
     Kyc,
-    AdminLogin,
     AdminDashboard,
 } from "./pages/index.js";
 import { Protected } from "./components";
@@ -82,8 +81,14 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/logout" element={<Logout />} />
             </Route>
             {/*Admin layout*/}
-            <Route path="/admin" element={<AdminLayout />}>
-                <Route path="login" element={<AdminLogin />} />
+            <Route
+                path="/admin"
+                element={
+                    <Protected>
+                        <AdminLayout />{" "}
+                    </Protected>
+                }
+            >
                 <Route path="dashboard" element={<AdminDashboard />} />
             </Route>
         </Routes>
