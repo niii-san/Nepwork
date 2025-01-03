@@ -22,7 +22,7 @@ export default ApiError;
 
 export const errorHandler = (err, req, res, next) => {
     if (err instanceof ApiError) {
-        res.status(err.statusCode).json(err.toJSON);
+        res.status(err.statusCode).json(err.toJSON());
     } else {
         res.status(500).json({
             statusCode: 500,
