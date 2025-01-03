@@ -5,8 +5,6 @@ import Protected from "./Protected";
 import UserCard from "./UserCard";
 import Button from "./Button";
 import EnterEmailOtp from "./EnterEmailOtp";
-import AdminOnly from "./AdminOnly";
-import AdminNavBar from "./AdminNavBar";
 
 export {
     NavBar,
@@ -16,6 +14,4 @@ export {
     UserCard,
     Button,
     EnterEmailOtp,
-    AdminOnly,
-    AdminNavBar,
 };

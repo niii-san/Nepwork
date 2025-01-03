@@ -20,7 +20,7 @@ export const generateAccessToken = async function (id) {
     );
 };
 
-export const generateRefreshToken = async function (id) {
+const generateRefreshToken = async function (id) {
     const user = await User.findById(id);
     return jwt.sign(
         {

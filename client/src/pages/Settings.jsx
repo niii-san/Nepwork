@@ -27,20 +27,6 @@ function Settings() {
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
                 </Link>
-
-                {userData.role === "admin" && (
-                    <Link to={"/admin/dashboard"}>
-                        <Button style="filled" className="w-full">
-                            Admin
-                        </Button>
-                    </Link>
-                )}
-                 <Link to={"/admin/dashboard"}>
-                        <Button style="filled" className="w-full">
-                            Admin
-                        </Button>
-                    </Link>
-
             </div>
         </div>
     );
