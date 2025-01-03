@@ -110,7 +110,7 @@ function Kyc() {
                             className=""
                         >
                             <h1 className={`${headerStyle}`}>Name</h1>
-                            <div className="bg-secondary p-6 rounded-lg">
+                            <div className="bg-gray-100 p-6 rounded-lg">
                                 <div>
                                     <label htmlFor="firstName">
                                         First name
@@ -180,21 +180,32 @@ function Kyc() {
                                     )}
                                 </div>
                             </div>
-                            <h1 className={`${headerStyle}`}>Gender</h1>
-                            <div className="bg-secondary p-6 rounded-lg">
-                                <div>
-                                    <select name="gender" id="">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
+                            {/* Gender DropDown */}
+                            <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
+                                <h1 className={`${headerStyle} ml-4`}>
+                                    Gender :
+                                </h1>
+                                <div className="p-6">
+                                    <select
+                                        name="gender"
+                                        id="gender"
+                                        className="peer mt-1 p-2 w-50% bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                                    >
+                                        <option value="Select Gender" disabled>
+                                            Select Gender
+                                        </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
                                     </select>
                                 </div>
                             </div>
+
                             <h1 className={`${headerStyle}`}>
                                 Date of Birth (Bikram Sambat - BS)
                             </h1>
                             {/* Year Input */}
-                            <div className="bg-secondary p-6 rounded-lg">
+                            <div className="bg-gray-100 p-6 rounded-lg">
                                 <div>
                                     <label htmlFor="year">Year</label>
                                     <input
@@ -272,9 +283,9 @@ function Kyc() {
                             </div>
                             {/*Permanent address*/}
                             <h1 className={`${headerStyle}`}>
-                                Permanent address
+                                Permanent Address
                             </h1>
-                            <div className="bg-secondary p-6 rounded-lg">
+                            <div className="bg-gray-100 p-6 rounded-lg">
                                 <div>
                                     <label htmlFor="permanentCountry">
                                         Country
@@ -337,7 +348,7 @@ function Kyc() {
                             <h1 className={`${headerStyle}`}>
                                 Temporary Address
                             </h1>
-                            <div className="bg-secondary p-6 rounded-lg">
+                            <div className="bg-gray-100 p-6 rounded-lg">
                                 <div>
                                     <label htmlFor="temporaryCountry">
                                         Country
@@ -401,7 +412,7 @@ function Kyc() {
                                 <h1 className={`${headerStyle}`}>
                                     Document Verification
                                 </h1>
-                                <div className="bg-secondary p-6 rounded-lg">
+                                <div className="bg-gray-100 p-6 rounded-lg">
                                     <div>
                                         <label htmlFor="documentType">
                                             Document Type
@@ -456,7 +467,8 @@ function Kyc() {
                                     </div>{" "}
                                     <div>
                                         <label htmlFor="documentFile">
-                                            Document (front and back both)
+                                            Document (front and back both){" "}
+                                            <u>Sample</u>
                                         </label>
                                         <input
                                             type="file"
@@ -496,6 +508,7 @@ function Kyc() {
                                 type="submit"
                                 style="filled"
                                 disabled={uploading}
+                                className="w-full"
                             >
                                 {uploading ? "Uploading..." : "Submit Kyc"}
                             </Button>
