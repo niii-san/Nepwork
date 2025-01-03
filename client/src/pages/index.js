@@ -9,6 +9,7 @@ import Settings from "./Settings";
 import VerifyEmail from "./VerifyEmail";
 import Kyc from "./Kyc";
 import AdminDashboard from "./AdminDashboard";
+import AdminLogin from "./AdminLogin";
 
 export {
     Home,
@@ -21,5 +22,6 @@ export {
     Settings,
     VerifyEmail,
     Kyc,
+    AdminLogin,
     AdminDashboard,
 };

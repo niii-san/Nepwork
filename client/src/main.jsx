@@ -15,8 +15,9 @@ import {
     VerifyEmail,
     Kyc,
     AdminDashboard,
+    AdminLogin,
 } from "./pages/index.js";
-import { Protected } from "./components";
+import { Protected, AdminOnly } from "./components";
 import AdminLayout from "./AdminLayout.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -29,8 +30,7 @@ createRoot(document.getElementById("root")).render(
                     path="dashboard"
                     element={
                         <Protected>
-                            {" "}
-                            <Dashboard />{" "}
+                            <Dashboard />
                         </Protected>
                     }
                 />
@@ -62,8 +62,7 @@ createRoot(document.getElementById("root")).render(
                     path="settings/kyc"
                     element={
                         <Protected>
-                            {" "}
-                            <Kyc />{" "}
+                            <Kyc />
                         </Protected>
                     }
                 />
@@ -71,25 +70,25 @@ createRoot(document.getElementById("root")).render(
                     path="settings/verify-email"
                     element={
                         <Protected>
-                            {" "}
-                            <VerifyEmail />{" "}
+                            <VerifyEmail />
                         </Protected>
                     }
                 />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/logout" element={<Logout />} />
+                <Route path="signup" element={<Signup />} />
+                <Route path="login" element={<Login />} />
+                <Route path="logout" element={<Logout />} />
             </Route>
             {/*Admin layout*/}
-            <Route
-                path="/admin"
-                element={
-                    <Protected>
-                        <AdminLayout />{" "}
-                    </Protected>
-                }
-            >
-                <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route path="login" element={<AdminLogin />} />
+                <Route
+                    path="dashboard"
+                    element={
+                        <AdminOnly>
+                            <AdminDashboard />
+                        </AdminOnly>
+                    }
+                />
             </Route>
         </Routes>
     </BrowserRouter>,

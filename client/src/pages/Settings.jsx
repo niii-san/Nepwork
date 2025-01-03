@@ -35,6 +35,12 @@ function Settings() {
                         </Button>
                     </Link>
                 )}
+                 <Link to={"/admin/dashboard"}>
+                        <Button style="filled" className="w-full">
+                            Admin
+                        </Button>
+                    </Link>
+
             </div>
         </div>
     );
