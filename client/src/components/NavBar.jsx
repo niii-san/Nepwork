@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../stores/Auth";
 import { GoHome } from "react-icons/go";
@@ -8,9 +8,10 @@ import { LuUserRound } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { RiUserSharedLine } from "react-icons/ri";
+import { Button } from "../components";
 
 function NavBar() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
     const activeNavItemStyle = "text-primary";
@@ -29,7 +30,7 @@ function NavBar() {
                             src="src/assets/logo.svg"
                             alt="logo"
                             className="p-2 h-full cursor-pointer"
-                            onClick={()=>navigate("/")}
+                            onClick={() => navigate("/")}
                         />
                     </div>
                     <div
@@ -100,36 +101,41 @@ function NavBar() {
     } else {
         return (
             <>
-                <div className="">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
-                        }
+                <div className="bg-tertiray h-[60px] flex justify-between">
+                    <div
+                        id="logo"
+                        className="w-1/4 flex items-center justify-center"
                     >
-                        <GoHome className="text-xl" />
-                        <p className="hidden tablet:inline-block">Home</p>
-                    </NavLink>
+                        <img
+                            src="src/assets/logo.svg"
+                            alt="logo"
+                            className="p-2 h-full cursor-pointer"
+                            onClick={() => navigate("/")}
+                        />
+                    </div>
 
-                    <NavLink
-                        to="/signup"
-                        className={({ isActive }) =>
-                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
-                        }
+                    <div
+                        id="navItems"
+                        className="flex justify-evenly items-center w-3/4"
                     >
-                        <RiUserSharedLine />
-                        <p className="hidden tablet:inline-block">Join</p>
-                    </NavLink>
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                `w-1/4 ${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
+                            }
+                        >
+                            <GoHome className="text-xl" />
+                            <p className="">Home</p>
+                        </NavLink>
 
-                    <NavLink
-                        to="/login"
-                        className={({ isActive }) =>
-                            `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
-                        }
-                    >
-                        <IoIosLogIn />
-                        <p className="hidden tablet:inline-block">Login</p>
-                    </NavLink>
+
+                        <div className="flex w-3/4 justify-evenly gap-1"> 
+
+                        <Button style="filled" onClick={()=>navigate("/signup")}>Join</Button>
+                        <Button onClick={()=>navigate("/login")}>Login</Button>
+                        </div>
+
+                    </div>
                 </div>
             </>
         );
