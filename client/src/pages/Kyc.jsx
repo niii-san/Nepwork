@@ -182,7 +182,9 @@ function Kyc() {
                             </div>
                             {/* Gender DropDown */}
                             <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
-                                <h1 className={`${headerStyle} ml-4`}>Gender :</h1>
+                                <h1 className={`${headerStyle} ml-4`}>
+                                    Gender :
+                                </h1>
                                 <div className="p-6">
                                     <select
                                         name="gender"
@@ -465,7 +467,8 @@ function Kyc() {
                                     </div>{" "}
                                     <div>
                                         <label htmlFor="documentFile">
-                                            Document (front and back both) <u>Sample</u>
+                                            Document (front and back both){" "}
+                                            <u>Sample</u>
                                         </label>
                                         <input
                                             type="file"
