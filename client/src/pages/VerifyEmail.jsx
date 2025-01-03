@@ -78,34 +78,46 @@ function VerifyEmail() {
                 />
             )}
             <div className="bg-secondary min-h-[800px]">
-                This is verify email page
-                <div>Enter your email address to receive OTP</div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input
-                        type="text"
-                        {...register("email", {
-                            required: "Email address is required",
-                        })}
-                    />
+                <div className="flex gap-10 justify-center items-center flex-col">
 
-                    {errors.email && (
-                        <p className="text-red-500">{errors.email.message}</p>
-                    )}
+                    This is verify email page
+                    <div>                    <h1 className="block text-2xl font-semibold text-center">
+                    Enter your email address to receive OTP
+                    </h1>
+                    </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center items-center flex-col gap-6">
+                        <input
+                            type="text"
+                            {...register("email", {
+                                required: "Email address is required",
+                            })}
+                            className="peer mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                        />
 
-                    {resErrMsg && <p className="text-red-500">{resErrMsg} </p>}
+                        {errors.email && (
+                            <p className="text-red-500">
+                                {errors.email.message}
+                            </p>
+                        )}
 
-                    <Button
-                        style="filled"
-                        type="submit"
-                        className="block"
-                        disabled={sending}
-                    >
-                        {sending ? "Sending..." : "Send OTP"}
-                    </Button>
-                    <Button onClick={() => setShowOtpModal(true)}>
-                        Enter OTP
-                    </Button>
-                </form>
+                        {resErrMsg && (
+                            <p className="text-red-500">{resErrMsg} </p>
+                        )}
+                        <div>
+                            <Button
+                                style="filled"
+                                type="submit"
+                                className="mr-4"
+                                disabled={sending}
+                            >
+                                {sending ? "Sending..." : "Send OTP"}
+                            </Button>
+                            <Button onClick={() => setShowOtpModal(true)}>
+                                Enter OTP
+                            </Button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     );
