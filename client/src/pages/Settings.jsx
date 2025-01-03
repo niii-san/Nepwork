@@ -10,29 +10,37 @@ function Settings() {
     return (
         <div className="min-h-[800px] bg-secondary">
             <h1>This is Settings</h1>
-            <div className="h-96 flex flex-col justify-evenly">
-                <Link to={"/settings/verify-email"} className="w-fit">
-                    <Button>Verify Email</Button>
+            <div className="h-72 w-[400px] flex flex-col justify-evenly">
+                <Link to={"/settings/verify-email"} className="">
+                    <Button className="w-full">Verify Email</Button>
                 </Link>
-                <Link to={"/settings/kyc"} className="w-fit">
-                    <Button>Kyc</Button>
+                <Link to={"/settings/kyc"} className="">
+                    <Button className="w-full">Kyc</Button>
                 </Link>
 
-                <Link to="/logout" className="w-fit">
+                <Link to="/logout" className="">
                     <Button
                         style="filled"
                         theme="danger"
-                        className="flex justify-center items-center gap-1 bg-danger hover:bg-danger border-danger"
+                        className="w-full flex justify-center items-center gap-1 bg-danger hover:bg-danger border-danger"
                     >
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
                 </Link>
 
                 {userData.role === "admin" && (
-                    <Link to={"/admin/login"}>
-                        <Button>Admin</Button>
+                    <Link to={"/admin/dashboard"}>
+                        <Button style="filled" className="w-full">
+                            Admin
+                        </Button>
                     </Link>
                 )}
+                 <Link to={"/admin/dashboard"}>
+                        <Button style="filled" className="w-full">
+                            Admin
+                        </Button>
+                    </Link>
+
             </div>
         </div>
     );

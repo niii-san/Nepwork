@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import { AdminNavBar } from "./components";
+import { Outlet } from "react-router";
 
 function AdminLayout() {
-  return (
-    <div>AdminLayout</div>
-  )
+    return (
+        <>
+            <AdminNavBar />
+            <Outlet />;
+        </>
+    );
 }
 
-export default AdminLayout
+export default AdminLayout;
