@@ -8,6 +8,9 @@ export default {
             pc: "1200px",
         },
         extend: {
+            backgroundImage: {
+                'signUpPattern': "url(src/assets/SignUp.svg)"
+            },
             boxShadow: {
                 custom_shadow: "4px 0px 2px 0px rgba(0, 0, 0, 0.3)",
             },

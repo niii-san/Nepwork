@@ -71,11 +71,11 @@ function Login() {
 
   return (
     <div className="bg-secondary min-h-[800px] flex items-center justify-center">
-      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+      <div className="w-full max-w-md bg-tertiray shadow-md rounded-lg p-6">
         <img
           src="src/assets/logo.svg"
           alt="NepWork Logo"
-          className="w-40 mx-auto mb-4"
+          className="pc:hidden w-40 mx-auto mb-4"
         />
         <h2 className="text-2xl font-bold text-center text-greentext mb-4">
           Login
