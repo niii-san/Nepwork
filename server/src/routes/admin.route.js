@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { adminLogin, createAdmin } from "../controllers/index.js";
+import { adminLogin, addAdmin } from "../controllers/index.js";
 
 export const adminRouter = Router();
 
-adminRouter.use("/create-admin", createAdmin);
+adminRouter.use("/create-admin", addAdmin);
 adminRouter.use("/login", adminLogin);
