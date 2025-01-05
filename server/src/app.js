@@ -37,5 +37,8 @@ app.use("/api/v1/user", userRoute);
 import { adminRouter } from "./routes/admin.route.js";
 app.use("/api/v1/admin", adminRouter);
 
+import { kycRouter } from "./routes/kyc.route.js";
+app.use("/api/v1/kyc", kycRouter);
+
 //* Error handling
 app.use(errorHandler);

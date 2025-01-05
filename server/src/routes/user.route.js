@@ -1,6 +1,5 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware.js";
-import { upload } from "../controllers/uploadKyc.controller.js";
 
 import {
     signup,
@@ -8,9 +7,10 @@ import {
     refreshAccessToken,
     requestOtp,
     verifyEmail,
-    verifyToken,
+    verifyUserToken,
     currentUserInfo,
     uploadKyc,
+    upload,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -20,7 +20,7 @@ userRoute.post("/login", login);
 userRoute.post("/refresh-access-token", refreshAccessToken);
 userRoute.post("/request-otp", authenticate, requestOtp);
 userRoute.post("/verify-email", authenticate, verifyEmail);
-userRoute.get("/verify-token", authenticate, verifyToken);
+userRoute.get("/verify-token", authenticate, verifyUserToken);
 
 // hanlind document upload and other form data of kyc
 userRoute.post(

@@ -1,12 +1,14 @@
-import { login, signup } from "./user.controller.js";
+import { login, signup } from "./user/user.controller.js";
 import refreshAccessToken from "./refreshAccessToken.controller.js";
 import { requestOtp } from "./requestOtp.controller.js";
-import { verifyEmail } from "./verifyEmail.controller.js";
-import { verifyToken } from "./verifyToken.controller.js";
-import { currentUserInfo } from "./currentUserInfo.controller.js";
-import { uploadKyc } from "./uploadKyc.controller.js";
+import { verifyEmail } from "./user/verifyEmail.controller.js";
+import { verifyUserToken } from "./user/verifyUserToken.controller.js";
+import { currentUserInfo } from "./user/currentUserInfo.controller.js";
+import { uploadKyc, upload } from "./kyc/uploadKyc.controller.js";
 import { adminLogin } from "./admin/adminLogin.controller.js";
-import { createAdmin } from "./admin/createAdmin.controller.js";
+import { addAdmin } from "./admin/addAdmin.controller.js";
+import { getAllKyc } from "./kyc/getAllKyc.controller.js";
+import { verifyAdminToken } from "./admin/verifyAdminToken.controller.js";
 
 export {
     login,
@@ -14,9 +16,12 @@ export {
     refreshAccessToken,
     requestOtp,
     verifyEmail,
-    verifyToken,
+    verifyUserToken,
     currentUserInfo,
     uploadKyc,
+    upload,
     adminLogin,
-    createAdmin,
+    addAdmin,
+    getAllKyc,
+    verifyAdminToken
 };

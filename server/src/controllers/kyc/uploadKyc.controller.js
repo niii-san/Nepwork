@@ -1,11 +1,12 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import { Kyc } from "../models/kyc.model.js";
-import { User } from "../models/user.model.js";
-import ApiResponse from "../utils/ApiResponse.js";
-import ApiError from "../utils/ApiError.js";
-import multer from "multer";
-import { cloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
+import multer from "multer";
+import {
+    ApiResponse,
+    ApiError,
+    asyncHandler,
+    cloudinary,
+} from "../../utils/index.js";
+import { User, Kyc } from "../../models/index.js";
 
 export const upload = multer({ dest: "uploads/" });
 
