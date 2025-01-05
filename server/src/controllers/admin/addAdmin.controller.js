@@ -15,7 +15,7 @@ export const addAdmin = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-        throw new ApiError(400, false, "No any user with this email");
+        throw new ApiError(404, false, "No any user with this email");
     }
 
     if (user.role === "admin")
