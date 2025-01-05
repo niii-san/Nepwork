@@ -1,7 +1,18 @@
 import { Router } from "express";
-import { adminLogin, addAdmin } from "../controllers/index.js";
+import {
+    adminLogin,
+    addAdmin,
+    verifyAdminToken,
+} from "../controllers/index.js";
+import { authenticate, authorizeAdmin } from "../middlewares/index.js";
 
 export const adminRouter = Router();
 
-adminRouter.use("/create-admin", addAdmin);
-adminRouter.use("/login", adminLogin);
+adminRouter.post("/create-admin", addAdmin);
+adminRouter.post("/login", adminLogin);
+adminRouter.post(
+    "/verify-token",
+    authenticate,
+    authorizeAdmin,
+    verifyAdminToken,
+);
