@@ -7,6 +7,10 @@ import { currentUserInfo } from "./currentUserInfo.controller.js";
 import { uploadKyc } from "./uploadKyc.controller.js";
 import { adminLogin } from "./admin/adminLogin.controller.js";
 import { addAdmin } from "./admin/addAdmin.controller.js";
+import { getAllKyc } from "./kyc/getAllKyc.controller.js";
+
+
+
 
 export {
     login,
@@ -19,4 +23,8 @@ export {
     uploadKyc,
     adminLogin,
     addAdmin,
+    getAllKyc
 };
+
+
+
