@@ -1,9 +1,10 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import { Otp } from "../models/otp.model.js";
-import ApiResponse from "../utils/ApiResponse.js";
-import { MailService } from "../utils/MailHandler.js";
-import ApiError from "../utils/ApiError.js";
-import { User } from "../models/user.model.js";
+import {
+    ApiResponse,
+    ApiError,
+    MailService,
+    asyncHandler,
+} from "../utils/index.js";
+import { User, Otp } from "../models/index.js";
 
 export const requestOtp = asyncHandler(async (req, res) => {
     const email = (req.body.email || "").trim().toLowerCase();
@@ -32,11 +33,7 @@ export const requestOtp = asyncHandler(async (req, res) => {
         return res
             .status(404)
             .json(
-                new ApiError(
-                    404,
-                    false,
-                    "Failed, No any user with this email",
-                ),
+                new ApiError(404, false, "Failed, No any user with this email"),
             );
     }
 

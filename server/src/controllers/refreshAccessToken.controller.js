@@ -1,9 +1,7 @@
-import { User } from "../models/user.model.js";
-import ApiError from "../utils/ApiError.js";
-import ApiResponse from "../utils/ApiResponse.js";
-import asyncHandler from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
-import { generateAccessToken } from "./user.controller.js";
+import { User } from "../models/index.js";
+import { ApiResponse, ApiError, asyncHandler } from "../utils/index.js";
+import { generateAccessToken } from "./user/user.controller.js";
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const refreshToken = (req.body.refreshToken || "").trim();
@@ -32,7 +30,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         if (error.message == "jwt expired") {
             return res
                 .status(401)
-                .json(new ApiError(401, false, "Refresh token expired! Login again"));
+                .json(
+                    new ApiError(
+                        401,
+                        false,
+                        "Refresh token expired! Login again",
+                    ),
+                );
         }
         return res.status(400).json(new ApiError(400, false, error.message));
     }

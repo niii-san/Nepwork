@@ -1,11 +1,9 @@
 import {
     generateAccessToken,
     generateRefreshToken,
-} from "../user.controller.js";
+} from "../user/user.controller.js";
 import { User } from "../../models/user.model.js";
-import ApiError from "../../utils/ApiError.js";
-import ApiResponse from "../../utils/ApiResponse.js";
-import asyncHandler from "../../utils/asyncHandler.js";
+import { ApiResponse, ApiError, asyncHandler } from "../../utils/index.js";
 
 export const adminLogin = asyncHandler(async (req, res) => {
     const email = (req.body.email || "").trim().toLowerCase();

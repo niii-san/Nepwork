@@ -1,8 +1,5 @@
-import { Otp } from "../models/otp.model.js";
-import { User } from "../models/user.model.js";
-import asyncHandler from "../utils/asyncHandler.js";
-import ApiResponse from "../utils/ApiResponse.js";
-import ApiError from "../utils/ApiError.js";
+import { User, Otp } from "../../models/index.js";
+import { ApiResponse, ApiError, asyncHandler } from "../../utils/index.js";
 
 export const verifyEmail = asyncHandler(async (req, res) => {
     const data = req.body;

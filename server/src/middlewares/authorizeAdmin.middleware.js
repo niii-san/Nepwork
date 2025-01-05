@@ -1,5 +1,4 @@
-import ApiError from "../utils/ApiError.js";
-import asyncHandler from "../utils/asyncHandler.js";
+import { ApiError, asyncHandler } from "../utils/index.js";
 
 // NOTE: Only use this middleware after authenticate middleware
 // this middleware is not standalone middleware this just checks if req.user.role is admin or not and forward or rejects

@@ -1,7 +1,5 @@
 import { User } from "../../models/user.model.js";
-import ApiError from "../../utils/ApiError.js";
-import ApiResponse from "../../utils/ApiResponse.js";
-import asyncHandler from "../../utils/asyncHandler.js";
+import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 export const addAdmin = asyncHandler(async (req, res) => {
     const email = (req.body.email || "").trim().toLowerCase();
@@ -21,10 +19,12 @@ export const addAdmin = asyncHandler(async (req, res) => {
     if (user.role === "admin")
         throw new ApiError(400, false, "This account is already admin");
 
-    if(!user.emailVerified) throw new ApiError(400,false,"Need to verify Email to continue")
-    if(!user.kycVerified) throw new ApiError(400,false,"Need to verify Kyc to continue")
+    if (!user.emailVerified)
+        throw new ApiError(400, false, "Need to verify Email to continue");
+    if (!user.kycVerified)
+        throw new ApiError(400, false, "Need to verify Kyc to continue");
 
-    user.role= "admin";
+    user.role = "admin";
     await user.save();
 
     return res.status(201).json(

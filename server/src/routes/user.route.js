@@ -1,6 +1,5 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware.js";
-import { upload } from "../controllers/uploadKyc.controller.js";
 
 import {
     signup,
@@ -11,6 +10,7 @@ import {
     verifyToken,
     currentUserInfo,
     uploadKyc,
+    upload,
 } from "../controllers/index.js";
 
 const userRoute = Router();

@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-import asyncHandler from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
-import ApiError from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/index.js";
 
 const authenticate = asyncHandler(async (req, res, next) => {
     const accessToken =
@@ -22,7 +21,9 @@ const authenticate = asyncHandler(async (req, res, next) => {
             process.env.AUTH_ACCESS_TOKEN_SECRET_KEY,
         );
 
-        const user = await User.findById(jwtVerification.id).select("-password");
+        const user = await User.findById(jwtVerification.id).select(
+            "-password",
+        );
         req.user = user;
 
         next();

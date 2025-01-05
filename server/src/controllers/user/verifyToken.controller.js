@@ -1,5 +1,4 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import ApiResponse from "../utils/ApiResponse.js";
+import { ApiResponse, asyncHandler } from "../../utils/index.js";
 
 export const verifyToken = asyncHandler(async (req, res) => {
     const user = req.user;
