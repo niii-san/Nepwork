@@ -56,7 +56,8 @@ function Signup() {
 
     return (
         <div className="mb-40 mt-12 min-h-[500px] bg-light_background flex justify-center">
-            <div className="hidden rounded-l-xl w-[418px] min-h-[500px] h-[630px] pc:flex bg-signUpPattern bg-center bg-contain bg-no-repeat justify-center items-center flex-col">
+            <div className="hidden rounded-l-xl h-[720px] pc:flex  justify-center items-center flex-col">
+                <div className="bg-signUpPattern rounded-l-xl h-full min-h-full min-w-full bg-center bg-contain bg-no-repeat pc:flex justify-center items-center flex-col">
                 <img
                     src="src/assets/Logo(light).svg"
                     alt="NepWork Logo"
@@ -75,8 +76,10 @@ function Signup() {
                 >
                     SIGN IN
                 </button>
+                </div>
             </div>
-            <div className="w-full max-w-md bg-white shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:rounded-l-none p-8 pc:h-[630px] pc:max-w-[500px]">
+            <div className="w-full max-w-md bg-white shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:w-[900px] pc:rounded-l-none p-8 pc:min-h-[720px] pc:max-h-[720px] pc:max-w-[60%] pc:flex pc:justify-center pc:items-center">
+                <div className="pc:w-[50%]">
                 <div className="pc:hidden flex justify-center mb-4">
                     <img
                         src="src/assets/logo.svg"
@@ -134,7 +137,7 @@ function Signup() {
                                         "Last name should only contain letters",
                                 },
                             })}
-                            className="mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                            className="mt-1 p-2 w-full bg-transparent  outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                         />
                         {errors.lastName && (
                             <p className="text-sm text-red-500 mt-1">
@@ -159,7 +162,7 @@ function Signup() {
                                     message: "Invalid email address format",
                                 },
                             })}
-                            className="mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                            className="mt-1 p-2 w-full bg-transparent  outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
                         />
                         {errors.email && (
                             <p className="text-sm text-red-500 mt-1">
@@ -173,7 +176,7 @@ function Signup() {
                     >
                         Password
                     </label>
-                    <div className="flex mt-1 items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
+                    <div className="flex  mt-1 items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
                         <input
                             type={showPassword ? "text" : "password"}
                             id="password"
@@ -220,7 +223,7 @@ function Signup() {
                     >
                         Confirm Password
                     </label>
-                    <div className="flex mt-1 items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
+                    <div className="flex  mt-1 items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
                         <input
                             type={showConfirmPassword ? "text" : "password"}
                             id="confirmPassword"
@@ -252,17 +255,19 @@ function Signup() {
                     <Button
                         type="submit"
                         style="filled"
-                        className="mt-4 w-full"
+                        className="mt-4  w-full"
                     >
                         SIGN UP
                     </Button>
                 </form>
                 <p
                     onClick={() => navigate("/login")}
-                    className="text-center text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
+                    className="text-center  text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
                 >
                     Already have an account? Login here
                 </p>
+                </div>
+                
             </div>
         </div>
     );
