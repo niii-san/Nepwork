@@ -2,53 +2,71 @@ import mongoose from "mongoose";
 import { User } from "./user.model";
 
 const jobSchema = new mongoose.Schema(
-    {
-        title:{
-            type :String ,
-            required : true ,   
-        },
+  {
+    title: {
+      type: String,
+      required: true,
+    },
 
-        description:{
-            type  :string ,
-            required : true ,
-        },
+    description: {
+      type: String,
+      required: true,
+    },
 
-        client:{
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "User" ,
-            required : true     
-           },
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-        freelancer: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-           },
+    appliedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
 
-        appliedBy: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        }],
+    acceptedFreelancer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
 
-        acceptedFreelancers :{
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "User"
-        },
+    hourlyRate: {
+      type: Number,
+      required: true,
+    },
 
-        hourlyRate: {
-            type: Number,
-            required: true
-        },
-       
-        skillsRequired: [{
-            type: String,
-            
-        }],
-        status: {
-            type: String,
-            enum: ["open", "in_progress", "completed", "cancelled", "closed"],
-            default: "open",
-        }
+    tags: [
+      {
+        type: String,
+        enum: [
+          "frontend",
+          "javascript",
+          "typescript",
+          "react",
+          "nextjs",
+          "tailwindcss",
+          "backend",
+          "nodejs",
+          "express",
+          "nestjs",
+          "django",
+          "flask",
+          "fullstack",
+          "sql",
+          "mysql",
+          "postgresql",
+          "mongodb",
+        ],
+      },
+    ],
+    status: {
+      type: String,
+      enum: ["open", "in_progress", "completed", "cancelled", "closed"],
+      default: "open",
+    },
+  },
+  { timestamps: true },
+);
 
-    },{timestamps:true});
-
-    export const Job = mongoose.model("Job" , jobSchema); 
+export const Job = mongoose.model("Job", jobSchema);
