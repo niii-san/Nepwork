@@ -74,79 +74,77 @@ function Login() {
     return (
         <div className="bg-secondary min-h-[800px]  flex items-center justify-center">
             <div className="bg-tertiray w-[430px] shadow-md rounded-l-xl h-[500px] flex justify-center items-center flex-col">
-                    <h2 className="text-2xl font-bold text-center text-greentext mb-4">
-                        Admin Login
-                    </h2>
-                    <form onSubmit={handleSubmit(onSubmit)} className="">
-                        <div>
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Email
-                            </label>
-                            <input
-                                type="text"
-                                id="email"
-                                {...register("email", {
-                                    required: "Email address is required",
-                                })}
-                                className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
-                            />
-                            {errors.email && (
-                                <p className="text-sm text-red-500 mt-1">
-                                    {errors.email.message}
-                                </p>
-                            )}
-                        </div>
-
+                <h2 className="text-2xl font-bold text-center text-greentext mb-4">
+                    Admin Login
+                </h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="">
+                    <div>
                         <label
-                            htmlFor="password"
-                            className="block mt-4 text-sm font-medium text-gray-700"
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700"
                         >
-                            Password
+                            Email
                         </label>
-                        <div className="mt-1 flex items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="password"
-                                {...register("password", {
-                                    required: "Password is required",
-                                })}
-                                className="rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
+                        <input
+                            type="text"
+                            id="email"
+                            {...register("email", {
+                                required: "Email address is required",
+                            })}
+                            className="mt-1 peer p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                        />
+                        {errors.email && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.email.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <label
+                        htmlFor="password"
+                        className="block mt-4 text-sm font-medium text-gray-700"
+                    >
+                        Password
+                    </label>
+                    <div className="mt-1 flex items-center flex-row w-full rounded-md bg-white border border-hover_button focus:shadow-md">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            {...register("password", {
+                                required: "Password is required",
+                            })}
+                            className="rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
+                        />
+                        {showPassword ? (
+                            <FaRegEye
+                                className="cursor-pointer"
+                                onClick={handleShowPassword}
                             />
-                            {showPassword ? (
-                                <FaRegEye
-                                    className="cursor-pointer"
-                                    onClick={handleShowPassword}
-                                />
-                            ) : (
-                                <FaRegEyeSlash
-                                    className="cursor-pointer"
-                                    onClick={handleShowPassword}
-                                />
-                            )}
-                        </div>
-                        {errors.password && (
-                            <p className="text-sm text-red-500 mt-1">
-                                {errors.password.message}
-                            </p>
+                        ) : (
+                            <FaRegEyeSlash
+                                className="cursor-pointer"
+                                onClick={handleShowPassword}
+                            />
                         )}
+                    </div>
+                    {errors.password && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.password.message}
+                        </p>
+                    )}
 
-                        {resMsg && (
-                            <p className="text-sm text-red-500 mt-1">
-                                {resMsg}
-                            </p>
-                        )}
+                    {resMsg && (
+                        <p className="text-sm text-red-500 mt-1">{resMsg}</p>
+                    )}
 
-                        <Button
-                            type="submit"
-                            style="filled"
-                            className="mx-auto mt-4 w-full"
-                        >
-                            Login
-                        </Button>
-                    </form>
+                    <Button
+                        type="submit"
+                        style="filled"
+                        className="mx-auto mt-4 w-full"
+                    >
+                        Login
+                    </Button>
+                </form>
             </div>
         </div>
     );
