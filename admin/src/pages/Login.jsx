@@ -33,7 +33,7 @@ function Login() {
         };
 
         axios
-            .post(`${import.meta.env.VITE_API_ENDPOINT}/user/login`, payload)
+            .post(`${import.meta.env.VITE_API_ENDPOINT}/admin/login`, payload)
             .then((res) => {
                 /*
                  * If login success
