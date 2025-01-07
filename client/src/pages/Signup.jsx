@@ -55,9 +55,9 @@ function Signup() {
     };
 
     return (
-        <div className="mb-40 mt-2 bg-light_background flex justify-center">
-            <div className="hidden shadow-md rounded-l-xl h-[700px] pc:flex justify-center items-center flex-col">
-                <div className="bg-signUpPattern rounded-l-xl h-full min-h-full min-w-full bg-center bg-cover bg-no-repeat pc:flex justify-center items-center flex-col">
+        <div className="pc:mt-0 mt-2 bg-light_background flex justify-center">
+            <div className="hidden w-[35%] shadow-md h-[720px] pc:flex justify-center items-center flex-col">
+                <div className="bg-signUpPattern h-full min-h-full min-w-full bg-center bg-cover bg-no-repeat pc:flex justify-center items-center flex-col">
                     <img
                         src="src/assets/Logo(light).svg"
                         alt="NepWork Logo"
@@ -78,8 +78,8 @@ function Signup() {
                     </button>
                 </div>
             </div>
-            <div className="w-full max-w-md bg-white shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:w-[900px] pc:rounded-l-none p-8 pc:min-h-[700px] pc:max-h-[700px] pc:max-w-[60%] pc:flex pc:justify-center pc:items-center">
-                <div className="pc:w-[50%]">
+            <div className="w-full max-w-md bg-secondary shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:w-[65%] pc:rounded-l-none p-8 pc:min-h-[720px] pc:max-h-[720px] pc:max-w-[70%] pc:flex pc:justify-center pc:items-center">
+                <div className="pc:w-[50%] pc:max-w-[800px]">
                     <div className="pc:hidden flex justify-center mb-4">
                         <img
                             src="src/assets/logo.svg"

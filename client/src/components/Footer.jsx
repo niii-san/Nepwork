@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
 function Footer() {
-  return (
-    <div className='h-[200px] bg-hover_button text-center mt-2'>Footer</div>
-  )
+    return (
+        <div className="h-[200px] bg-hover_button text-center mt-5">Footer</div>
+    );
 }
 
-export default Footer
+export default Footer;
