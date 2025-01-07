@@ -1,3 +1,5 @@
+import Button from "./Button";
 import Loader from "./Loader";
 import NavBar from "./NavBar";
-export { Loader, NavBar };
+import Protected from "./Protected";
+export { Loader, NavBar, Button, Protected };

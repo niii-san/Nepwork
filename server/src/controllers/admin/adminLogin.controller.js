@@ -34,7 +34,12 @@ export const adminLogin = asyncHandler(async (req, res) => {
         .status(200)
         .json(
             new ApiResponse(200, true, true, "Login success", {
+                name: user.name,
                 email: user.email,
+                tokens: {
+                    accessToken,
+                    refreshToken,
+                },
             }),
         );
 });
