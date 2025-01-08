@@ -73,7 +73,7 @@ function Login() {
 
     return (
         <div className="bg-secondary min-h-[800px]  flex items-center justify-center">
-            <div className="bg-tertiray w-[430px] shadow-md rounded-l-xl h-[500px] flex justify-center items-center flex-col">
+            <div className="bg-tertiray w-[430px] shadow-md rounded-xl h-[500px] flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-bold text-center text-greentext mb-4">
                     Admin Login
                 </h2>
@@ -113,7 +113,7 @@ function Login() {
                             {...register("password", {
                                 required: "Password is required",
                             })}
-                            className="rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
+                            className="focus:shadow-md rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
                         />
                         {showPassword ? (
                             <FaRegEye

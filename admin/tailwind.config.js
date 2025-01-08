@@ -25,9 +25,17 @@ export default {
                 danger: "#d64343",
                 //white text
                 primaryText: "#FFFFFF",
+                //black text
                 secondaryText: "#505050",
 
                 error_color: "#cb3b3b",
+
+
+                green_border: "#009400",
+                hover_button: "#4CB44C",
+                focus_color: "#4CB44C",
+                nav_border_color: "#AEAEAE",
+                greentext: "#009400",
             },
         },
     },

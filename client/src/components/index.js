@@ -5,6 +5,7 @@ import Protected from "./Protected";
 import UserCard from "./UserCard";
 import Button from "./Button";
 import EnterEmailOtp from "./EnterEmailOtp";
+import FreelancerCard from "./FreelancerCard";
 
 export {
     NavBar,
@@ -14,4 +15,5 @@ export {
     UserCard,
     Button,
     EnterEmailOtp,
+    FreelancerCard
 };
