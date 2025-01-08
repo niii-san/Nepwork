@@ -55,9 +55,9 @@ function Signup() {
     };
 
     return (
-        <div className="pc:mt-0 mt-2 bg-light_background flex justify-center">
-            <div className="hidden w-[35%] shadow-md h-[720px] pc:flex justify-center items-center flex-col">
-                <div className="bg-signUpPattern h-full min-h-full min-w-full bg-center bg-cover bg-no-repeat pc:flex justify-center items-center flex-col">
+        <div className="bg-secondary mt-4 min-h-[800px] flex items-start pc:mt-16 justify-center">
+            <div className="hidden w-[360px] shadow-md rounded-l-xl h-[600px] pc:flex justify-center items-center flex-col">
+                <div className="bg-signUpPattern rounded-l-xl h-full min-h-full min-w-full bg-center bg-cover bg-no-repeat pc:flex justify-center items-center flex-col">
                     <img
                         src="src/assets/Logo(light).svg"
                         alt="NepWork Logo"
@@ -78,16 +78,16 @@ function Signup() {
                     </button>
                 </div>
             </div>
-            <div className="w-full max-w-md bg-secondary shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:w-[65%] pc:rounded-l-none p-8 pc:min-h-[720px] pc:max-h-[720px] pc:max-w-[70%] pc:flex pc:justify-center pc:items-center">
-                <div className="pc:w-[50%] pc:max-w-[800px]">
-                    <div className="pc:hidden flex justify-center mb-4">
+            <div className="w-full max-w-md bg-white shadow-md min-w-[380px] rounded-lg pc:rounded-r-xl pc:rounded-l-none p-10 pc:min-h-[600px] pc:max-h-[600px] pc:max-w-[580px] pc:flex pc:justify-center pc:items-center">
+                <div className="pc:w-full">
+                    <div className="pc:hidden flex justify-center mb-2">
                         <img
                             src="src/assets/logo.svg"
                             alt="NepWork Logo"
                             className="w-40"
                         />
                     </div>
-                    <h2 className="text-2xl font-bold text-center text-greentext pc:mt-6 mb-4">
+                    <h2 className="text-2xl font-bold text-center text-greentext pc:mb-0 mb-2">
                         Create Account
                     </h2>
                     <form onSubmit={handleSubmit(onSubmit)} className="">
@@ -121,7 +121,7 @@ function Signup() {
                         <div>
                             <label
                                 htmlFor="lastName"
-                                className="block mt-4 text-sm font-medium text-gray-700"
+                                className="block text-sm font-medium text-gray-700 mt-1"
                             >
                                 Last Name
                             </label>
@@ -148,7 +148,7 @@ function Signup() {
                         <div>
                             <label
                                 htmlFor="email"
-                                className="block mt-4 text-sm font-medium text-gray-700"
+                                className="mt-1 block text-sm font-medium text-gray-700"
                             >
                                 Email
                             </label>
@@ -172,7 +172,7 @@ function Signup() {
                         </div>
                         <label
                             htmlFor="password"
-                            className="text-sm mt-4 block font-medium text-gray-700"
+                            className="mt-1 text-sm block font-medium text-gray-700"
                         >
                             Password
                         </label>
@@ -219,7 +219,7 @@ function Signup() {
                         )}
                         <label
                             htmlFor="confirmPassword"
-                            className="block mt-4 text-sm font-medium text-gray-700"
+                            className="block mt-1  text-sm font-medium text-gray-700"
                         >
                             Confirm Password
                         </label>
@@ -262,7 +262,7 @@ function Signup() {
                     </form>
                     <p
                         onClick={() => navigate("/login")}
-                        className="text-center  text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
+                        className="text-center  text-sm text-blue-500 mt-1 cursor-pointer hover:underline"
                     >
                         Already have an account? Login here
                     </p>

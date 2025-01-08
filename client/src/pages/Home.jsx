@@ -1,20 +1,11 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import { useAuth } from "../stores/Auth";
+import { FreelancerCard } from "../components";
 
 function Home() {
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
-    if (isLoggedIn) {
-        return (
-            <>
-                <div className="bg-secondary text-center ">
-                    {/* You're Logged in{" "} */}
-                </div>
-            </>
-        );
-    } else {
+
         return (
             <>
                 <div className="bg-secondary text-center ">
@@ -43,11 +34,12 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div>{/* job card components */}</div>
+                    <div>
+                        <FreelancerCard/>
+                    </div>
                 </div>
             </>
         );
     }
-}
 
 export default Home;
