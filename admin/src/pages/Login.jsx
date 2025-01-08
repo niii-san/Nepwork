@@ -113,7 +113,7 @@ function Login() {
                             {...register("password", {
                                 required: "Password is required",
                             })}
-                            className="rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
+                            className="focus:shadow-md rounded-md p-2 w-[90%] bg-transparent outline-none px-4 text-base "
                         />
                         {showPassword ? (
                             <FaRegEye
