@@ -6,15 +6,15 @@ function Kycs() {
     const [kycs, setKycs] = useState([]);
     const [activeFilter, setActiveFilter] = useState("All");
 
-    //OPTIM: need to optimize this code
-    const filteredKycs =
-        activeFilter.toLowerCase() === "pending"
-            ? kycs.filter((elem) => elem.status === "pending")
-            : activeFilter.toLowerCase() === "verified"
-              ? kycs.filter((elem) => elem.status === "verified")
-              : activeFilter.toLowerCase() === "failed"
-                ? kycs.filter((elem) => elem.status === "failed")
-                : kycs;
+    const filterConditions = {
+        pending: (kyc) => kyc.status === "pending",
+        verified: (kyc) => kyc.status === "verified",
+        failed: (kyc) => kyc.status === "failed",
+        all: () => true,
+    };
+
+    const filteredKycs = kycs.filter(filterConditions[(activeFilter).toLowerCase()] || filterConditions.all)
+       
 
     useEffect(() => {
         const fetchKycs = async () => {
@@ -60,7 +60,7 @@ function Kycs() {
                     ))}
                 </div>
             </div>
-            <div className="w-full min-h-[200px] flex justify-center my-10">
+            <div className="w-full min-h-[200px] flex flex-col items-center gap-y-5 my-10">
                 {kycs.length < 1 ? (
                     <p>Loading...</p>
                 ) : (
