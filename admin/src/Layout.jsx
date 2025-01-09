@@ -33,8 +33,18 @@ function Layout() {
         return (
             <>
                 <Toaster />
-                <NavBar />
-                <Outlet />
+                <div className="tablet:hidden fixed top-0 left-0 bg-primary h-full w-full flex justify-center items-center">
+                    <p className="text-xl text-center">
+                        <strong>
+                        Admin portal doesnot supports small screen sizes, Please
+                        use bigger one
+                        </strong>
+                    </p>
+                </div>
+                <div className="hidden tablet:block">
+                    <NavBar />
+                    <Outlet />
+                </div>
             </>
         );
     }
