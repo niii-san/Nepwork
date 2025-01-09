@@ -4,4 +4,5 @@ import Login from "./Login";
 import Kycs from "./Kycs";
 import Profile from "./Profile";
 import Logout from "./Logout";
-export { Home, Dashboard, Login, Kycs, Profile, Logout };
+import SingleKyc from "./SingleKyc";
+export { Home, Dashboard, Login, Kycs, Profile, Logout, SingleKyc };
