@@ -39,28 +39,58 @@ function FreelancerCard() {
             </div>
             <div className="mx-[25px] flex gap-2 mb-[16px]">
                 <div>
-                    <label className="border border-blacktext rounded-xl text-xs px-2 py-1" htmlFor="">Design</label>
+                    <label
+                        className="border border-blacktext rounded-xl text-xs px-2 py-1"
+                        htmlFor=""
+                    >
+                        Design
+                    </label>
                 </div>
                 <div>
-                    <label className="border border-blacktext rounded-xl text-xs px-2 py-1" htmlFor="">Brand</label>
+                    <label
+                        className="border border-blacktext rounded-xl text-xs px-2 py-1"
+                        htmlFor=""
+                    >
+                        Brand
+                    </label>
                 </div>
                 <div>
-                    <label className="border border-blacktext rounded-xl text-xs px-2 py-1" htmlFor="">Product</label>
+                    <label
+                        className="border border-blacktext rounded-xl text-xs px-2 py-1"
+                        htmlFor=""
+                    >
+                        Product
+                    </label>
                 </div>
                 <div>
-                    <label className="border border-blacktext rounded-xl text-xs px-2 py-1" htmlFor="">+3</label>
+                    <label
+                        className="border border-blacktext rounded-xl text-xs px-2 py-1"
+                        htmlFor=""
+                    >
+                        +3
+                    </label>
                 </div>
             </div>
             <div className="mx-[25px] mb-[16px] flex rounded-[3px] justify-between items-center bg-neutral-200 p-3">
-                <div><label className="font-semibold text-2xl" htmlFor="">Rs.130 / hr</label></div>
-                <div><label className="font-semibold text-sm" htmlFor="">Hourly</label></div>
+                <div>
+                    <label className="font-semibold text-2xl" htmlFor="">
+                        Rs.130 / hr
+                    </label>
+                </div>
+                <div>
+                    <label className="font-semibold text-sm" htmlFor="">
+                        Hourly
+                    </label>
+                </div>
             </div>
             <div className="mx-[25px] mb-[25px] flex  justify-between items-center">
                 <div className="bg-lightgreen w-[43px] ">
-                    <AiOutlineLogin className=" text-black w-[22px] h-[42px]"/>
+                    <AiOutlineLogin className=" text-black w-[22px] h-[42px]" />
                 </div>
                 <div>
-                    <button className="bg-primary text-whitetext h-[40px] w-[188px] rounded-[3px]">Hire Now</button>
+                    <button className="bg-primary text-whitetext h-[40px] w-[188px] rounded-[3px]">
+                        Hire Now
+                    </button>
                 </div>
             </div>
         </div>
