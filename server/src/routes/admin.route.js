@@ -10,7 +10,7 @@ export const adminRouter = Router();
 
 adminRouter.post("/create-admin", addAdmin);
 adminRouter.post("/login", adminLogin);
-adminRouter.post(
+adminRouter.get(
     "/verify-token",
     authenticate,
     authorizeAdmin,

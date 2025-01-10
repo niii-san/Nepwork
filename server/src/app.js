@@ -9,12 +9,24 @@ export const app = express();
  * Basic middlewares
  */
 
+const allowlist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
+
 const corsOption = {
     credentials: true,
     origin: process.env.CLIENT_URL,
 };
 
-app.use(cors(corsOption));
+const corsOptionsDelegate = function (req, callback) {
+    let corsOptions;
+    if (allowlist.indexOf(req.header("Origin")) !== -1) {
+        corsOptions = { origin: true };
+    } else {
+        corsOptions = { origin: false };
+    }
+    callback(null, corsOptions);
+};
+
+app.use(cors(corsOptionsDelegate));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
