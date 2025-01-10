@@ -10,6 +10,8 @@ import { addAdmin } from "./admin/addAdmin.controller.js";
 import { getAllKyc } from "./kyc/getAllKyc.controller.js";
 import { verifyAdminToken } from "./admin/verifyAdminToken.controller.js";
 import { getKycById } from "./kyc/getKycById.controller.js";
+import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
+
 
 export {
     login,
@@ -26,4 +28,5 @@ export {
     getAllKyc,
     getKycById,
     verifyAdminToken,
+    updateKycStatus
 };
