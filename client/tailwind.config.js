@@ -32,6 +32,12 @@ export default {
                 //light green for card
                 lightgreen: "#d5ffcb",
 
+                //grey border
+                grey_border:"#e6e6e6",
+
+                //grey text
+                grey_text:"#919191",
+
 
                 green_button: "#009400",
                 green_border: "#009400",
