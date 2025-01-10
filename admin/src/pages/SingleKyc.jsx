@@ -27,28 +27,46 @@ function SingleKyc() {
 
     const kycStatus = watch("selectKyc");
 
-    const onSubmit = (formData) => {
+    const onSubmit = async (formData) => {
         if (!editStatus) {
             setEditStatus(true);
         } else {
             if (formData.selectKyc !== data.status) {
-                console.log(formData);
+                const payload = {
+                    status: formData.selectKyc,
+                    failedReason: formData.reason,
+                };
+                try {
+                    const response = await api.post(
+                        `/kyc/update-status/${data._id}`,
+                        payload,
+                    );
+                    toast.success(
+                        `Status updated: ${response.data.data.status}`,
+                    );
+                    reset();
+                    fetchKyc();
+                } catch (err) {
+                    console.log(err);
+                    toast.error(`Failed to save status, msg:`);
+                }
             }
             setEditStatus(false);
         }
     };
 
-    useEffect(() => {
-        const fetchKyc = async () => {
-            try {
-                const response = await api.get(`/kyc/get-kyc/${params.kycId}`);
-                setData(response.data.data);
-            } catch (err) {
-                console.log(err);
-                toast.error("Failed to fetch kyc: ");
-            }
-        };
+    const fetchKyc = async () => {
+        console.log("fetched");
+        try {
+            const response = await api.get(`/kyc/get-kyc/${params.kycId}`);
+            setData(response.data.data);
+        } catch (err) {
+            console.log(err);
+            toast.error("Failed to fetch kyc: ");
+        }
+    };
 
+    useEffect(() => {
         fetchKyc();
     }, []);
     useEffect(() => {
@@ -75,14 +93,12 @@ function SingleKyc() {
                 <div id="names" className="flex">
                     <strong>First name:</strong>
                     <p>{data.name.firstName}</p>
-                    <strong>
-                        {data.name.middleName && (
-                            <>
-                                <strong>Middle name</strong>
-                                <p>{data.name.middleName}</p>
-                            </>
-                        )}
-                    </strong>
+                    {data.name.middleName && (
+                        <>
+                            <strong>Middle name</strong>
+                            <p>{data.name.middleName}</p>
+                        </>
+                    )}
                     <strong>Last name:</strong>
                     <p>{data.name.lastName}</p>
                 </div>
@@ -196,9 +212,22 @@ function SingleKyc() {
                                 <textarea
                                     disabled={!editStatus}
                                     id="reason"
-                                    {...register("reason")}
+                                    {...register("reason", {
+                                        validate: (value) => {
+                                            if (!editStatus) return true;
+                                            return (
+                                                value.trim() !== "" ||
+                                                "Reason is required"
+                                            );
+                                        },
+                                    })}
                                     defaultValue={data?.failedReason ?? ""}
                                 />
+                                {errors.reason && (
+                                    <p className="text-red-600">
+                                        {errors.reason.message}
+                                    </p>
+                                )}
                             </div>
                         )}
                     </form>

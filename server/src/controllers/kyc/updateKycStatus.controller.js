@@ -40,10 +40,10 @@ export const updateKycStatus = asyncHandler(async (req, res) => {
     const user = await User.findById(kyc.user);
     user.kycStatus = status;
     user.kycVerified = status === "verified";
-    user.save();
+    await user.save();
 
     return res.status(200).json(
-        new ApiResponse(200, true, "Test passed", {
+        new ApiResponse(200, true, true, `Kyc status updated ${kyc.status}`, {
             status: kyc.status,
             reason: kyc.failedReason,
         }),
