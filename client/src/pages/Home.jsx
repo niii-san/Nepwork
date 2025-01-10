@@ -24,17 +24,20 @@ function Home() {
                                         placeholder="Search"
                                         className="rounded-md p-3 w-full bg-transparent outline-none px-4 text-base "
                                     />
-                                    <button className="bg-primary text-whitetext p-2 rounded-lg mr-1">
+                                    <button className="bg-primary text-whitetext p-3 rounded-lg mr-1">
                                         <FaArrowRightLong />
                                     </button>
                                 </div>
                             </div>
-                            <div className="text-whitetext ml-2 text-4xl">
+                            <div className="text-whitetext ml-2 text-3xl">
                                 <HiOutlineAdjustmentsHorizontal />
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="flex gap-6 mt-2">
+                        <FreelancerCard/>
+                        <FreelancerCard/>
+                        <FreelancerCard/>
                         <FreelancerCard/>
                     </div>
                 </div>
