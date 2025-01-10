@@ -66,15 +66,19 @@ const kycSchema = new mongoose.Schema(
         verified: {
             type: Boolean,
             default: false,
-        },   
+        },
 
         status: {
             type: String,
             enum: ["pending", "verified", "failed"],
             default: "pending",
         },
+        failedReason: {
+            type: String,
+            default: "",
+        },
     },
-    { timestamps: true } , 
+    { timestamps: true },
 );
 
 export const Kyc = mongoose.model("Kyc", kycSchema);
