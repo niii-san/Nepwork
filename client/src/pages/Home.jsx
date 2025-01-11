@@ -34,7 +34,7 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-6 mt-2">
+                    <div className="flex flex-wrap gap-6 mt-2">
                         <FreelancerCard/>
                         <FreelancerCard/>
                         <FreelancerCard/>

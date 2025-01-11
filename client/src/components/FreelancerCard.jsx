@@ -1,10 +1,11 @@
 import React from "react";
 import { AiOutlineLogin } from "react-icons/ai";
 import { CiStar } from "react-icons/ci";
+import Tag from "./Tag";
 
 function FreelancerCard() {
     return (
-        <div className="w-[290px] max-w-[290px] bg-white shadow-card_shadow rounded-md mt-5 border">
+        <div className="w-[290px] max-w-[290px] bg-white shadow-card_shadow rounded-md mt-5">
             <div className="flex justify-between mx-[25px] mt-[25px]">
                 <div className="">
                     <img
@@ -24,7 +25,10 @@ function FreelancerCard() {
             </div>
             <div className="flex flex-col  mx-[25px]">
                 <div>
-                    <label className="text-lg text-[15px] font-medium" htmlFor="">
+                    <label
+                        className="text-lg text-[15px] font-medium"
+                        htmlFor=""
+                    >
                         Jane Cooper
                     </label>
                 </div>
@@ -38,54 +42,13 @@ function FreelancerCard() {
                 </div>
             </div>
             <div className="mx-[25px] flex flex-wrap gap-2 mb-[16px]">
-                <div>
-                    <label
-                        className="border-[0.5px] border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        Design
-                    </label>
-                </div>
-                <div>
-                    <label
-                        className="border border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        Brand
-                    </label>
-                </div>
-                <div>
-                    <label
-                        className="border border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        Product
-                    </label>
-                </div>
-                <div>
-                    <label
-                        className="border border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        +3
-                    </label>
-                </div>
-                <div>
-                    <label
-                        className="border border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        Product
-                    </label>
-                </div>
-                <div>
-                    <label
-                        className="border border-grey_border rounded-xl text-xs px-2 py-1"
-                        htmlFor=""
-                    >
-                        Product
-                    </label>
-                </div>
+                <Tag>Design</Tag>
+                <Tag>Brand</Tag>
+                <Tag>Product</Tag>
+                <Tag>Design</Tag>
+                <Tag>Market</Tag>
+                <Tag>Product</Tag>
+                <Tag>+3</Tag>
             </div>
             <div className="mx-[25px] mb-[16px] flex rounded-[3px] justify-between items-center bg-[#F4F4F4] p-3">
                 <div>
