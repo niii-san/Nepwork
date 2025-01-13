@@ -254,7 +254,7 @@ function Signup() {
                         )}
                         <Button
                             type="submit"
-                            style="filled"
+                            variant="filled"
                             className="mt-4  w-full"
                         >
                             SIGN UP

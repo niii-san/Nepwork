@@ -176,7 +176,7 @@ function Login() {
 
                         <Button
                             type="submit"
-                            style="filled"
+                            variant="filled"
                             className="mx-auto mt-4 w-full"
                         >
                             Login

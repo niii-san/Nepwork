@@ -20,7 +20,7 @@ function Settings() {
 
                 <Link to="/logout" className="">
                     <Button
-                        style="filled"
+                        variant="filled"
                         theme="danger"
                         className="w-full flex justify-center items-center gap-1 bg-danger hover:bg-danger border-danger"
                     >

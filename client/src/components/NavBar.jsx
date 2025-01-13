@@ -3,11 +3,9 @@ import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../stores/Auth";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { IoIosLogIn } from "react-icons/io";
 import { LuUserRound } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { RiUserSharedLine } from "react-icons/ri";
 import { Button } from "../components";
 
 function NavBar() {
@@ -128,13 +126,17 @@ function NavBar() {
                             <p className="">Home</p>
                         </NavLink>
 
-
-                        <div className="flex w-3/4 justify-evenly gap-1"> 
-
-                        <Button style="filled" onClick={()=>navigate("/signup")}>Join</Button>
-                        <Button onClick={()=>navigate("/login")}>Login</Button>
+                        <div className="flex w-3/4 justify-evenly gap-1">
+                            <Button
+                                variant="filled"
+                                onClick={() => navigate("/signup")}
+                            >
+                                Join
+                            </Button>
+                            <Button onClick={() => navigate("/login")}>
+                                Login
+                            </Button>
                         </div>
-
                     </div>
                 </div>
             </>

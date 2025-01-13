@@ -10,10 +10,12 @@ function SwitchRole() {
     const userData = useUser((state) => state.data);
     const [openModal, setOpenModal] = useState(false);
     const [errMsg, setErrMsg] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     if (!userData) return <Loader />;
 
     const handleRoleSwitch = async () => {
+        setLoading(true);
         const payload = {
             role: userData.role === "client" ? "freelancer" : "client",
         };
@@ -23,9 +25,11 @@ function SwitchRole() {
             toast.success(response.data.message);
 
             if (errMsg) setErrMsg("");
+            setLoading(false);
             navigate("/settings");
         } catch (error) {
             setErrMsg(error.response.data.message);
+            setLoading(false);
         }
     };
 
@@ -94,9 +98,9 @@ function SwitchRole() {
                             </p>
                         )}
 
-                        <div className="flex justify-evenly mt-4">
+                        <div className="flex justify-evenly mt-4 gap-x-4">
                             <Button
-                                style="filled"
+                                variant="filled"
                                 className="border-red-500 bg-red-400 text-black"
                                 onClick={() => {
                                     if (errMsg) setErrMsg("");
@@ -105,7 +109,12 @@ function SwitchRole() {
                             >
                                 Cancel
                             </Button>
-                            <Button style="filled" onClick={handleRoleSwitch}>
+                            <Button
+                                disabled={loading}
+                                loading={loading}
+                                variant="filled"
+                                onClick={handleRoleSwitch}
+                            >
                                 Confirm
                             </Button>
                         </div>

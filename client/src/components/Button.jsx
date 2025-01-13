@@ -19,33 +19,54 @@ function Button({
     type = "button",
     className,
     disabled = false,
-    style = "outline",
+    loading = false,
+    variant = "outline",
     onClick,
     children,
     ...rest
 }) {
-    const baseClasses =
-        "px-6 py-2 rounded-md transition ease-in-out duration-150";
-    const outlineClasses =
-        "border border-primary hover:bg-primary hover:bg-opacity-20 active:bg-opacity-50";
-    const filledClasses =
-        "border border-primary bg-primary text-primaryText hover:text-black hover:border-opacity-40 hover:bg-opacity-40 active:bg-opacity-90";
-    const disabledClasses =
-        "cursor-not-allowed hover:bg-opacity-40 bg-opacity-40 hover:text-tertiray active:bg-none";
+    const baseStyle =
+        "w-full py-2 border-2 border-primary rounded-lg text-background text-base flex justify-center items-center cursor-pointer transition ease-in-out duration-300";
+
+    const ButtonVariants = {
+        outline: "text-dark_text hover:bg-primary hover:bg-opacity-20",
+        filled: "bg-primary hover:bg-opacity-80 ",
+    };
+
+    const disabledStyle =
+        "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed hover:bg-gray-300";
+    const loadingStyle = "cursor-wait opacity-80";
+
+    const buttonVariant = !disabled
+        ? ButtonVariants[variant] || ButtonVariants.filled
+        : disabledStyle;
+
+    const handleClick = (e) => {
+        if (disabled || loading) {
+            e.preventDefault();
+            return;
+        }
+        onClick?.(); // Only call the onClick if not disabled/loading
+    };
 
     return (
         <button
-            id={id}
-            type={type}
             disabled={disabled}
+            onClick={handleClick}
             className={twMerge(
-                `${baseClasses} ${style === "outline" ? outlineClasses : filledClasses} ${disabled ? disabledClasses : ""
-                } ${className}`,
+                `${baseStyle} ${buttonVariant} ${disabled ? disabledStyle : ""} ${loading ? loadingStyle : ""}`,
+                className,
             )}
-            onClick={!disabled ? onClick : undefined}
             {...rest}
         >
-            {children}
+            {loading ? (
+                <div className="flex justify-center items-center gap-x-2">
+                    <span className="w-6 h-6 border-4 border-t-primary border-secondary rounded-full animate-spin"></span>
+                    <span>{children}</span>
+                </div>
+            ) : (
+                children
+            )}
         </button>
     );
 }
@@ -56,7 +77,7 @@ Button.propTypes = {
     type: PropTypes.oneOf(["button", "submit", "reset"]),
     className: PropTypes.string,
     disabled: PropTypes.bool,
-    style: PropTypes.oneOf(["outline", "filled"]),
+    variant: PropTypes.oneOf(["outline", "filled"]),
     onClick: PropTypes.func,
     children: PropTypes.node.isRequired, // Ensures children are passed
 };

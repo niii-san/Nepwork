@@ -109,7 +109,7 @@ function VerifyEmail() {
                         )}
                         <div>
                             <Button
-                                style="filled"
+                                variant="filled"
                                 type="submit"
                                 className="mr-4"
                                 disabled={sending}
