@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticate from "../middlewares/authenticate.middleware.js";
+import { authenticate, verified } from "../middlewares/index.js";
 
 import {
     signup,
@@ -35,7 +35,12 @@ userRoute.get("/current-user-info", authenticate, currentUserInfo);
 
 // switching roles routes
 
-userRoute.post("/switch-to-client", authenticate, switchToClient);
-userRoute.post("/switch-to-freelancer", authenticate, switchToFreelancer);
+userRoute.post("/switch-to-client", authenticate, verified, switchToClient);
+userRoute.post(
+    "/switch-to-freelancer",
+    authenticate,
+    verified,
+    switchToFreelancer,
+);
 
 export { userRoute };
