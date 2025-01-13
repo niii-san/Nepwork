@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        lastRoleChange: {
+            type: Date,
+            default: null,
+        },
 
         refreshToken: String,
     },
