@@ -10,7 +10,7 @@ const canChangeRole = (lastChangedDate) => {
     const daysSinceLastChange = Math.floor(
         (Date.now() - lastChangedDate.getTime()) / (1000 * 60 * 60 * 24),
     );
-    const daysRemaining = 30 - daysSinceLastChange;
+    const daysRemaining = 14 - daysSinceLastChange;
 
     if (daysRemaining <= 0) {
         return { canChange: true, message: "You can change your role now!" };

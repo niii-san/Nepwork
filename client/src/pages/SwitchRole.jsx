@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useUser } from "../stores";
 import { Loader, Button } from "../components";
+import api from "../utils/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 function SwitchRole() {
+    const navigate = useNavigate();
     const userData = useUser((state) => state.data);
     const [openModal, setOpenModal] = useState(false);
     const [errMsg, setErrMsg] = useState(null);
@@ -13,10 +17,16 @@ function SwitchRole() {
         const payload = {
             role: userData.role === "client" ? "freelancer" : "client",
         };
-        console.log(payload)
 
-        setOpenModal(false);
-        //TODO: server interaction
+        try {
+            const response = await api.post("/user/switch-role", payload);
+            toast.success(response.data.message);
+
+            if (errMsg) setErrMsg("");
+            navigate("/settings");
+        } catch (error) {
+            setErrMsg(error.response.data.message);
+        }
     };
 
     const renderRules = () => {
@@ -44,7 +54,9 @@ function SwitchRole() {
                 {renderRules()}
                 <h2>Applies to All Users</h2>
                 <ol>
-                    <li>Can only switch once every 30 days.</li>
+                    <li>Email Address should be verified</li>
+                    <li>Kyc should be verified</li>
+                    <li>Can only switch once every 14 days.</li>
                 </ol>
             </div>
 
@@ -62,7 +74,7 @@ function SwitchRole() {
             {openModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-                        <h2 className="text-lg font-bold mb-4">
+                        <h2 className="text-lg font-bold mb-4 text-center">
                             Confirm Role Switch
                         </h2>
                         <div className="mb-6"></div>
@@ -76,15 +88,20 @@ function SwitchRole() {
                             </strong>
                             ?
                         </p>
-                        <div id="errmsg" className="bg-red-500 h-6 mt-2">
-                            {errMsg && <p className="bg-red-500">{errMsg}</p>}
-                        </div>
+                        {errMsg && (
+                            <p className="text-red-600 text-center mt-2 text-sm">
+                                {errMsg}
+                            </p>
+                        )}
 
-                        <div className="flex justify-evenly mt-8">
+                        <div className="flex justify-evenly mt-4">
                             <Button
                                 style="filled"
                                 className="border-red-500 bg-red-400 text-black"
-                                onClick={() => setOpenModal(false)}
+                                onClick={() => {
+                                    if (errMsg) setErrMsg("");
+                                    setOpenModal(false);
+                                }}
                             >
                                 Cancel
                             </Button>
