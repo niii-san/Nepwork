@@ -15,5 +15,5 @@ export {
     UserCard,
     Button,
     EnterEmailOtp,
-    FreelancerCard
+    FreelancerCard,
 };

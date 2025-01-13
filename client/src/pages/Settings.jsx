@@ -20,12 +20,15 @@ function Settings() {
 
                 <Link to="/logout" className="">
                     <Button
-                        style="filled"
+                        variant="filled"
                         theme="danger"
                         className="w-full flex justify-center items-center gap-1 bg-danger hover:bg-danger border-danger"
                     >
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
+                </Link>
+                <Link to={"/settings/switch-role"} className="">
+                    <Button className="w-full">Switch Role</Button>
                 </Link>
             </div>
         </div>

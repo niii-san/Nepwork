@@ -14,6 +14,7 @@ import {
     Settings,
     VerifyEmail,
     Kyc,
+    SwitchRole,
 } from "./pages/index.js";
 import { Protected } from "./components";
 
@@ -68,6 +69,14 @@ createRoot(document.getElementById("root")).render(
                     element={
                         <Protected>
                             <VerifyEmail />
+                        </Protected>
+                    }
+                />
+                <Route
+                    path="settings/switch-role"
+                    element={
+                        <Protected>
+                            <SwitchRole />
                         </Protected>
                     }
                 />
