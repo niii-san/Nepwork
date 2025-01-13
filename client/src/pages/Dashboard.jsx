@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
+import { useUser } from "../stores";
+import { Loader } from "../components";
 
 function Dashboard() {
-  return (
-    <div className='min-h-[800px] bg-secondary'>This is dashboard</div>
-  )
+
+
+    return <div className="min-h-[800px] bg-secondary"></div>;
 }
 
-export default Dashboard
+export default Dashboard;

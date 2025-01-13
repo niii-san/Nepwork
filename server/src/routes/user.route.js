@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticate from "../middlewares/authenticate.middleware.js";
+import { authenticate, verified } from "../middlewares/index.js";
 
 import {
     signup,
@@ -11,6 +11,7 @@ import {
     currentUserInfo,
     uploadKyc,
     upload,
+    switchRole,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -30,5 +31,8 @@ userRoute.post(
     uploadKyc,
 );
 userRoute.get("/current-user-info", authenticate, currentUserInfo);
+
+// switch role route
+userRoute.post("/switch-role", authenticate, verified, switchRole);
 
 export { userRoute };

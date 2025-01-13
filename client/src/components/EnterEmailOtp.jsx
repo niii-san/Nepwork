@@ -109,12 +109,12 @@ function EnterEmailOtp({ email, setShowOtpModal }) {
                     )}
                     </div>
                     <div className="flex justify-evenly mt-6 gap-x-2">
-                        <Button style="filled" type="submit">
+                        <Button variant="filled" type="submit">
                             Submit
                         </Button>
                         <Button
                             onClick={() => setShowOtpModal(false)}
-                            style="outline"
+                            variant="outline"
                         >
                             Cancel
                         </Button>

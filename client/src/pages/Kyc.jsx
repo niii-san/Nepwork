@@ -506,8 +506,9 @@ function Kyc() {
                             <br />
                             <Button
                                 type="submit"
-                                style="filled"
+                                variant="filled"
                                 disabled={uploading}
+                                loading={uploading}
                                 className="w-full"
                             >
                                 {uploading ? "Uploading..." : "Submit Kyc"}

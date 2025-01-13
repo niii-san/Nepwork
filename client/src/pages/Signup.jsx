@@ -19,6 +19,8 @@ function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     const handleShowPassword = () => {
         setShowPassword((prev) => !prev);
     };
@@ -30,6 +32,7 @@ function Signup() {
     const password = watch("password", ""); // create structured payload and hit endpoint
 
     const onSubmit = (data) => {
+        setLoading(true);
         const payload = {
             name: {
                 firstName: data.firstName,
@@ -51,7 +54,8 @@ function Signup() {
             })
             .catch((err) => {
                 toast.error(err.response.data.message);
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     return (
@@ -254,8 +258,10 @@ function Signup() {
                         )}
                         <Button
                             type="submit"
-                            style="filled"
-                            className="mt-4  w-full"
+                            variant="filled"
+                            className="mt-4 w-full"
+                            disabled={loading}
+                            loading={loading}
                         >
                             SIGN UP
                         </Button>
