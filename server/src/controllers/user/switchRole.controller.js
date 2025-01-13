@@ -22,40 +22,30 @@ const canChangeRole = (lastChangedDate) => {
     }
 };
 
-export const switchToFreelancer = asyncHandler(async (req, res) => {
+export const switchRole = asyncHandler(async (req, res) => {
+    const role = (req.body.role ?? "").trim();
+
+    if (!role) throw new ApiError(400, true, "Role not provided");
+
+    if (role !== "client" && role !== "freelancer")
+        throw new ApiError(400, true, "Invalid role");
+
     const user = await User.findById(req.user._id);
 
     const { canChange, message } = canChangeRole(user.lastRoleChange);
 
-    // if cannot change
     if (!canChange) throw new ApiError(400, true, message);
 
-    // if already freelancer
-    if (user.role === "freelancer")
-        throw new ApiError(400, true, "You're already freelancer");
+    if (user.role === role)
+        throw new ApiError(400, true, `You're already ${role}`);
 
-    // if can change
     user.lastRoleChange = new Date();
-    user.role = "freelancer";
+    user.role = role;
     await user.save();
 
     return res.status(200).json(
-        new ApiResponse(200, true, true, "Role changed to freelancer", {
+        new ApiResponse(200, true, true, `Role changed to ${role}`, {
             lastRoleChange: user.lastRoleChange,
         }),
     );
-});
-
-export const switchToClient = asyncHandler(async (req, res) => {
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                true,
-                true,
-                "Successfully switched to Client",
-                null,
-            ),
-        );
 });

@@ -11,10 +11,7 @@ import { getAllKyc } from "./kyc/getAllKyc.controller.js";
 import { verifyAdminToken } from "./admin/verifyAdminToken.controller.js";
 import { getKycById } from "./kyc/getKycById.controller.js";
 import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
-import {
-    switchToClient,
-    switchToFreelancer,
-} from "./user/switchRole.controller.js";
+import { switchRole } from "./user/switchRole.controller.js";
 
 export {
     login,
@@ -32,6 +29,5 @@ export {
     getKycById,
     verifyAdminToken,
     updateKycStatus,
-    switchToClient,
-    switchToFreelancer
+    switchRole,
 };
