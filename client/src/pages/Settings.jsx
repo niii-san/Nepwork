@@ -27,6 +27,9 @@ function Settings() {
                         <TbLogout className="inline-block text-xl" /> Logout
                     </Button>
                 </Link>
+                <Link to={"/settings/switch-role"} className="">
+                    <Button className="w-full">Switch Role</Button>
+                </Link>
             </div>
         </div>
     );
