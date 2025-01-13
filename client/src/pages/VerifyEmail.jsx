@@ -79,13 +79,17 @@ function VerifyEmail() {
             )}
             <div className="bg-secondary min-h-[800px]">
                 <div className="flex gap-10 justify-center items-center flex-col">
-
                     This is verify email page
-                    <div>                    <h1 className="block text-2xl font-semibold text-center">
-                    Enter your email address to receive OTP
-                    </h1>
+                    <div>
+                        {" "}
+                        <h1 className="block text-2xl font-semibold text-center">
+                            Enter your email address to receive OTP
+                        </h1>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center items-center flex-col gap-6">
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="flex justify-center items-center flex-col gap-6"
+                    >
                         <input
                             type="text"
                             {...register("email", {
