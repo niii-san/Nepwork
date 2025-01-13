@@ -508,6 +508,7 @@ function Kyc() {
                                 type="submit"
                                 variant="filled"
                                 disabled={uploading}
+                                loading={uploading}
                                 className="w-full"
                             >
                                 {uploading ? "Uploading..." : "Submit Kyc"}

@@ -113,6 +113,7 @@ function VerifyEmail() {
                                 type="submit"
                                 className="mr-4"
                                 disabled={sending}
+                                loading={sending}
                             >
                                 {sending ? "Sending..." : "Send OTP"}
                             </Button>

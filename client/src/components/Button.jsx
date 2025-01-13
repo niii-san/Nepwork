@@ -26,11 +26,11 @@ function Button({
     ...rest
 }) {
     const baseStyle =
-        "w-full py-2 border-2 border-primary rounded-lg text-background text-base flex justify-center items-center cursor-pointer transition ease-in-out duration-300";
+        "w-full px-6 py-2 border-2 border-primary rounded-lg text-background text-base flex justify-center items-center cursor-pointer transition ease-in-out duration-300";
 
     const ButtonVariants = {
-        outline: "text-dark_text hover:bg-primary hover:bg-opacity-20",
-        filled: "bg-primary hover:bg-opacity-80 ",
+        outline: "text-black hover:bg-primary hover:bg-opacity-20",
+        filled: "bg-primary text-white hover:bg-opacity-80 ",
     };
 
     const disabledStyle =
