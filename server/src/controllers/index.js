@@ -13,7 +13,10 @@ import { getKycById } from "./kyc/getKycById.controller.js";
 import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
 import { switchRole } from "./user/switchRole.controller.js";
 import { createJob } from "./job/createJob.controller.js";
-import { getAllJobs } from "./job/getAllJobs.controller.js";
+import {
+    getAllJobs,
+    getJobsPostedByCurrentUser,
+} from "./job/getJobs.controller.js";
 import { updateJob } from "./job/updateJob.controller.js";
 
 export {
@@ -36,4 +39,5 @@ export {
     createJob,
     getAllJobs,
     updateJob,
+    getJobsPostedByCurrentUser
 };
