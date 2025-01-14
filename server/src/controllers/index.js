@@ -14,6 +14,7 @@ import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
 import { switchRole } from "./user/switchRole.controller.js";
 import { createJob } from "./job/createJob.controller.js";
 import { getAllJobs } from "./job/getAllJobs.controller.js";
+import { updateJob } from "./job/updateJob.controller.js";
 
 export {
     login,
@@ -34,4 +35,5 @@ export {
     switchRole,
     createJob,
     getAllJobs,
+    updateJob,
 };
