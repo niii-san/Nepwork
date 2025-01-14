@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useUser } from "../stores";
-import { Loader, Button,Note } from "../components";
+import { Loader, Button, Note } from "../components";
 import { useForm } from "react-hook-form";
 import { useTags } from "../contexts/tagContext";
+import toast from "react-hot-toast";
+import api from "../utils/api";
 
 function Dashboard() {
     const userData = useUser((state) => state.data);
@@ -25,7 +27,7 @@ function Dashboard() {
 
     // Client Dashboard
     function ClientDashBoard() {
-        const [showPostJobModal, setShowPostJobModal] = useState(true);
+        const [showPostJobModal, setShowPostJobModal] = useState(false);
 
         return (
             <>
@@ -46,21 +48,47 @@ function Dashboard() {
                 handleSubmit,
                 formState: { errors },
                 setValue,
+                reset,
                 watch,
             } = useForm();
 
             const { tags } = useTags();
             const selectedTags = watch("tags", []);
             const [tagErr, setTagErr] = useState(null);
+            const [resErr, setResErr] = useState(null);
+            const [uploading, setUploading] = useState(false);
 
             const onSubmit = (data) => {
                 if (selectedTags.length === 0) {
                     setTagErr("Atleast one tag is required");
                 } else {
+                    setUploading(true);
                     if (tagErr) setTagErr(null);
-                    console.log("Form submitted:", {
-                        data,
-                    });
+                    if (resErr) setResErr(null);
+                    const payload = {
+                        title: data.jobTitle,
+                        description: data.jobDescription,
+                        tags: data.tags,
+                        rate: data.hourlyRate,
+                    };
+
+                    api.post("/jobs/create-job", payload)
+                        .then((res) => {
+                            toast.success(
+                                `Job posted: ${res.data.data.title}`,
+                                {
+                                    duration: 5000,
+                                },
+                            );
+                            reset();
+                            setShowPostJobModal(false);
+                        })
+                        .catch((err) => {
+                            setResErr(err.response.data.message);
+                        })
+                        .finally(() => {
+                            setUploading(false);
+                        });
                 }
             };
 
@@ -193,6 +221,10 @@ function Dashboard() {
                                 </div>
                             </div>
 
+                            {resErr && (
+                                <p className="text-red-600 text-sm">{resErr}</p>
+                            )}
+
                             {/* Buttons */}
                             <div
                                 id="btns"
@@ -200,12 +232,14 @@ function Dashboard() {
                             >
                                 <Button
                                     variant="outline"
-                                    className="border-red-500 text-red-500"
+                                    className="border-red-500 text-red-500 hover:bg-red-500"
                                     onClick={() => setShowPostJobModal(false)}
                                 >
                                     Cancel
                                 </Button>
                                 <Button
+                                    loading={uploading}
+                                    disabled={uploading}
                                     variant="filled"
                                     className=""
                                     type="submit"
