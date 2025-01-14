@@ -1,8 +1,10 @@
-function Tag({ children }) {
+function Tag({ children, className}) {
     return (
-        <div className="border border-grey_border rounded-xl text-xs px-2 py-1">
+        <label
+            className={`border border-grey_border rounded-xl text-xs px-2 py-1 ${className || ""}`}
+        >
             {children}
-        </div>
+        </label>
     );
 }
 

@@ -34,12 +34,10 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-wrap gap-6 mt-2">
                         <FreelancerCard/>
                         <JobCard></JobCard>
                         <FreelancerCard/>
                         <FreelancerCard/>
-                    </div>
                 </div>
             </>
         );

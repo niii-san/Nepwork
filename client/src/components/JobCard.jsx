@@ -4,20 +4,20 @@ import Tag from "./Tag";
 
 function JobCard() {
     return (
-        <div className="h-[235px] w-[324px] max-w-[324px] flex flex-col justify-center bg-white shadow-card_shadow rounded-md mt-5">
-            <div className=" flex justify-between mb-[10px] mx-[25px] mt-[25px]">
+        <div className="w-[324px] max-w-[324px] flex flex-col justify-center bg-white shadow-card_shadow rounded-md mt-5">
+            <div className=" flex justify-between mb-[10px] mx-[25px] mt-[30px]">
                 <div className="">
                     <img
                         src="src\assets\image.png"
                         alt="Photo"
-                        className="w-16 rounded-full h-16 shadow-card_shadow"
+                        className="w-20 h-20 rounded-full shadow-card_shadow"
                     />
                 </div>
                 <div className="flex  items-start">
-                    <div className="">
+                    <div className="mr-4">
                         <div>
                             <label
-                                className="text-lg text-[20px] font-medium "
+                                className="text-lg text-[20px] font-medium"
                                 htmlFor=""
                             >
                                 Graphic Designer
@@ -44,8 +44,8 @@ function JobCard() {
                 <Tag>+3</Tag>
             </div>
 
-            <div className=" mx-[25px] mb-[25px] flex gap-2 justify-center items-center">
-                <div className="flex  justify-center items-center bg-lightgreen rounded-[3px] min-w-[43px] min-h-[40px]">
+            <div className=" mx-[25px] mb-[30px] flex gap-2 justify-center items-center">
+                <div className="flex  justify-center items-center bg-lightgreen rounded-[3px] min-w-[43px] h-[40px]">
                     <AiOutlineLogin className=" text-black text-2xl w-[22px]" />
                 </div>
                 <div>
@@ -55,7 +55,7 @@ function JobCard() {
                 </div>
                 <div className=" flex rounded-[3px] h-[40px] justify-between items-center  p-3 bg-[#F4F4F4]">
                     <div>
-                        <label className="font-semibold text-[18px]" htmlFor="">
+                        <label className="font-semibold text-[16px]" htmlFor="">
                             Rs.130 / hr
                         </label>
                     </div>
