@@ -267,9 +267,10 @@ function SingleKyc() {
                             </div>
 
                             {kycStatus === "failed" && (
-                                <div>
+                                <div className="w-full">
                                     <h1>Reason</h1>
                                     <textarea
+                                    className="w-full border border-hover_button rounded shadow-lg"
                                         disabled={!editStatus}
                                         id="reason"
                                         {...register("reason", {

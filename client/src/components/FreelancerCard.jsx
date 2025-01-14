@@ -57,9 +57,7 @@ function FreelancerCard() {
                     </label>
                 </div>
                 <div>
-                    <label className="font-semibold text-sm" htmlFor="">
-                        Hourly
-                    </label>
+                    <Tag className={"text-primary font-semibold"}>Hourly</Tag>
                 </div>
             </div>
             <div className="mx-[25px] mb-[25px] flex  justify-between items-center">
