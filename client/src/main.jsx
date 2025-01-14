@@ -17,74 +17,77 @@ import {
     SwitchRole,
 } from "./pages/index.js";
 import { Protected } from "./components";
+import { TagsProvider } from "./contexts/tagContext";
 
 createRoot(document.getElementById("root")).render(
     //  <StrictMode>
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route path="" element={<Home />} />
-                <Route
-                    path="dashboard"
-                    element={
-                        <Protected>
-                            <Dashboard />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="notifications"
-                    element={
-                        <Protected>
-                            <Notifications />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="profile"
-                    element={
-                        <Protected>
-                            <Profile />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="settings"
-                    element={
-                        <Protected>
-                            <Settings />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="settings/kyc"
-                    element={
-                        <Protected>
-                            <Kyc />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="settings/verify-email"
-                    element={
-                        <Protected>
-                            <VerifyEmail />
-                        </Protected>
-                    }
-                />
-                <Route
-                    path="settings/switch-role"
-                    element={
-                        <Protected>
-                            <SwitchRole />
-                        </Protected>
-                    }
-                />
-                <Route path="signup" element={<Signup />} />
-                <Route path="login" element={<Login />} />
-                <Route path="logout" element={<Logout />} />
-            </Route>
-        </Routes>
-    </BrowserRouter>,
+    <TagsProvider>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route path="" element={<Home />} />
+                    <Route
+                        path="dashboard"
+                        element={
+                            <Protected>
+                                <Dashboard />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="notifications"
+                        element={
+                            <Protected>
+                                <Notifications />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="profile"
+                        element={
+                            <Protected>
+                                <Profile />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="settings"
+                        element={
+                            <Protected>
+                                <Settings />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="settings/kyc"
+                        element={
+                            <Protected>
+                                <Kyc />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="settings/verify-email"
+                        element={
+                            <Protected>
+                                <VerifyEmail />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="settings/switch-role"
+                        element={
+                            <Protected>
+                                <SwitchRole />
+                            </Protected>
+                        }
+                    />
+                    <Route path="signup" element={<Signup />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="logout" element={<Logout />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </TagsProvider>,
     // </StrictMode>,
 );

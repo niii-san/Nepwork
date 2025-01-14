@@ -7,6 +7,7 @@ import Button from "./Button";
 import EnterEmailOtp from "./EnterEmailOtp";
 import FreelancerCard from "./FreelancerCard";
 import JobCard from "./JobCard";
+import Note from "./Note";
 
 export {
     NavBar,
@@ -17,5 +18,6 @@ export {
     Button,
     EnterEmailOtp,
     FreelancerCard,
-    JobCard
+    JobCard,
+    Note,
 };
