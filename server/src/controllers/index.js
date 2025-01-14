@@ -12,6 +12,7 @@ import { verifyAdminToken } from "./admin/verifyAdminToken.controller.js";
 import { getKycById } from "./kyc/getKycById.controller.js";
 import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
 import { switchRole } from "./user/switchRole.controller.js";
+import { createJob } from "./job/createJob.controller.js";
 
 export {
     login,
@@ -30,4 +31,5 @@ export {
     verifyAdminToken,
     updateKycStatus,
     switchRole,
+    createJob,
 };

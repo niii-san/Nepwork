@@ -93,6 +93,20 @@ function Kyc() {
         );
     }
 
+    if (userData.kycStatus === "verified") {
+        return (
+            <>
+                <div className="bg-secondary min-h-[800px] w-full flex flex-col justify-center items-center">
+                    <h1 className="mx-auto text-3xl mt-12 font-bold">
+                        Your Kyc is verified 
+                    </h1>
+
+                    {userData && <UserCard userData={userData} />}
+                </div>
+            </>
+        );
+    }
+
     // if kyc status is "not_uploaded"
     if (userData.kycStatus === "not_uploaded") {
         return (
