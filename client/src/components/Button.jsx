@@ -26,7 +26,7 @@ function Button({
     ...rest
 }) {
     const baseStyle =
-        "w-full px-6 py-2 border-2 border-primary rounded-lg text-background text-base flex justify-center items-center cursor-pointer transition ease-in-out duration-300";
+        "w-fit px-6 py-2 border-2 border-primary rounded-lg text-background text-base flex justify-center items-center cursor-pointer transition ease-in-out duration-300";
 
     const ButtonVariants = {
         outline: "text-black hover:bg-primary hover:bg-opacity-20",

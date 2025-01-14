@@ -9,7 +9,7 @@ function FreelancerCard() {
             <div className="flex justify-between mx-[25px] mt-[25px]">
                 <div className="">
                     <img
-                        src="src\assets\image.png"
+                        src="src\assets\image1.png"
                         alt="Photo"
                         className="w-16 rounded-full h-16 shadow-card_shadow"
                     />
@@ -48,7 +48,7 @@ function FreelancerCard() {
                 <Tag>Design</Tag>
                 <Tag>Market</Tag>
                 <Tag>Product</Tag>
-                <Tag>"+3"</Tag>
+                <Tag>+3</Tag>
             </div>
             <div className="mx-[25px] mb-[16px] flex rounded-[3px] justify-between items-center bg-[#F4F4F4] p-3">
                 <div>
