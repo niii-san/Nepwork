@@ -52,5 +52,13 @@ app.use("/api/v1/admin", adminRouter);
 import { kycRouter } from "./routes/kyc.route.js";
 app.use("/api/v1/kyc", kycRouter);
 
+import { jobRouter } from "./routes/jobs.route.js";
+app.use("/api/v1/jobs", jobRouter);
+
+import { tags } from "./constants.js";
+app.get("/api/v1/tags", (_, res) => {
+    return res.status(200).json({ tags });
+});
+
 //* Error handling
 app.use(errorHandler);

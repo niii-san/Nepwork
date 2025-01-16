@@ -1,7 +1,7 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import { FreelancerCard } from "../components";
+import { FreelancerCard,JobCard } from "../components";
 
 function Home() {
 
@@ -34,12 +34,10 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-6 mt-2">
+                        <FreelancerCard/>
+                        <JobCard></JobCard>
                         <FreelancerCard/>
                         <FreelancerCard/>
-                        <FreelancerCard/>
-                        <FreelancerCard/>
-                    </div>
                 </div>
             </>
         );

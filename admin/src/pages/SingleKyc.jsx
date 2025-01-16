@@ -80,97 +80,142 @@ function SingleKyc() {
     if (!data) return <Loader />;
 
     return (
-        <div>
+        <div className="flex flex-col justify-center items-center">
             <Button
                 style="filled"
                 onClick={() => navigate("/kycs")}
-                className="mt-2 ml-2"
+                className="m-2 ml-2"
             >
                 Go Back
             </Button>
 
-            <div className="w-[600px] mx-auto bg-primary">
-                <div id="names" className="flex">
-                    <strong>First name:</strong>
-                    <p>{data.name.firstName}</p>
-                    {data.name.middleName && (
-                        <>
-                            <strong>Middle name</strong>
-                            <p>{data.name.middleName}</p>
-                        </>
-                    )}
-                    <strong>Last name:</strong>
-                    <p>{data.name.lastName}</p>
-                </div>
-                <div id="dob">
-                    <strong>Date of Birth: </strong>
-                    {data.dob.year}-{data.dob.month}-{data.dob.day}
-                </div>
-                <div className="flex">
-                    <strong>Gender: </strong>
-                    <p>{data.gender ?? "Male"}</p>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold">Permanent Address</h1>
-                    <div className="flex justify-evenly">
-                        <span className="flex">
-                            <strong>Country:</strong>
-                            <p>
-                                {data.address.permanent.country.toUpperCase()}
-                            </p>
-                        </span>
-                        <span className="flex">
-                            <strong>State:</strong>
-                            <p>{data.address.permanent.state}</p>
-                        </span>
-                        <span className="flex">
-                            <strong>City:</strong>
-                            <p>{data.address.permanent.city.toUpperCase()}</p>
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold">Temporary Address</h1>
-                    <div className="flex justify-evenly">
-                        <span className="flex">
-                            <strong>Country:</strong>
-                            <p>
-                                {data.address.temporary.country.toUpperCase()}
-                            </p>
-                        </span>
-                        <span className="flex">
-                            <strong>State:</strong>
-                            <p>{data.address.temporary.state}</p>
-                        </span>
-                        <span className="flex">
-                            <strong>City:</strong>
-                            <p>{data.address.temporary.city.toUpperCase()}</p>
-                        </span>
-                    </div>
-                    <div id="contact">
-                        <h1 className="text-2xl font-bold">Contact</h1>
+            <div className="border border-hover_button rounded shadow-lg w-[500px] mx-auto bg-white p-6 mb-6">
+                <div className="">
+                    <div id="names" className="mb-4">
+                        <h3 className="text-lg font-semibold text-primary">
+                            Personal Details
+                        </h3>
                         <div className="flex">
-                            <span className="flex">
-                                <strong>Email:</strong>
-                                <p>{data.contact?.email ?? "Email address"}</p>
+                            <strong>First name:</strong>
+                            <p className="ml-1">{data.name.firstName}</p>
+                        </div>
+                        <div className="flex">
+                            {data.name.middleName && (
+                                <>
+                                    <strong>Middle name:</strong>
+                                    <p className="ml-1">
+                                        {data.name.middleName}
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                        <div className="flex">
+                            <strong>Last name:</strong>
+                            <p className="ml-1">{data.name.lastName}</p>
+                        </div>
+                        <div id="dob">
+                            <strong>Date of Birth: </strong>
+                            {data.dob.year}-{data.dob.month}-{data.dob.day}
+                        </div>
+                        <div className="flex">
+                            <strong>Gender: </strong>
+                            <p className="ml-1">{data.gender ?? "Male"}</p>
+                        </div>
+                    </div>
+                    <hr className="border-hover_button" />
+                    <div>
+                        <h3 className="text-lg font-semibold mt-4 text-primary">
+                            Address
+                        </h3>
+                        <strong>Permanent Address</strong>
+                        <div className="flex gap-10">
+                            <span className="flex gap-1">
+                                <label className="font-semibold">
+                                    Country:
+                                </label>
+                                <p>
+                                    {data.address.permanent.country.toUpperCase()}
+                                </p>
                             </span>
-                            <span className="flex">
-                                <strong>Phone:</strong>
-                                <p>{data.contact?.phone ?? "Phone number"}</p>
+                            <span className="flex gap-1">
+                                <label className="font-semibold">State:</label>
+                                <p>{data.address.permanent.state}</p>
+                            </span>
+                            <span className="flex gap-1">
+                                <label className="font-semibold">City:</label>
+                                <p>
+                                    {data.address.permanent.city.toUpperCase()}
+                                </p>
                             </span>
                         </div>
                     </div>
-                    <div id="document" className="">
-                        <div id="docInfo" className="flex">
-                            <span className="flex">
-                                <strong>Document Type:</strong>
-                                <p>{data.document.type}</p>
+                    <div>
+                        <strong>Temporary Address</strong>
+                        <div className="flex gap-10 mb-4">
+                            <span className="flex  gap-1">
+                                <label className="font-semibold">
+                                    Country:
+                                </label>
+                                <p>
+                                    {data.address.temporary.country.toUpperCase()}
+                                </p>
                             </span>
-                            <span className="flex">
-                                <strong>Document Id:</strong>
-                                <p>{data.document.id}</p>
+                            <span className="flex  gap-1">
+                                <label className="font-semibold">State:</label>
+                                <p>{data.address.temporary.state}</p>
+                            </span>
+                            <span className="flex  gap-1">
+                                <label className="font-semibold">City:</label>
+                                <p>
+                                    {data.address.temporary.city.toUpperCase()}
+                                </p>
                             </span>
                         </div>
+                        <hr className="border-hover_button" />
+                        <div id="contact" className="mb-4">
+                            <h3 className="text-lg font-semibold mt-4 text-primary">
+                                Contact
+                            </h3>
+                            <div className="flex gap-10">
+                                <span className="flex  gap-1">
+                                    <label className="font-semibold">
+                                        Email:
+                                    </label>
+                                    <p>
+                                        {data.contact?.email ?? "Email address"}
+                                    </p>
+                                </span>
+                                <span className="flex  gap-1">
+                                    <label className="font-semibold">
+                                        Phone:
+                                    </label>
+                                    <p>
+                                        {data.contact?.phone ?? "Phone number"}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <hr className="border-hover_button" />
+                        <div id="document" className="mb-4">
+                            <h3 className="text-lg font-semibold mt-4 text-primary">
+                                Documents
+                            </h3>
+                            <div id="docInfo" className="flex gap-10">
+                                <span className="flex  gap-1">
+                                    <label className="font-semibold">
+                                        Document Type:
+                                    </label>
+                                    <p>{data.document.type}</p>
+                                </span>
+                                <span className="flex  gap-1">
+                                    <label className="font-semibold">
+                                        Document Id:
+                                    </label>
+                                    <p>{data.document.id}</p>
+                                </span>
+                            </div>
+                        </div>
+                        <hr className="border-hover_button" />
                     </div>
                     <PhotoProvider>
                         <PhotoView src={`${data.document.url}`}>
@@ -182,55 +227,72 @@ function SingleKyc() {
                         </PhotoView>
                     </PhotoProvider>
                 </div>
-            </div>
-            <div className="w-[600px] mx-auto">
-                <div id="status">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <label htmlFor="kycStatus">KYC Status:</label>
-                        <Controller
-                            name="selectKyc"
-                            control={control}
-                            render={({ field }) => (
-                                <select
-                                    {...field}
-                                    id="kycStatus"
-                                    disabled={!editStatus}
-                                >
-                                    <option value="pending">Pending</option>
-                                    <option value="verified">Verified</option>
-                                    <option value="failed">Failed</option>
-                                </select>
-                            )}
-                        />
-                        <Button type="submit">
-                            {editStatus ? "Save" : "Edit"}
-                        </Button>
+                <div className="mt-2">
+                    <div id="status">
+                        <form
+                            className="justify-center p-4 flex items-center flex-col"
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
+                            <div className="justify-between w-full flex items-center">
+                                <div>
+                                    <label className="mr-2" htmlFor="kycStatus">
+                                        KYC Status:
+                                    </label>
+                                    <Controller
+                                        name="selectKyc"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <select
+                                                {...field}
+                                                id="kycStatus"
+                                                disabled={!editStatus}
+                                            >
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                                <option value="verified">
+                                                    Verified
+                                                </option>
+                                                <option value="failed">
+                                                    Failed
+                                                </option>
+                                            </select>
+                                        )}
+                                    />
+                                </div>
 
-                        {kycStatus === "failed" && (
-                            <div>
-                                <h1>Reason</h1>
-                                <textarea
-                                    disabled={!editStatus}
-                                    id="reason"
-                                    {...register("reason", {
-                                        validate: (value) => {
-                                            if (!editStatus) return true;
-                                            return (
-                                                value.trim() !== "" ||
-                                                "Reason is required"
-                                            );
-                                        },
-                                    })}
-                                    defaultValue={data?.failedReason ?? ""}
-                                />
-                                {errors.reason && (
-                                    <p className="text-red-600">
-                                        {errors.reason.message}
-                                    </p>
-                                )}
+                                <Button type="submit">
+                                    {editStatus ? "Save" : "Edit"}
+                                </Button>
                             </div>
-                        )}
-                    </form>
+
+                            {kycStatus === "failed" && (
+                                <div className="w-full">
+                                    <h1>Reason</h1>
+                                    <textarea
+                                    className="w-full border border-hover_button rounded shadow-lg"
+                                        disabled={!editStatus}
+                                        id="reason"
+                                        {...register("reason", {
+                                            validate: (value) => {
+                                                if (!editStatus) return true;
+                                                return (
+                                                    value.trim() !== "" ||
+                                                    "Reason is required"
+                                                );
+                                            },
+                                        })}
+                                        defaultValue={data?.failedReason ?? ""}
+                                    />
+                                    {errors.reason && (
+                                        <p className="text-red-600">
+                                            {errors.reason.message}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

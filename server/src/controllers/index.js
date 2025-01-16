@@ -11,7 +11,13 @@ import { getAllKyc } from "./kyc/getAllKyc.controller.js";
 import { verifyAdminToken } from "./admin/verifyAdminToken.controller.js";
 import { getKycById } from "./kyc/getKycById.controller.js";
 import { updateKycStatus } from "./kyc/updateKycStatus.controller.js";
-
+import { switchRole } from "./user/switchRole.controller.js";
+import { createJob } from "./job/createJob.controller.js";
+import {
+    getAllJobs,
+    getJobsPostedByCurrentUser,
+} from "./job/getJobs.controller.js";
+import { updateJob } from "./job/updateJob.controller.js";
 
 export {
     login,
@@ -28,5 +34,10 @@ export {
     getAllKyc,
     getKycById,
     verifyAdminToken,
-    updateKycStatus
+    updateKycStatus,
+    switchRole,
+    createJob,
+    getAllJobs,
+    updateJob,
+    getJobsPostedByCurrentUser
 };
