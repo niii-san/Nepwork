@@ -34,10 +34,12 @@ function Home() {
                             </div>
                         </div>
                     </div>
+                    <div className="flex justify-center items-center flex-wrap gap-6">
+                    <FreelancerCard/>
                         <FreelancerCard/>
-                        <JobCard></JobCard>
                         <FreelancerCard/>
                         <FreelancerCard/>
+                    </div>
                 </div>
             </>
         );
