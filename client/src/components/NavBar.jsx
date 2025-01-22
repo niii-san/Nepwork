@@ -12,20 +12,20 @@ function NavBar() {
     const navigate = useNavigate();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
 
-    const activeNavItemStyle = "text-primary";
+    const activeNavItemStyle = "text-primary font-bold";
     const inactiveNavItemStyle = "";
     const navItemStyle = "flex justify-center items-center gap-1";
 
     if (isLoggedIn) {
         return (
             <>
-                <div className="bg-tertiray  h-[60px] flex justify-between">
+                <div className="bg-tertiray h-[60px] flex justify-between">
                     <div
                         id="logo"
                         className="w-1/4 flex items-center justify-center"
                     >
                         <img
-                            src="src/assets/logo.svg"
+                            src="src/assets/Nepwork_Logo.svg"
                             alt="logo"
                             className="p-2 h-full cursor-pointer"
                             onClick={() => navigate("/")}
