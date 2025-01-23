@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
 import JobListCard from "../JobListCard";
-import { fetchPostedJobs } from "./clientDashboardHelpers";
+import { usePostedJobs } from "../../stores";
 
 function AllPostedJobs() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
+    const data = usePostedJobs((state) => state.jobs);
+    const fetchPostedJobs = usePostedJobs((state) => state.fetchPostedJobs);
+    const loading = usePostedJobs((state) => state.loading);
+    const error = usePostedJobs((state) => state.error);
 
     useEffect(() => {
-        const fetchjobs = async () => {
-            fetchPostedJobs();
-            try {
-                const response = await fetchPostedJobs();
-                setData(response.data.data);
-            } catch (error) {
-                console.error(error);
-                setErr("Failed to load posted jobs");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchjobs();
+        fetchPostedJobs();
     }, []);
 
     return (
@@ -51,8 +40,8 @@ function AllPostedJobs() {
                 </div>
             </div>
             <hr className="mt-[14px] border-[#eeeeee] w-full" />
-            {err ? (
-                <div>{err}</div>
+            {error ? (
+                <div>{error}</div>
             ) : loading ? (
                 <div>Loading...</div>
             ) : data.length == 0 ? (

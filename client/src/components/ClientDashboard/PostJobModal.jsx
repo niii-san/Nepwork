@@ -5,7 +5,7 @@ import api from "../../utils/api";
 import { Note, Button } from "../index";
 import { useState } from "react";
 
-export function PostJobModal({setShowPostJobModal}) {
+export function PostJobModal({ setShowPostJobModal }) {
     const {
         register,
         handleSubmit,
@@ -36,7 +36,7 @@ export function PostJobModal({setShowPostJobModal}) {
             };
 
             api.post("/jobs/create-job", payload)
-                .then((res) => {
+                .then(async (res) => {
                     toast.success(`Job posted: ${res.data.data.title}`, {
                         duration: 5000,
                     });
