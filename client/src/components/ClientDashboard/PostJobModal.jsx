@@ -44,7 +44,7 @@ export function PostJobModal({ setShowPostJobModal }) {
                     toast.success(`Job posted: ${res.data.data.title}`, {
                         duration: 5000,
                     });
-                    invalidatePostedJobs()
+                    invalidatePostedJobs();
                     reset();
                     setShowPostJobModal(false);
                 })

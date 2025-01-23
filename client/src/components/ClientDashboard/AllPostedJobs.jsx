@@ -17,28 +17,22 @@ function AllPostedJobs() {
             <h1 className="text-primary text-[22px] font-semibold text-center">
                 All Posted Jobs
             </h1>
-            <div className="flex justify-between items-center w-full mt-[30px]">
-                <div>
-                    <h2 className="text-[#939393] text-sm font-medium">
-                        Job Title
-                    </h2>
+
+            <div className="flex justify-between items-center w-[90%] py-3">
+                <div className="flex-1">
+                    <h2 className="font-bold">Job Title</h2>
                 </div>
-                <div>
-                    <h2 className="text-[#939393] text-sm font-medium">
-                        Nrs/Hr
-                    </h2>
+                <div className="flex-1">
+                    <h2 className="font-bold">NRS/hr</h2>
                 </div>
-                <div>
-                    <h2 className="text-[#939393] text-sm font-medium">
-                        Freelancer
-                    </h2>
+                <div className="flex-1">
+                    <h2 className="font-bold">Freelancer</h2>
                 </div>
-                <div>
-                    <h2 className="text-[#939393] text-sm font-medium">
-                        Status
-                    </h2>
+                <div className="font-bold">
+                    <h2>Status</h2>
                 </div>
             </div>
+
             <hr className="mt-[14px] border-[#eeeeee] w-full" />
             {error ? (
                 <div>{error}</div>
