@@ -9,6 +9,8 @@ import FreelancerCard from "./FreelancerCard";
 import JobCard from "./JobCard";
 import Note from "./Note";
 import JobListCard from "./JobListCard";
+import { PostJobModal } from "./ClientDashboard/PostJobModal";
+import AllPostedJobs from "./ClientDashboard/AllPostedJobs";
 
 export {
     NavBar,
@@ -22,4 +24,6 @@ export {
     JobCard,
     JobListCard,
     Note,
+    PostJobModal,
+    AllPostedJobs,
 };
