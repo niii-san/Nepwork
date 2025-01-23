@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import JobListCard from "../JobListCard";
 import { usePostedJobs } from "../../stores";
+import NullLoader from "../NullLoader";
 
 function AllPostedJobs() {
     const data = usePostedJobs((state) => state.jobs);
@@ -13,7 +14,7 @@ function AllPostedJobs() {
     }, []);
 
     return (
-        <div className="w-[634px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 p-[42px] flex  flex-col items-center">
+        <div className="w-[634px] h-[800px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 p-[42px] flex  flex-col items-center">
             <h1 className="text-primary text-[22px] font-semibold text-center">
                 All Posted Jobs
             </h1>
@@ -39,18 +40,22 @@ function AllPostedJobs() {
             ) : loading ? (
                 <div>Loading...</div>
             ) : data.length == 0 ? (
-                "No any jobs posted"
+                <div className="h-full flex flex-col items-center justify-center">
+                    <NullLoader message="No any jobs posted yet." />
+                </div>
             ) : (
-                data.map((item) => (
-                    <JobListCard
-                        key={item._id}
-                        jobId={item._id}
-                        jobtitle={item.title}
-                        amount={item.hourlyRate}
-                        freelancer={item.acceptedFreelancer}
-                        status={item.status}
-                    />
-                ))
+                <div className="w-full h-full overflow-y-scroll">
+                    {data.map((item) => (
+                        <JobListCard
+                            key={item._id}
+                            jobId={item._id}
+                            jobtitle={item.title}
+                            amount={item.hourlyRate}
+                            freelancer={item.acceptedFreelancer}
+                            status={item.status}
+                        />
+                    ))}
+                </div>
             )}
         </div>
     );

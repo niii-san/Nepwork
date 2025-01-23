@@ -11,6 +11,7 @@ import Note from "./Note";
 import JobListCard from "./JobListCard";
 import { PostJobModal } from "./ClientDashboard/PostJobModal";
 import AllPostedJobs from "./ClientDashboard/AllPostedJobs";
+import NullLoader from "./NullLoader";
 
 export {
     NavBar,
@@ -26,4 +27,5 @@ export {
     Note,
     PostJobModal,
     AllPostedJobs,
+    NullLoader,
 };
