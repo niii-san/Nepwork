@@ -4,8 +4,12 @@ import toast from "react-hot-toast";
 import api from "../../utils/api";
 import { Note, Button } from "../index";
 import { useState } from "react";
+import { usePostedJobs } from "../../stores";
 
 export function PostJobModal({ setShowPostJobModal }) {
+    const invalidatePostedJobs = usePostedJobs(
+        (state) => state.fetchPostedJobs,
+    );
     const {
         register,
         handleSubmit,
@@ -40,6 +44,7 @@ export function PostJobModal({ setShowPostJobModal }) {
                     toast.success(`Job posted: ${res.data.data.title}`, {
                         duration: 5000,
                     });
+                    invalidatePostedJobs()
                     reset();
                     setShowPostJobModal(false);
                 })
@@ -122,10 +127,11 @@ export function PostJobModal({ setShowPostJobModal }) {
                                 {tags.map((tag) => (
                                     <label
                                         key={tag}
-                                        className={`cursor-pointer inline-flex items-center px-3 py-1 border rounded-xl text-sm ${selectedTags.includes(tag)
+                                        className={`cursor-pointer inline-flex items-center px-3 py-1 border rounded-xl text-sm ${
+                                            selectedTags.includes(tag)
                                                 ? "bg-primary text-white border-blue-500"
                                                 : "bg-gray-200 text-gray-700 border-gray-300"
-                                            }`}
+                                        }`}
                                     >
                                         <input
                                             type="checkbox"
