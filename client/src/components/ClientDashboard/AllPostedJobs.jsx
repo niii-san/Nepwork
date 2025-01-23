@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import JobListCard from "../JobListCard";
+import { fetchPostedJobs } from "./clientDashboardHelpers";
 
 function AllPostedJobs() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        const fetchjobs = async () => {
+            fetchPostedJobs();
+            try {
+                const response = await fetchPostedJobs();
+                setData(response.data.data);
+            } catch (error) {
+                console.error(error);
+                setErr("Failed to load posted jobs");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchjobs();
+    }, []);
+
     return (
         <div className="w-[634px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 p-[42px] flex  flex-col items-center">
             <h1 className="text-primary text-[22px] font-semibold text-center">
@@ -30,48 +51,23 @@ function AllPostedJobs() {
                 </div>
             </div>
             <hr className="mt-[14px] border-[#eeeeee] w-full" />
-            <JobListCard
-                jobtitle="Design a Logo"
-                amount="50.00"
-                freelancer="Jane Cooper"
-                statustitle="Done"
-                status="done"
-            />
-            <JobListCard
-                jobtitle="Graphic Designer"
-                amount="130.00"
-                freelancer="Jane Cooper"
-                statustitle="In Progress"
-                status="inprogress"
-            />
-            <JobListCard
-                jobtitle="Graphic Designer"
-                amount="130.00"
-                freelancer="Jane Cooper"
-                statustitle="Cancelled"
-                status="cancelled"
-            />
-            <JobListCard
-                jobtitle="Design a Logo"
-                amount="50.00"
-                freelancer="Jane Cooper"
-                statustitle="Done"
-                status="done"
-            />
-            <JobListCard
-                jobtitle="Graphic Designer"
-                amount="130.00"
-                freelancer="Jane Cooper"
-                statustitle="In Progress"
-                status="inprogress"
-            />
-            <JobListCard
-                jobtitle="Graphic Designer"
-                amount="130.00"
-                freelancer="Jane Cooper"
-                statustitle="In Progress"
-                status="inprogress"
-            />
+            {err ? (
+                <div>{err}</div>
+            ) : loading ? (
+                <div>Loading...</div>
+            ) : data.length == 0 ? (
+                "No any jobs posted"
+            ) : (
+                data.map((item) => (
+                    <JobListCard
+                        key={item._id}
+                        jobtitle={item.title}
+                        amount={item.hourlyRate}
+                        freelancer={item.acceptedFreelancer}
+                        status={item.status}
+                    />
+                ))
+            )}
         </div>
     );
 }
