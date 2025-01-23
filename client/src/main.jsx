@@ -15,6 +15,7 @@ import {
     VerifyEmail,
     Kyc,
     SwitchRole,
+    Jobs,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -82,6 +83,16 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
+
+                    <Route
+                        path="jobs/:jobId"
+                        element={
+                            <Protected>
+                                <Jobs />
+                            </Protected>
+                        }
+                    />
+
                     <Route path="signup" element={<Signup />} />
                     <Route path="login" element={<Login />} />
                     <Route path="logout" element={<Logout />} />
