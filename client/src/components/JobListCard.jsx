@@ -1,13 +1,17 @@
 import React from "react";
+import { Link } from "react-router";
 
-function JobListCard({ jobtitle, amount, freelancer, status }) {
+function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
     const statusStyles = {
         open: "bg-primary text-whitetext",
         closed: "bg-red-500 text-whitetext",
         finished: "bg-gray-500 text-black",
     };
     return (
-        <div className="flex justify-between items-center w-full py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg px-6">
+        <Link
+            to={`/jobs/${jobId}`}
+            className="flex justify-between items-center w-full py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg px-6"
+        >
             <div className="flex-1">
                 <h2 className="text-blacktext text-sm font-medium">
                     {jobtitle}
@@ -30,7 +34,7 @@ function JobListCard({ jobtitle, amount, freelancer, status }) {
                     {status}
                 </h2>
             </div>
-        </div>
+        </Link>
     );
 }
 

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useUser } from "../stores";
 import { Loader, Button, PostJobModal, AllPostedJobs } from "../components";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { useNavigate } from "react-router";
 
 function Dashboard() {
+    const navigate = useNavigate()
     const userData = useUser((state) => state.data);
 
     if (!userData) return <Loader />;
@@ -46,7 +48,7 @@ function Dashboard() {
                                     Post Job
                                 </Button>
 
-                                <Button className="w-full relative">
+                                <Button className="w-full relative" onClick={()=>navigate("/notifications")}>
                                     <IoMdNotificationsOutline className="text-2xl" />
                                     <p className="absolute top-1 translate-x-3.5 text-[12px] font-bold text-white bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
                                         1

@@ -44,6 +44,7 @@ function AllPostedJobs() {
                 data.map((item) => (
                     <JobListCard
                         key={item._id}
+                        jobId={item._id}
                         jobtitle={item.title}
                         amount={item.hourlyRate}
                         freelancer={item.acceptedFreelancer}
