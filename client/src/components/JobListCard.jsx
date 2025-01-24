@@ -1,38 +1,53 @@
 import React from "react";
+import { GrInProgress } from "react-icons/gr";
+import { FaLockOpen } from "react-icons/fa";
+import { HiLockClosed } from "react-icons/hi";
+import { GiCheckMark } from "react-icons/gi";
 import { Link } from "react-router";
 
 function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
     const statusStyles = {
         open: "bg-primary text-whitetext",
         closed: "bg-red-500 text-whitetext",
-        finished: "bg-gray-500 text-black",
+        finished: "bg-gray-500 text-whitetext",
+        in_progress: "bg-gray-500 text-whitetext",
     };
     return (
         <Link
             to={`/jobs/${jobId}`}
-            className="flex justify-between items-center w-full py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg px-6"
+            className="flex justify-between items-center w-[660px] py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg"
         >
-            <div className="flex-1">
-                <h2 className="text-blacktext text-sm font-medium">
-                    {jobtitle}
-                </h2>
-            </div>
-            <div className="flex-1">
-                <h2 className="text-blacktext text-sm font-medium">
-                    Rs.{amount}
-                </h2>
-            </div>
-            <div className="flex-1">
-                <h2 className="text-blacktext text-sm font-medium">
-                    {freelancer ?? "Not accepted"}
-                </h2>
-            </div>
-            <div className="">
-                <h2
-                    className={`text-sm font-medium px-3 py-1 rounded ${statusStyles[status] || "Error"}`}
-                >
-                    {status}
-                </h2>
+            <div className="flex justify-between items-center w-full">
+                <div className="flex w-[24%]">
+                    <h2 className="text-blacktext text-sm font-medium">
+                        {jobtitle}
+                    </h2>
+                </div>
+                <div className="flex w-[24%]">
+                    <h2 className="text-blacktext text-sm font-medium">
+                        Rs.{amount}
+                    </h2>
+                </div>
+                <div className="flex w-[24%]">
+                    <h2 className="text-blacktext text-sm font-medium">
+                        {freelancer ?? "Not accepted"}
+                    </h2>
+                </div>
+                <div className="flex w-[24%]">
+                    <h2
+                        className={`text-sm font-medium px-3 py-1 rounded ${statusStyles[status] || "Error"}`}
+                    >
+                        {status === "in_progress"
+                            ? "In Progress"
+                            : status === "open"
+                              ? "Open"
+                              : status === "closed"
+                                ? "Closed"
+                                : status === "finished"
+                                  ? "Finished"
+                                  : status}
+                    </h2>
+                </div>
             </div>
         </Link>
     );
