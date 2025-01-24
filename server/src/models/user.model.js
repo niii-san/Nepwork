@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema(
             enum: ["admin", "client", "freelancer"],
             default: "client",
         },
+        avatar: {
+            type: String,
+        },
 
         emailVerified: {
             type: Boolean,
