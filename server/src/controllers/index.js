@@ -16,6 +16,7 @@ import { createJob } from "./job/createJob.controller.js";
 import {
     getAllJobs,
     getJobsPostedByCurrentUser,
+    getSingleJob,
 } from "./job/getJobs.controller.js";
 import { updateJob } from "./job/updateJob.controller.js";
 
@@ -39,5 +40,6 @@ export {
     createJob,
     getAllJobs,
     updateJob,
-    getJobsPostedByCurrentUser
+    getJobsPostedByCurrentUser,
+    getSingleJob,
 };

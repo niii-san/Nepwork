@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
             enum: ["admin", "client", "freelancer"],
             default: "client",
         },
+        avatar: {
+            type: String,
+            default: null,
+        },
 
         emailVerified: {
             type: Boolean,
