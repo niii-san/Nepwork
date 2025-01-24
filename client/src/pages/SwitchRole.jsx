@@ -56,9 +56,9 @@ function SwitchRole() {
                 <div id="Rules" className="text-base font-medium leading-8">
                     <h1 className="text-center text-2xl font-semibold text-primary">Rules For Switching Roles !</h1>
                     <hr className="my-2 border-hover_button w-[500px]"/>
-                    <h2><span className="text-primary">•</span> Applies if currently {userData.role.toUpperCase()}</h2>
+                    <h2 className="font-bold text-primary">Applies if you are currently {userData.role.toUpperCase()}</h2>
                     {renderRules()}
-                    <h2><span className="text-primary">•</span> Applies to All Users</h2>
+                    <h2 className="font-bold text-primary">Applies to All Users</h2>
                     <ol>
                         <li><span className="text-primary">•</span> Email Address should be verified</li>
                         <li><span className="text-primary">•</span> Kyc should be verified</li>

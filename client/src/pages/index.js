@@ -9,6 +9,7 @@ import Settings from "./Settings";
 import VerifyEmail from "./VerifyEmail";
 import Kyc from "./Kyc";
 import SwitchRole from "./SwitchRole";
+import Jobs from "./Jobs";
 
 export {
     Home,
@@ -21,5 +22,6 @@ export {
     Settings,
     VerifyEmail,
     Kyc,
-    SwitchRole
+    SwitchRole,
+    Jobs,
 };
