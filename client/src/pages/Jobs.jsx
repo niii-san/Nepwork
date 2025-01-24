@@ -12,7 +12,7 @@ function Jobs() {
                 const response = await api.get(`/jobs/${jobId}`);
                 setCurrentJob(response.data.data);
             } catch (error) {
-                console.erro(`failed to fetch job`, error);
+                console.error(`failed to fetch job`, error);
             }
         };
         fetchSetCurrentJob();
@@ -44,7 +44,7 @@ export default Jobs;
                 "middleName": "",
                 "lastName": "Bista"
             },
-            avatar:"profile_picture_url".
+            avatar:"profile_picture_url" or null.
             "_id": "67756cc5b2a720d137dee1c6"
         },
         "appliedBy": [],
