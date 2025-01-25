@@ -1,11 +1,11 @@
-import React from 'react'
-import FreelancerCard from '../FreelancerCard'
+import React from "react";
+import FreelancerCard from "../FreelancerCard";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import JobCard from '../JobCard';
+import JobCard from "../JobCard";
 
-function FreelancerHomePage({isLoggedIn,userData}) {
-  return (
+function FreelancerHomePage({ isLoggedIn, userData }) {
+    return (
         <>
             <div className="bg-secondary text-center ">
                 {/* You're not Logged in */}
@@ -34,12 +34,11 @@ function FreelancerHomePage({isLoggedIn,userData}) {
                     </div>
                 </div>
                 <div className="flex justify-center items-center flex-wrap gap-6">
-                    freelancer dashboard
-                
+                    Jobs for freelancers listing here
                 </div>
             </div>
         </>
-  )
+    );
 }
 
-export default FreelancerHomePage
+export default FreelancerHomePage;

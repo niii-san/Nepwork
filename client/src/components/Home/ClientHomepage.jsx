@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 
-function ClientHomepage() {
-  return (
+function ClientHomepage({ isLoggedIn, userData }) {
+    return (
         <>
             <div className="bg-secondary text-center ">
                 {/* You're not Logged in */}
@@ -32,11 +32,11 @@ function ClientHomepage() {
                     </div>
                 </div>
                 <div className="flex justify-center items-center flex-wrap gap-6">
-                    client dashboard
+                    Freelancers card listing here
                 </div>
             </div>
         </>
-  )
+    );
 }
 
-export default ClientHomepage
+export default ClientHomepage;
