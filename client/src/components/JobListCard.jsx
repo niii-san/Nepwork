@@ -15,9 +15,9 @@ function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
     return (
         <Link
             to={`/jobs/${jobId}`}
-            className="flex justify-between items-center w-[660px] py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg"
+            className="flex justify-between items-center w-[750px] py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg"
         >
-            <div className="flex justify-between items-center w-full">
+            <div className="flex justify-between items-center w-full max-w-[750px] mx-auto">
                 <div className="flex w-[24%]">
                     <h2 className="text-blacktext text-sm font-medium">
                         {jobtitle}
@@ -33,7 +33,7 @@ function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
                         {freelancer ?? "Not accepted"}
                     </h2>
                 </div>
-                <div className="flex w-[24%]">
+                <div className="flex w-[24%] justify-center">
                     <h2
                         className={`text-sm font-medium px-3 py-1 rounded ${statusStyles[status] || "Error"}`}
                     >
