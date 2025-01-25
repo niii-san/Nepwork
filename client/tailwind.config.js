@@ -9,12 +9,12 @@ export default {
         },
         extend: {
             backgroundImage: {
-                'signUpPattern': "url(src/assets/SignUp.svg)"
+                signUpPattern: "url(src/assets/SignUp.svg)",
             },
             boxShadow: {
                 custom_shadow: "4px 0px 2px 0px rgba(0, 0, 0, 0.3)",
                 card_shadow: "1px 1px 10.3px 0px rgba(0, 0, 0, 0.25);",
-                image_shadow: "2px_2px_4px_0px_rgba(0,0,0,0.25)"
+                image_shadow: "2px_2px_4px_0px_rgba(0,0,0,0.25)",
             },
             colors: {
                 //green
@@ -33,11 +33,10 @@ export default {
                 lightgreen: "#d5ffcb",
 
                 //grey border
-                grey_border:"#e6e6e6",
+                grey_border: "#e6e6e6",
 
                 //grey text
-                grey_text:"#919191",
-
+                grey_text: "#919191",
 
                 green_button: "#009400",
                 green_border: "#009400",

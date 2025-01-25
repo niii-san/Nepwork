@@ -7,6 +7,7 @@ import { LuUserRound } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
+import { HiOutlineChatAlt2 } from "react-icons/hi";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -68,17 +69,28 @@ function NavBar() {
                                 Profile
                             </p>
                         </NavLink>
-
                         <NavLink
-                            to="/notifications"
+                            to="/inbox"
                             className={({ isActive }) =>
                                 `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
                         >
-                            <IoMdNotificationsOutline className="text-xl" />
-                            <p className="hidden tablet:inline-block">
-                                Notification
-                            </p>
+                            <HiOutlineChatAlt2 className="text-xl" />
+                            <p className="hidden tablet:inline-block">Inbox</p>
+                        </NavLink>
+
+                        <NavLink
+                            to="/notifications"
+                            className={({ isActive }) =>
+                                `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle} `
+                            }
+                        >
+                            <span className="relative">
+                                <IoMdNotificationsOutline className="text-xl" />
+                                <p className="absolute top-0 animate-blink translate-x-4 font-extrabold text-xl text-red-500 w-3 h-4 flex items-center justify-center">
+                                    !
+                                </p>
+                            </span>
                         </NavLink>
 
                         <NavLink
@@ -88,9 +100,6 @@ function NavBar() {
                             }
                         >
                             <IoSettingsOutline className="text-xl" />
-                            <p className="hidden tablet:inline-block">
-                                Settings
-                            </p>
                         </NavLink>
                     </div>
                 </div>
