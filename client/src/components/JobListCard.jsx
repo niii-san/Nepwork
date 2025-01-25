@@ -15,9 +15,9 @@ function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
     return (
         <Link
             to={`/jobs/${jobId}`}
-            className="flex justify-between items-center w-[750px] py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg"
+            className="flex justify-between items-center w-[740px] py-3 border-b border-[#eeeeee] cursor-pointer hover:bg-secondary rounded-lg"
         >
-            <div className="flex justify-between items-center w-full max-w-[750px] mx-auto">
+            <div className="flex justify-between items-center w-full mx-auto">
                 <div className="flex w-[24%]">
                     <h2 className="text-blacktext text-sm font-medium">
                         {jobtitle}

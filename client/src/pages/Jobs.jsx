@@ -54,33 +54,36 @@ function Jobs() {
                             className="w-[200px] h-[200px] rounded-full bg-red-500"
                         />
                         <p>
-                            Name: {currentJob.postedBy.name.firstName}{" "}
+                            <strong>Name:</strong>{" "}
+                            {currentJob.postedBy.name.firstName}{" "}
                             {currentJob.postedBy.name.middleName}{" "}
                             {currentJob.postedBy.name.lastName}
                         </p>
                     </div>
 
                     <div id="jobDetails">
-                        <p>Job Status: {currentJob.status}</p>
                         <p>
-                            Job posted:{" "}
+                            <strong>Job Status:</strong> {currentJob.status}
+                        </p>
+                        <p>
+                            <strong>Job posted:</strong>{" "}
                             {getTimeSincePosted(currentJob.createdAt)}
                         </p>
-                        <p>Job Title: {currentJob.title}</p>
-                        <p>Job Description: {currentJob.description}</p>
-                        <p>NRS {currentJob.hourlyRate}/hr</p>
+                        <p><strong>Job Title:</strong> {currentJob.title}</p>
+                        <p><strong>Job Description:</strong> {currentJob.description}</p>
+                        <p><strong>NRS:</strong> {currentJob.hourlyRate}/hr</p>
                         <p>
-                            Tags:
+                            <strong>Tags: </strong>
                             {currentJob.tags.map((item) => (
                                 <span key={item}>{item}</span>
                             ))}
                         </p>
                         <p>
-                            Accepted Freelancer:{" "}
+                            <strong>Accepted Freelancer:</strong>{" "}
                             {currentJob.acceptedFreelancer ?? "Not selected"}
                         </p>
                         <p>
-                            Applied By: {currentJob.appliedBy.length}{" "}
+                            <strong>Applied By:</strong> {currentJob.appliedBy.length}{" "}
                             Freelancers
                         </p>
                     </div>

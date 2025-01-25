@@ -14,7 +14,7 @@ function AllPostedJobs() {
     }, []);
 
     return (
-        <div className="w-[800px] h-[675px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 py-[10px] px-[30px] flex flex-col items-center">
+        <div className="w-[820px] h-[675px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 py-[10px] px-[30px] flex flex-col items-center">
             <h1 className="text-primary text-[22px] font-semibold text-center">
                 All Posted Jobs
             </h1>
@@ -29,7 +29,7 @@ function AllPostedJobs() {
                 <div className="flex w-[24%] justify-start">
                     <h2 className="font-bold">Freelancer</h2>
                 </div>
-                <div className="flex w-[24%] justify-center">
+                <div className="flex w-[24%] justify-center mr-4">
                     <h2 className="font-bold">Status</h2>
                 </div>
             </div>
