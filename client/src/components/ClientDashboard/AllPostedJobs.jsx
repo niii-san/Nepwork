@@ -14,23 +14,23 @@ function AllPostedJobs() {
     }, []);
 
     return (
-        <div className="w-[634px] h-[800px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 p-[42px] flex  flex-col items-center">
+        <div className="w-[820px] h-[675px] bg-white shadow-card_shadow rounded-md mt-5 ml-4 py-[10px] px-[30px] flex flex-col items-center">
             <h1 className="text-primary text-[22px] font-semibold text-center">
                 All Posted Jobs
             </h1>
 
-            <div className="flex justify-between items-center w-[90%] py-3">
-                <div className="flex-1">
+            <div className="flex justify-between items-center w-full py-2">
+                <div className="flex w-[24%] justify-start">
                     <h2 className="font-bold">Job Title</h2>
                 </div>
-                <div className="flex-1">
+                <div className="flex w-[24%] justify-start">
                     <h2 className="font-bold">NRS/hr</h2>
                 </div>
-                <div className="flex-1">
+                <div className="flex w-[24%] justify-start">
                     <h2 className="font-bold">Freelancer</h2>
                 </div>
-                <div className="font-bold">
-                    <h2>Status</h2>
+                <div className="flex w-[24%] justify-center mr-4">
+                    <h2 className="font-bold">Status</h2>
                 </div>
             </div>
 

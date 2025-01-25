@@ -54,33 +54,36 @@ function Jobs() {
                             className="w-[200px] h-[200px] rounded-full bg-red-500"
                         />
                         <p>
-                            Name: {currentJob.postedBy.name.firstName}{" "}
+                            <strong>Name:</strong>{" "}
+                            {currentJob.postedBy.name.firstName}{" "}
                             {currentJob.postedBy.name.middleName}{" "}
                             {currentJob.postedBy.name.lastName}
                         </p>
                     </div>
 
                     <div id="jobDetails">
-                        <p>Job Status: {currentJob.status}</p>
                         <p>
-                            Job posted:{" "}
+                            <strong>Job Status:</strong> {currentJob.status}
+                        </p>
+                        <p>
+                            <strong>Job posted:</strong>{" "}
                             {getTimeSincePosted(currentJob.createdAt)}
                         </p>
-                        <p>Job Title: {currentJob.title}</p>
-                        <p>Job Description: {currentJob.description}</p>
-                        <p>NRS {currentJob.hourlyRate}/hr</p>
+                        <p><strong>Job Title:</strong> {currentJob.title}</p>
+                        <p><strong>Job Description:</strong> {currentJob.description}</p>
+                        <p><strong>NRS:</strong> {currentJob.hourlyRate}/hr</p>
                         <p>
-                            Tags:
+                            <strong>Tags: </strong>
                             {currentJob.tags.map((item) => (
                                 <span key={item}>{item}</span>
                             ))}
                         </p>
                         <p>
-                            Accepted Freelancer:{" "}
+                            <strong>Accepted Freelancer:</strong>{" "}
                             {currentJob.acceptedFreelancer ?? "Not selected"}
                         </p>
                         <p>
-                            Applied By: {currentJob.appliedBy.length}{" "}
+                            <strong>Applied By:</strong> {currentJob.appliedBy.length}{" "}
                             Freelancers
                         </p>
                     </div>
@@ -103,25 +106,25 @@ export default Jobs;
 /*
  {
         "_id": "67924dd7074e0e5b64154f6a",
-        "title": "test",
-        "description": "testasdfadsf adf",
-        "postedBy": {
+        "title": "test",###
+        "description": "testasdfadsf adf",###
+        "postedBy": {###
             "name": {
                 "firstName": "Nishan",
                 "middleName": "",
                 "lastName": "Bista"
             },
-            avatar:"profile_picture_url" or null.
+            avatar:"profile_picture_url" or null.###
             "_id": "67756cc5b2a720d137dee1c6"
         },
-        "appliedBy": [],
-        "acceptedFreelancer": null,
-        "hourlyRate": 50,
-        "tags": [
+        "appliedBy": [],###
+        "acceptedFreelancer": null,###
+        "hourlyRate": 50,###
+        "tags": [###
             "javascript",
             "django"
         ],
-        "status": "open",
+        "status": "open",###
         "createdAt": "2025-01-23T14:10:31.521Z",
         "updatedAt": "2025-01-23T14:10:31.521Z",
         "__v": 0
