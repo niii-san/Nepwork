@@ -22,7 +22,7 @@ export const getFreelancers = asyncHandler(async (req, res) => {
 
     // if userId not provided send all freelancers
     const ranFreelancers = await User.find({ role: "freelancer" }).select(
-        "name avatar _id rating available hourlyRate",
+        "name avatar _id rating available hourlyRate kycVerified",
     );
     return res
         .status(200)
@@ -39,7 +39,7 @@ export const getFreelancers = asyncHandler(async (req, res) => {
 async function fetchRelevantFreelancers(userId) {
     // TODO: send only relevant freelancers
     const users = await User.find({ role: "freelancer" }).select(
-        "name avatar _id rating available hourlyRate",
+        "name avatar _id rating available hourlyRate kycVerified",
     );
     return users;
 }

@@ -71,7 +71,7 @@ function renderTags(tags) {
             {renderItems.map((item) => (
                 <Tag key={item} title={item} />
             ))}
-            <Tag title={`+${remaining}`} />
+            {remaining > 0 && <Tag title={`+${remaining}`} />}
         </>
     );
 }

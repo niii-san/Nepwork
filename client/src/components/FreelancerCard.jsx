@@ -5,6 +5,7 @@ import Tag from "./Tag";
 import Button from "./Button";
 import default_avatar from "../assets/default_avatar.svg";
 import { GoVerified } from "react-icons/go";
+import { Link } from "react-router";
 
 function FreelancerCard({ userData }) {
     return (
@@ -16,11 +17,6 @@ function FreelancerCard({ userData }) {
                         alt="Photo"
                         className="w-20 rounded-xl h-20 shadow-card_shadow"
                     />
-                    {userData.kycVerified && (
-                        <span>
-                            <GoVerified className="text-blue-600" />
-                        </span>
-                    )}
                 </div>
                 <div className="flex items-start">
                     <div className="flex items-center">
@@ -32,8 +28,13 @@ function FreelancerCard({ userData }) {
                 </div>
             </div>
             <div className="flex flex-col px-6">
-                <span className="text-lg  mt-2">
+                <span className="text-lg  mt-2 flex items-center">
                     {userData.name.firstName} {userData.name.lastName}
+                    {userData.kycVerified && (
+                        <span>
+                            <GoVerified className="text-blue-600 text-sm mt-1 ml-3" />
+                        </span>
+                    )}
                 </span>
                 <div className="text-grey_text font-semibold text-[11px]">
                     <span>Available: </span>
@@ -53,9 +54,11 @@ function FreelancerCard({ userData }) {
                 </span>
             </div>
             <div className="mx-[25px] mb-[25px] flex  justify-between items-center">
-                <Button className={"rounded-md w-full "}>
-                    <AiOutlineLogin className=" text-black text-2xl " />
-                </Button>
+                <Link to={`/profile/${userData._id}`} className="w-full">
+                    <Button className={"rounded-md w-full "}>
+                        <AiOutlineLogin className=" text-black text-2xl " />
+                    </Button>
+                </Link>
             </div>
         </div>
     );
