@@ -1,10 +1,10 @@
-function Tag({ children, className}) {
+function Tag({title, className}) {
     return (
-        <label
+        <span
             className={`border border-grey_border rounded-xl text-xs px-2 py-1 ${className || ""}`}
         >
-            {children}
-        </label>
+            {title}
+        </span>
     );
 }
 

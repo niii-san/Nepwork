@@ -17,7 +17,7 @@ function Home() {
     }
 
     if (isLoggedIn && userData?.role === "freelancer") {
-        return <FreelancerHomePage />;
+        return <FreelancerHomePage userData={userData} />;
     }
 
     return <div>Something went wrong!</div>;

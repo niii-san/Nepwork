@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FreelancerCard from "../FreelancerCard";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
+import api from "../../utils/api";
 import JobCard from "../JobCard";
+import toast from "react-hot-toast";
+import Loader from "../Loader";
 
-function FreelancerHomePage({ isLoggedIn, userData }) {
+function FreelancerHomePage({ userData }) {
+    const [jobs, setJobs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    console.log(jobs);
+
+    useEffect(() => {
+        const fetchSetJobs = async () => {
+            try {
+                const response = await api.get("/jobs/get-home-jobs");
+                setJobs(response.data.data);
+            } catch (error) {
+                toast.error("failed loading home");
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchSetJobs();
+    }, []);
+
     return (
         <>
-            <div className="bg-secondary text-center ">
-                {/* You're not Logged in */}
-            </div>
+            <div className="bg-secondary text-center "></div>
             <div className="mt-12 mb-[800px] flex max-w-full justify-center items-center flex-col">
                 <div className="bg-primary w-[90%] rounded-xl max-w-[1200px]">
                     <h1 className="text-4xl font-semibold text-center text-whitetext mb-4 mt-12">
@@ -33,9 +53,15 @@ function FreelancerHomePage({ isLoggedIn, userData }) {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center items-center flex-wrap gap-6">
-                    Jobs for freelancers listing here
-                </div>
+                {loading ? (
+                    <Loader />
+                ) : (
+                    <div className="flex justify-center items-center flex-wrap gap-6">
+                        {jobs.map((item) => (
+                            <JobCard key={item._id} jobData={item} />
+                        ))}
+                    </div>
+                )}
             </div>
         </>
     );
