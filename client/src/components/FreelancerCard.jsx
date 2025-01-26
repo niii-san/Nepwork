@@ -42,13 +42,13 @@ function FreelancerCard() {
                 </div>
             </div>
             <div className="mx-[25px] flex flex-wrap gap-2 mb-[16px]">
-                <Tag>Design</Tag>
-                <Tag>Brand</Tag>
-                <Tag>Product</Tag>
-                <Tag>Design</Tag>
-                <Tag>Market</Tag>
-                <Tag>Product</Tag>
-                <Tag>+3</Tag>
+                <Tag name={"Design"}/>
+                <Tag name={"Brand"}/>
+                <Tag name={"Product"}/>
+                <Tag name={"Design"}/>
+                <Tag name={"Market"}/>
+                <Tag name={"Product"}/>
+                <Tag name={"+3"}/>
             </div>
             <div className="mx-[25px] mb-[16px] flex rounded-[3px] justify-between items-center bg-[#F4F4F4] p-3">
                 <div>
