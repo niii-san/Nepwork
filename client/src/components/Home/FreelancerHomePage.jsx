@@ -10,7 +10,6 @@ import Loader from "../Loader";
 function FreelancerHomePage({ userData }) {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(jobs);
 
     useEffect(() => {
         const fetchSetJobs = async () => {
@@ -28,9 +27,8 @@ function FreelancerHomePage({ userData }) {
     }, []);
 
     return (
-        <>
-            <div className="bg-secondary text-center "></div>
-            <div className="mt-12 mb-[800px] flex max-w-full justify-center items-center flex-col">
+        <div className="min-h-[800px]">
+            <div className="mt-12  flex max-w-full justify-center items-center flex-col">
                 <div className="bg-primary w-[90%] rounded-xl max-w-[1200px]">
                     <h1 className="text-4xl font-semibold text-center text-whitetext mb-4 mt-12">
                         Work from anywhere, hire for <br /> anything!
@@ -56,14 +54,14 @@ function FreelancerHomePage({ userData }) {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <div className="flex justify-center items-center flex-wrap gap-6">
+                    <div className="flex mt-6 items-center flex-wrap gap-12">
                         {jobs.map((item) => (
                             <JobCard key={item._id} jobData={item} />
                         ))}
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 

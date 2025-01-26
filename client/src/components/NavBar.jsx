@@ -8,6 +8,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
+import nepwork_logo from "../assets/nepwork_logo.svg";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ function NavBar() {
                         className="w-1/4 flex items-center justify-center"
                     >
                         <img
-                            src="src/assets/Nepwork_Logo.svg"
+                            src={nepwork_logo}
                             alt="logo"
                             className="p-2 h-full cursor-pointer"
                             onClick={() => navigate("/")}

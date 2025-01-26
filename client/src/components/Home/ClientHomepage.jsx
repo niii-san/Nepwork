@@ -31,7 +31,7 @@ function ClientHomepage({ isLoggedIn, userData }) {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center items-center flex-wrap gap-6">
+                <div className="flex justify-center items-center flex-wrap gap-12">
                     Freelancers card listing here
                 </div>
             </div>
