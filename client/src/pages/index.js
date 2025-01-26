@@ -10,6 +10,7 @@ import VerifyEmail from "./VerifyEmail";
 import Kyc from "./Kyc";
 import SwitchRole from "./SwitchRole";
 import Jobs from "./Jobs";
+import Inbox from "./Inbox";
 
 export {
     Home,
@@ -24,4 +25,5 @@ export {
     Kyc,
     SwitchRole,
     Jobs,
+    Inbox,
 };
