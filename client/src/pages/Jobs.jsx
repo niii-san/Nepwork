@@ -50,15 +50,15 @@ function Jobs() {
         }
     };
     return (
-        <div className="">
+        <div className="flex justify-center items-center">
             {!currentJob ? (
                 <Loader />
             ) : (
                 <div
-                    className="min-h-[800px] flex items-center flex-col rounded-md mt-10"
+                    className="flex w-[600px] items-center flex-col rounded-md mt-10"
                     id="jobDetailsContainer"
                 >
-                    <div className="flex" id="postedByDetails">
+                    <div className="flex justify-center items-center" id="postedByDetails">
                         <div className="flex flex-col justify-center items-center">
                             <img
                                 src={
@@ -67,18 +67,11 @@ function Jobs() {
                                 alt="Avatar"
                                 className="w-[200px] h-[200px] rounded-3xl bg-green-600"
                             />
-                            {/*Edit button*/}
-                            {!userData ? (
-                                ""
-                            ) : currentJob.postedBy._id == userData._id ? (
-                                <Button className={"mt-4 w-full font-semibold"}>
-                                    EDIT JOB
-                                </Button>
-                            ) : (
-                                <Button>Request to work</Button>
-                            )}
                         </div>
-                        <div className="ml-4 text-lg flex flex-col justify-center gap-[2px]" id="jobDetails">
+                        <div
+                            className="ml-4 text-lg flex flex-col justify-center"
+                            id="jobDetails"
+                        >
                             <p className="text-lg">
                                 <strong>Posted By:</strong>
                                 <span className="font-semibold">
@@ -148,15 +141,27 @@ function Jobs() {
                                         "Not selected"}
                                 </span>
                             </p>
-                            <p>
-                                <strong>Job Description:</strong>
-                                <span className="font-semibold">
-                                    {" "}
-                                    {currentJob.description}
-                                </span>
-                            </p>
                         </div>
                     </div>
+                    <div className="w-full mt-4">
+                        <p>
+                            <strong className="text-lg">Job Description:</strong>
+                            <span>
+                                {" "}
+                                {currentJob.description}
+                            </span>
+                        </p>
+                    </div>
+                    {/*Edit button*/}
+                    {!userData ? (
+                        ""
+                    ) : currentJob.postedBy._id == userData._id ? (
+                        <Button className={"mt-4 w-full font-semibold"}>
+                            EDIT JOB
+                        </Button>
+                    ) : (
+                        <Button>Request to work</Button>
+                    )}
                 </div>
             )}
         </div>
