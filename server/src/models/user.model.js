@@ -42,6 +42,19 @@ const userSchema = new mongoose.Schema(
             enum: ["not_uploaded", "pending", "verified", "failed"],
             default: "not_uploaded",
         },
+        available: {
+            type: Boolean,
+            default: true,
+        },
+        rating: {
+            type: Number,
+            max: [5, "Rating cannot be more than 5"],
+            default: 0,
+        },
+        hourlyRate: {
+            type: Number,
+            default: 0,
+        },
         password: {
             type: String,
             required: true,
