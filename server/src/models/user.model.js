@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { tags } from "../constants.js";
 
 const userSchema = new mongoose.Schema(
     {
@@ -42,6 +43,25 @@ const userSchema = new mongoose.Schema(
             enum: ["not_uploaded", "pending", "verified", "failed"],
             default: "not_uploaded",
         },
+        available: {
+            type: Boolean,
+            default: true,
+        },
+        rating: {
+            type: Number,
+            max: [5, "Rating cannot be more than 5"],
+            default: 0,
+        },
+        hourlyRate: {
+            type: Number,
+            default: 0,
+        },
+        tags: [
+            {
+                type: String,
+                enum: tags,
+            },
+        ],
         password: {
             type: String,
             required: true,

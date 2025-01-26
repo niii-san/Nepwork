@@ -12,6 +12,8 @@ import JobListCard from "./JobListCard";
 import { PostJobModal } from "./ClientDashboard/PostJobModal";
 import AllPostedJobs from "./ClientDashboard/AllPostedJobs";
 import NullLoader from "./NullLoader";
+import ClientHomepage from "./Home/ClientHomepage";
+import FreelancerHomePage from "./Home/FreelancerHomePage";
 
 export {
     NavBar,
@@ -28,4 +30,6 @@ export {
     PostJobModal,
     AllPostedJobs,
     NullLoader,
+    ClientHomepage,
+    FreelancerHomePage,
 };

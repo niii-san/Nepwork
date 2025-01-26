@@ -12,6 +12,7 @@ import {
     uploadKyc,
     upload,
     switchRole,
+    getFreelancers,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -34,5 +35,7 @@ userRoute.get("/current-user-info", authenticate, currentUserInfo);
 
 // switch role route
 userRoute.post("/switch-role", authenticate, verified, switchRole);
+
+userRoute.get("/get-freelancers", getFreelancers);
 
 export { userRoute };

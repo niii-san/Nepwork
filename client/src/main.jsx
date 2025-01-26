@@ -16,6 +16,7 @@ import {
     Kyc,
     SwitchRole,
     Jobs,
+    Inbox,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -89,6 +90,15 @@ createRoot(document.getElementById("root")).render(
                         element={
                             <Protected>
                                 <Jobs />
+                            </Protected>
+                        }
+                    />
+
+                    <Route
+                        path="inbox"
+                        element={
+                            <Protected>
+                                <Inbox />
                             </Protected>
                         }
                     />
