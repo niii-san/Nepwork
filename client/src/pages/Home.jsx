@@ -5,8 +5,6 @@ import { ClientHomepage, FreelancerHomePage, Loader } from "../components";
 function Home() {
     const userData = useUser((state) => state.data);
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
-    console.log(userData);
-    console.log(isLoggedIn);
 
     if (isLoggedIn && !userData) {
         return <Loader />;
@@ -17,7 +15,7 @@ function Home() {
     }
 
     if (isLoggedIn && userData?.role === "freelancer") {
-        return <FreelancerHomePage />;
+        return <FreelancerHomePage userData={userData} />;
     }
 
     return <div>Something went wrong!</div>;

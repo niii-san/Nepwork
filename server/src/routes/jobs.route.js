@@ -3,6 +3,7 @@ import { authenticate, verified, clientOnly } from "../middlewares/index.js";
 import {
     createJob,
     getAllJobs,
+    getHomePageJobs,
     getJobsPostedByCurrentUser,
     getSingleJob,
     updateJob,
@@ -19,4 +20,6 @@ jobRouter.get(
     clientOnly,
     getJobsPostedByCurrentUser,
 );
+jobRouter.get("/get-home-jobs", getHomePageJobs);
 jobRouter.get("/:id", getSingleJob);
+

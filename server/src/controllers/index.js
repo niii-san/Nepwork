@@ -19,6 +19,7 @@ import {
     getSingleJob,
 } from "./job/getJobs.controller.js";
 import { updateJob } from "./job/updateJob.controller.js";
+import { getHomePageJobs } from "./job/getHomePageJobs.controller.js";
 
 export {
     login,
@@ -42,4 +43,5 @@ export {
     updateJob,
     getJobsPostedByCurrentUser,
     getSingleJob,
+    getHomePageJobs,
 };
