@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { tags } from "../constants.js";
 
 const userSchema = new mongoose.Schema(
     {
@@ -55,6 +56,12 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        tags: [
+            {
+                type: String,
+                enum: tags,
+            },
+        ],
         password: {
             type: String,
             required: true,

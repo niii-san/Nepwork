@@ -54,7 +54,7 @@ function ClientHomepage({ isLoggedIn, userData }) {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <div className="flex mt-6  w-full pc:w-[80%] px-5 flex-wrap gap-12">
+                    <div className="flex mt-6 bg-red-100 w-full pc:w-[80%] flex-wrap gap-12">
                         {freelancers.map((item) => (
                             <FreelancerCard key={item._id} userData={item} />
                         ))}
