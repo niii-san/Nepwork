@@ -47,14 +47,14 @@ export const updateJob = asyncHandler(async (req, res) => {
         );
 
     const updatedJob = await Job.findOneAndUpdate(
-        { _id: jobId, postedBy: userId }, // Filter: Job must exist and belong to user
+        { _id: jobId, postedBy: userId }, 
         {
             title: jobTitle,
             description: jobDescription,
             hourlyRate,
             tags: jobTags,
         },
-        { new: true }, // Return the updated document
+        { new: true }, 
     );
 
     if (!updatedJob) throw new ApiError(400, true, "Job not found");

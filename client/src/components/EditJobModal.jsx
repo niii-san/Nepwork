@@ -57,8 +57,10 @@ function EditJobModal({ jobData, setModalStatus }) {
             return;
         }
 
-        console.log("Updated job data:", data);
-        setModalStatus(false);
+        const payload = data;
+
+        console.log("payload: ", payload);
+        console.log(haveValuesChanged(jobData, payload));
     };
 
     return (
