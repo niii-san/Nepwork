@@ -58,7 +58,7 @@ function Jobs() {
                 />
             )}
 
-            <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+            <div className="min-h-[800px] max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
                 <div className="flex-1">
                     {!currentJob ? (
                         <Loader />
@@ -188,7 +188,7 @@ function Jobs() {
                                     Edit Job Post
                                 </Button>
                             ) : (
-                                <Button className="w-full py-3 font-semibold bg-green-600 hover:bg-green-700">
+                                <Button variant="filled" className="w-full py-3 font-semibold">
                                     Apply Now
                                 </Button>
                             )}

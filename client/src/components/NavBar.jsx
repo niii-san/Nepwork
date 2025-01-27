@@ -140,7 +140,7 @@ function NavBar() {
         );
     } else {
         return (
-            <nav className="bg-white shadow-md fixed w-full top-0 z-50">
+            <nav className="bg-white shadow-md sticky w-full top-0 z-50">
                 <div className="max-w-7xl mx-auto px-2 sm:px-4 h-14 sm:h-16 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center flex-shrink-0">
