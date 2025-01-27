@@ -72,7 +72,7 @@ function FreelancerCard({ userData }) {
         {/* Rate Section */}
         <div className="mb-4 p-3 bg-indigo-50 rounded-lg text-center">
           <span className="text-sm font-bold text-indigo-700">
-            ₹{hourlyRate.toLocaleString()}/hour
+            Rs. {hourlyRate.toLocaleString()}/hour
           </span>
         </div>
 

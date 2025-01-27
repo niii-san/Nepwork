@@ -106,7 +106,7 @@ function Jobs() {
                                             <Link
                                                 to={`/profile/${currentJob.postedBy._id}`}
                                             >
-                                                <span className="ml-1 hover:text-black">
+                                                <span className="ml-1 hover:text-black font-bold">
                                                     {
                                                         currentJob.postedBy.name
                                                             .firstName
@@ -188,7 +188,10 @@ function Jobs() {
                                     Edit Job Post
                                 </Button>
                             ) : (
-                                <Button variant="filled" className="w-full py-3 font-semibold">
+                                <Button
+                                    variant="filled"
+                                    className="w-full py-3 font-semibold"
+                                >
                                     Apply Now
                                 </Button>
                             )}
