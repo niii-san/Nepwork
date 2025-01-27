@@ -119,18 +119,9 @@ function renderTags(tags) {
     return (
         <>
             {visibleTags.map((tag) => (
-                <Tag
-                    key={tag}
-                    title={tag}
-                    className="text-xs bg-gray-100 text-gray-700 px-2.5 py-1"
-                />
+                <Tag key={tag} title={tag} className="text-xs" />
             ))}
-            {remainingCount > 0 && (
-                <Tag
-                    title={`+${remainingCount}`}
-                    className="text-xs bg-gray-200 text-gray-600 px-2.5 py-1"
-                />
-            )}
+            {remainingCount > 0 && <Tag title={`+${remainingCount}`} />}
         </>
     );
 }

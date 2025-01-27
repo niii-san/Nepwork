@@ -15,6 +15,7 @@ import NullLoader from "./NullLoader";
 import ClientHomepage from "./Home/ClientHomepage";
 import FreelancerHomePage from "./Home/FreelancerHomePage";
 import EditJobModal from "./EditJobModal";
+import SearchBox from "./SearchBox";
 
 export {
     NavBar,
@@ -34,4 +35,5 @@ export {
     ClientHomepage,
     FreelancerHomePage,
     EditJobModal,
+    SearchBox,
 };

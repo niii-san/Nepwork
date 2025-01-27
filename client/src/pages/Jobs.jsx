@@ -158,11 +158,7 @@ function Jobs() {
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {currentJob.tags.map((item) => (
-                                        <Tag
-                                            title={item}
-                                            key={item}
-                                            className="bg-blue-100 text-blue-800"
-                                        />
+                                        <Tag title={item} key={item} />
                                     ))}
                                 </div>
                             </div>
