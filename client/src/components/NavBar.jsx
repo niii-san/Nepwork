@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router";
-import { useAuth } from "../stores/Auth";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
@@ -9,10 +8,12 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import nepwork_logo from "../assets/nepwork_logo.svg";
+import { useAuth, useUser } from "../stores";
 
 function NavBar() {
     const navigate = useNavigate();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
+    const userData = useUser((state) => state.data);
 
     const activeNavItemStyle = "text-primary font-bold";
     const inactiveNavItemStyle = "";
@@ -60,7 +61,7 @@ function NavBar() {
                         </NavLink>
 
                         <NavLink
-                            to="/profile"
+                            to={`/profile/${userData?._id}`}
                             className={({ isActive }) =>
                                 `${navItemStyle} ${isActive ? activeNavItemStyle : inactiveNavItemStyle}`
                             }
