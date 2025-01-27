@@ -5,7 +5,7 @@ import { useTags } from "../contexts/tagContext";
 import api from "../utils/api";
 import toast from "react-hot-toast";
 
-function EditJobModal({ jobData, setModalStatus,refetchJobFn }) {
+function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
     const { tags } = useTags();
     const {
         register,
@@ -60,10 +60,12 @@ function EditJobModal({ jobData, setModalStatus,refetchJobFn }) {
         }
 
         const payload = { ...data, id: jobData._id };
+        console.log(payload)
         try {
-            const response = await api.post("/jobs/update-job", payload);
-            toast.success(response.data.message);
-            await refetchJobFn()
+            await api.post("/jobs/update-job", payload);
+            toast.success("Job updated");
+            await refetchJobFn();
+            setModalStatus(false);
         } catch (error) {
             toast.error("Job update failed!");
             console.error(error);

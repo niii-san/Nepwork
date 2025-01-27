@@ -57,7 +57,7 @@ function FreelancerCard({ userData }) {
                             className={`text-xs font-semibold ${available ? "text-green-600" : "text-red-600"
                                 }`}
                         >
-                            {available ? "Available Now" : "Not Available"}
+                            {available ? "Available" : "Not Available"}
                         </span>
                     </div>
                 </div>
@@ -90,7 +90,6 @@ function FreelancerCard({ userData }) {
         </div>
     );
 }
-
 
 function renderTags(tags) {
     const MAX_VISIBLE_TAGS = 4;
