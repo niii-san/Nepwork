@@ -27,11 +27,11 @@ function FreelancerHomePage({ isLoggedIn, userData }) {
     return (
         <div className="min-h-[800px]">
             <SearchBox type="freelancer" />
-            <div>
+            <div className="mt-4 flex max-w-full bg-red-600 justify-center items-center flex-col">
                 {loading ? (
                     <Loader />
                 ) : (
-                    <div className="flex mt-6 px-8 items-center flex-wrap gap-12">
+                    <div className="flex mt-6 w-full px-8 flex-wrap gap-12">
                         {jobs.map((item) => (
                             <JobCard key={item._id} jobData={item} />
                         ))}

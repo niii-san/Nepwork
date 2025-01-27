@@ -21,6 +21,7 @@ export const updateJob = asyncHandler(async (req, res) => {
     const jobDescription = (data.description ?? "").trim();
     const hourlyRate = Number(data.rate);
     const jobTags = data.tags ?? [];
+    const status = data.status;
 
     if (!jobId) throw new ApiError(400, true, "Job id is required");
     if (!mongoose.isValidObjectId(jobId))
@@ -29,6 +30,8 @@ export const updateJob = asyncHandler(async (req, res) => {
     if (!jobTitle) throw new ApiError(400, true, "Job title is required");
     if (!jobDescription)
         throw new ApiError(400, true, "Job description is required");
+
+    if (!status) throw new ApiError(400, true, "Status is required");
 
     // validating tags
     if (!Array.isArray(jobTags))
@@ -47,14 +50,15 @@ export const updateJob = asyncHandler(async (req, res) => {
         );
 
     const updatedJob = await Job.findOneAndUpdate(
-        { _id: jobId, postedBy: userId }, 
+        { _id: jobId, postedBy: userId },
         {
             title: jobTitle,
             description: jobDescription,
             hourlyRate,
             tags: jobTags,
+            status: status,
         },
-        { new: true }, 
+        { new: true },
     );
 
     if (!updatedJob) throw new ApiError(400, true, "Job not found");

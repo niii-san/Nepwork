@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { AiOutlineLogin } from "react-icons/ai";
 import { CiStar } from "react-icons/ci";
 import Tag from "./Tag";
@@ -58,7 +57,7 @@ function FreelancerCard({ userData }) {
                             className={`text-xs font-semibold ${available ? "text-green-600" : "text-red-600"
                                 }`}
                         >
-                            {available ? "Available Now" : "Not Available"}
+                            {available ? "Available" : "Not Available"}
                         </span>
                     </div>
                 </div>
@@ -91,22 +90,6 @@ function FreelancerCard({ userData }) {
         </div>
     );
 }
-
-FreelancerCard.propTypes = {
-    userData: PropTypes.shape({
-        avatar: PropTypes.string,
-        rating: PropTypes.number.isRequired,
-        name: PropTypes.shape({
-            firstName: PropTypes.string.isRequired,
-            lastName: PropTypes.string.isRequired,
-        }).isRequired,
-        kycVerified: PropTypes.bool,
-        available: PropTypes.bool.isRequired,
-        tags: PropTypes.arrayOf(PropTypes.string),
-        hourlyRate: PropTypes.number.isRequired,
-        _id: PropTypes.string.isRequired,
-    }).isRequired,
-};
 
 function renderTags(tags) {
     const MAX_VISIBLE_TAGS = 4;

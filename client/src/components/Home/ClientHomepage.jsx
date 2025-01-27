@@ -28,7 +28,7 @@ function ClientHomepage({ isLoggedIn, userData }) {
     return (
         <div className="min-h-[800px]">
             <SearchBox type="client" />
-            <div className="mt-12  flex max-w-full justify-center items-center flex-col">
+            <div className="mt-4 flex max-w-full justify-center items-center flex-col">
                 {loading ? (
                     <Loader />
                 ) : (
