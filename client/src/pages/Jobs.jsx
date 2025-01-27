@@ -129,7 +129,9 @@ function Jobs() {
                                         Hourly Rate
                                     </h3>
                                     <p className="text-lg text-gray-900">
-                                        NRS {currentJob.hourlyRate}/hr
+                                        NRS{" "}
+                                        {currentJob.hourlyRate.toLocaleString()}
+                                        / hr
                                     </p>
                                 </div>
                                 <div>
