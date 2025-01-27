@@ -66,7 +66,7 @@ function EditJobModal({ jobData, setModalStatus }) {
             <div className="bg-white rounded-lg shadow-xl w-full max-w-[800px] relative max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={() => setModalStatus(false)}
-                    className="absolute top-0 right-4 ml-auto text-gray-500 hover:text-gray-700 text-2xl z-10 bg-white rounded-full p-1 shadow-sm"
+                    className="absolute top-1 right-2 ml-auto text-gray-500 hover:text-gray-700 text-2xl z-10 bg-white rounded-full p-1 shadow-sm"
                 >
                     ✕
                 </button>
@@ -194,7 +194,7 @@ function EditJobModal({ jobData, setModalStatus }) {
                         </div>
 
                         {/* Buttons */}
-                        <div className="flex flex-col tablet:flex-row gap-4 mt-8 tablet:justify-end ">
+                        <div className="flex flex-col tablet:flex-row gap-4 mt-8 tablet:justify-end">
                             <Button
                                 variant="outline"
                                 className="w-full tablet:w-auto justify-center border-red-500 text-red-500 hover:bg-red-50"
