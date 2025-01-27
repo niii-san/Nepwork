@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import api from "../utils/api";
-import { Button, Loader } from "../components";
+import { Button, EditJobModal, Loader } from "../components";
 import default_avatar from "../assets/default_avatar.svg";
 import { useUser } from "../stores";
 import Tag from "../components/Tag";
@@ -11,7 +11,7 @@ function Jobs() {
     const userData = useUser((state) => state.data);
     console.log(userData);
     const [currentJob, setCurrentJob] = useState(null);
-    const [editJob, setEditJob] = useState(false);
+    const [showEditJobModal, setShowEditJobModal] = useState(false);
 
     const statusStyles = {
         open: "bg-primary text-whitetext",
@@ -50,121 +50,142 @@ function Jobs() {
         }
     };
     return (
-        <div className="flex justify-center items-center">
-            {!currentJob ? (
-                <Loader />
-            ) : (
-                <div
-                    className="flex w-[600px] items-center flex-col rounded-md mt-10"
-                    id="jobDetailsContainer"
-                >
-                    <div className="flex justify-center items-center" id="postedByDetails">
-                        <div className="flex flex-col justify-center items-center">
-                            <img
-                                src={
-                                    currentJob.postedBy.avatar ?? default_avatar
-                                }
-                                alt="Avatar"
-                                className="w-[200px] h-[200px] rounded-3xl bg-green-600"
-                            />
-                        </div>
-                        <div
-                            className="ml-4 text-lg flex flex-col justify-center"
-                            id="jobDetails"
-                        >
-                            <p className="text-lg">
-                                <strong>Posted By:</strong>
-                                <span className="font-semibold">
-                                    {" "}
-                                    {currentJob.postedBy.name.firstName}{" "}
-                                    {currentJob.postedBy.name.middleName}{" "}
-                                    {currentJob.postedBy.name.lastName}
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Job Title:</strong>{" "}
-                                <span className="font-semibold">
-                                    {currentJob.title}
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Job posted:</strong>{" "}
-                                <span className="font-semibold">
-                                    {" "}
-                                    {getTimeSincePosted(currentJob.createdAt)}
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Job Status:</strong>{" "}
-                                <span
-                                    className={`text-sm font-medium px-3 py-1 rounded ${statusStyles[currentJob.status] || "bg-gray-300 text-black"}`}
-                                >
-                                    {currentJob.status === "in_progress"
-                                        ? "In Progress"
-                                        : currentJob.status === "open"
-                                          ? "Open"
-                                          : currentJob.status === "closed"
-                                            ? "Closed"
-                                            : currentJob.status === "finished"
-                                              ? "Finished"
-                                              : currentJob.status}
-                                </span>
-                            </p>
-                            <p>
-                                <strong>NRS:</strong>{" "}
-                                <span className="font-semibold">
-                                    {currentJob.hourlyRate}/hr
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Tags: </strong>
-                                {currentJob.tags.map((item) => (
-                                    <Tag
-                                        className={"mr-1"}
-                                        name={item}
-                                        key={item}
-                                    />
-                                ))}
-                            </p>
-                            <p>
-                                <strong>Applied By:</strong>
-                                <span className="font-semibold">
-                                    {" "}
-                                    {currentJob.appliedBy.length} Freelancers
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Accepted Freelancer:</strong>
-                                <span className="font-semibold">
-                                    {" "}
-                                    {currentJob.acceptedFreelancer ??
-                                        "Not selected"}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div className="w-full mt-4">
-                        <p>
-                            <strong className="text-lg">Job Description:</strong>
-                            <span>
-                                {" "}
-                                {currentJob.description}
-                            </span>
-                        </p>
-                    </div>
-                    {/*Edit button*/}
-                    {!userData ? (
-                        ""
-                    ) : currentJob.postedBy._id == userData._id ? (
-                        <Button className={"mt-4 w-full font-semibold"}>
-                            EDIT JOB
-                        </Button>
-                    ) : (
-                        <Button>Request to work</Button>
-                    )}
-                </div>
+        <>
+            {showEditJobModal && (
+                <EditJobModal
+                    jobData={currentJob}
+                    setModalStatus={setShowEditJobModal}
+                />
             )}
-        </div>
+
+            <div className="flex justify-center items-center">
+                {!currentJob ? (
+                    <Loader />
+                ) : (
+                    <div
+                        className="flex w-[600px] items-center flex-col rounded-md mt-10"
+                        id="jobDetailsContainer"
+                    >
+                        <div
+                            className="flex justify-center items-center"
+                            id="postedByDetails"
+                        >
+                            <div className="flex flex-col justify-center items-center">
+                                <img
+                                    src={
+                                        currentJob.postedBy.avatar ??
+                                        default_avatar
+                                    }
+                                    alt="Avatar"
+                                    className="w-[200px] h-[200px] rounded-3xl bg-green-600"
+                                />
+                            </div>
+                            <div
+                                className="ml-4 text-lg flex flex-col justify-center"
+                                id="jobDetails"
+                            >
+                                <p className="text-lg">
+                                    <strong>Posted By:</strong>
+                                    <span className="font-semibold">
+                                        {" "}
+                                        {
+                                            currentJob.postedBy.name.firstName
+                                        }{" "}
+                                        {currentJob.postedBy.name.middleName}{" "}
+                                        {currentJob.postedBy.name.lastName}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Job Title:</strong>{" "}
+                                    <span className="font-semibold">
+                                        {currentJob.title}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Job posted:</strong>{" "}
+                                    <span className="font-semibold">
+                                        {" "}
+                                        {getTimeSincePosted(
+                                            currentJob.createdAt,
+                                        )}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Job Status:</strong>{" "}
+                                    <span
+                                        className={`text-sm font-medium px-3 py-1 rounded ${statusStyles[currentJob.status] || "bg-gray-300 text-black"}`}
+                                    >
+                                        {currentJob.status === "in_progress"
+                                            ? "In Progress"
+                                            : currentJob.status === "open"
+                                                ? "Open"
+                                                : currentJob.status === "closed"
+                                                    ? "Closed"
+                                                    : currentJob.status ===
+                                                        "finished"
+                                                        ? "Finished"
+                                                        : currentJob.status}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>NRS:</strong>{" "}
+                                    <span className="font-semibold">
+                                        {currentJob.hourlyRate}/hr
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Tags: </strong>
+                                    {currentJob.tags.map((item) => (
+                                        <Tag
+                                            className={"mr-1"}
+                                            name={item}
+                                            key={item}
+                                        />
+                                    ))}
+                                </p>
+                                <p>
+                                    <strong>Applied By:</strong>
+                                    <span className="font-semibold">
+                                        {" "}
+                                        {currentJob.appliedBy.length}{" "}
+                                        Freelancers
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Accepted Freelancer:</strong>
+                                    <span className="font-semibold">
+                                        {" "}
+                                        {currentJob.acceptedFreelancer ??
+                                            "Not selected"}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div className="w-full mt-4">
+                            <p>
+                                <strong className="text-lg">
+                                    Job Description:
+                                </strong>
+                                <span> {currentJob.description}</span>
+                            </p>
+                        </div>
+                        {/*Edit button*/}
+                        {!userData ? (
+                            ""
+                        ) : currentJob.postedBy._id == userData._id ? (
+                            <Button
+                                className={"mt-4 w-full font-semibold"}
+                                onClick={() => setShowEditJobModal(true)}
+                            >
+                                EDIT JOB
+                            </Button>
+                        ) : (
+                           <Button className={"mt-4 w-full font-semibold"}>Request to work</Button>
+                        )}
+                    </div>
+                )}
+            </div>
+        </>
     );
 }
 
