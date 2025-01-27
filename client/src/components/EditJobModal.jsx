@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
 import { useTags } from "../contexts/tagContext";
+import api from "../utils/api";
+import toast from "react-hot-toast";
 
-function EditJobModal({ jobData, setModalStatus }) {
+function EditJobModal({ jobData, setModalStatus,refetchJobFn }) {
     const { tags } = useTags();
     const {
         register,
@@ -24,7 +26,7 @@ function EditJobModal({ jobData, setModalStatus }) {
             reset({
                 title: jobData.title,
                 description: jobData.description,
-                hourlyRate: jobData.hourlyRate,
+                rate: jobData.hourlyRate,
                 status: jobData.status,
                 tags: jobData.tags,
             });
@@ -48,7 +50,7 @@ function EditJobModal({ jobData, setModalStatus }) {
         }
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (data.tags.length === 0) {
             setError("tags", {
                 type: "manual",
@@ -57,10 +59,15 @@ function EditJobModal({ jobData, setModalStatus }) {
             return;
         }
 
-        const payload = data;
-
-        console.log("payload: ", payload);
-        console.log(haveValuesChanged(jobData, payload));
+        const payload = { ...data, id: jobData._id };
+        try {
+            const response = await api.post("/jobs/update-job", payload);
+            toast.success(response.data.message);
+            await refetchJobFn()
+        } catch (error) {
+            toast.error("Job update failed!");
+            console.error(error);
+        }
     };
 
     return (
@@ -158,7 +165,7 @@ function EditJobModal({ jobData, setModalStatus }) {
                                     </label>
                                     <input
                                         type="number"
-                                        {...register("hourlyRate", {
+                                        {...register("rate", {
                                             required: "Hourly Rate is required",
                                             valueAsNumber: true,
                                             validate: (value) =>
@@ -167,9 +174,9 @@ function EditJobModal({ jobData, setModalStatus }) {
                                         })}
                                         className="mt-1 p-2 w-full bg-transparent outline-none text-base rounded-md bg-white border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary"
                                     />
-                                    {errors.hourlyRate && (
+                                    {errors.rate && (
                                         <p className="text-red-600 text-sm mt-1">
-                                            {errors.hourlyRate.message}
+                                            {errors.rate.message}
                                         </p>
                                     )}
                                 </div>

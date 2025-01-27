@@ -9,7 +9,6 @@ import Tag from "../components/Tag";
 function Jobs() {
     const { jobId } = useParams();
     const userData = useUser((state) => state.data);
-    console.log(userData);
     const [currentJob, setCurrentJob] = useState(null);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
 
@@ -19,16 +18,16 @@ function Jobs() {
         finished: "bg-gray-500 text-whitetext",
         in_progress: "bg-gray-500 text-whitetext",
     };
+    const fetchSetCurrentJob = async () => {
+        try {
+            const response = await api.get(`/jobs/${jobId}`);
+            setCurrentJob(response.data.data);
+        } catch (error) {
+            console.error(`failed to fetch job`, error);
+        }
+    };
 
     useEffect(() => {
-        const fetchSetCurrentJob = async () => {
-            try {
-                const response = await api.get(`/jobs/${jobId}`);
-                setCurrentJob(response.data.data);
-            } catch (error) {
-                console.error(`failed to fetch job`, error);
-            }
-        };
         fetchSetCurrentJob();
     }, []);
     const getTimeSincePosted = (createdAt) => {
@@ -55,6 +54,7 @@ function Jobs() {
                 <EditJobModal
                     jobData={currentJob}
                     setModalStatus={setShowEditJobModal}
+                    refetchJobFn={fetchSetCurrentJob}
                 />
             )}
 
