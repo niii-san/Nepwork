@@ -22,7 +22,6 @@ import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
 
 createRoot(document.getElementById("root")).render(
-    //  <StrictMode>
     <TagsProvider>
         <BrowserRouter>
             <Routes>
@@ -44,14 +43,7 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
-                    <Route
-                        path="profile"
-                        element={
-                            <Protected>
-                                <Profile />
-                            </Protected>
-                        }
-                    />
+                    <Route path="profile/:userId" element={<Profile />} />
                     <Route
                         path="settings"
                         element={
@@ -110,5 +102,4 @@ createRoot(document.getElementById("root")).render(
             </Routes>
         </BrowserRouter>
     </TagsProvider>,
-    // </StrictMode>,
 );
