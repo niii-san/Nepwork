@@ -1,8 +1,4 @@
 import React from "react";
-import { GrInProgress } from "react-icons/gr";
-import { FaLockOpen } from "react-icons/fa";
-import { HiLockClosed } from "react-icons/hi";
-import { GiCheckMark } from "react-icons/gi";
 import { Link } from "react-router";
 
 function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
