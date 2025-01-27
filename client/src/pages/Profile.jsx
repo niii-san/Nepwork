@@ -1,13 +1,23 @@
-import React from "react";
-import { useParams } from "react-router";
+import React, { useEffect } from "react";
+import { data, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
 import { Loader } from "../components";
+import { useState } from "react";
+import api from "../utils/api";
 
 function Profile() {
+    const [currentPorfileData,setCurrentProfileData] = useState(null)
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
 
+
+    useEffect(()=>{
+        const fetchSetProfileData = async ()=>{
+            const response = await api.get("/user/get-profile-data")
+        }
+        fetchSetProfileData()
+    },[])
     if (isLoggedIn && !currentUserData) return <Loader />;
 
     return (
