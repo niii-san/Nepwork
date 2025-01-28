@@ -11,7 +11,7 @@ export const getProfileData = asyncHandler(async (req, res) => {
         throw new ApiError(400, false, "Invalid userId");
 
     const userProfileData = await User.findById(userId).select(
-        "-password -refreshToken -lastRoleChange -kyc -kycStatus -email -emailVerified -createdAt -updatedAt -__v",
+        "-password -refreshToken -lastRoleChange -kyc -kycStatus -email -emailVerified -updatedAt -__v",
     );
 
     if (!userProfileData) throw new ApiError(404, false, "User not found");

@@ -4,6 +4,7 @@ import { useAuth, useUser } from "../stores";
 import { Loader } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
+import default_avatar from "../assets/default_avatar.svg";
 
 function Profile() {
     //function to fetch and set current user profile data
@@ -12,7 +13,6 @@ function Profile() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
-    console.log(currentProfileData);
 
     const fetchSetCurrentProfileData = async () => {
         try {
@@ -27,13 +27,51 @@ function Profile() {
         fetchSetCurrentProfileData();
     }, [userId]);
 
-    if (isLoggedIn && !currentUserData) return <Loader />;
+    const getJoinedTime = (createdAt) => {
+        const now = new Date();
+        const createdTime = new Date(createdAt);
+        const timeDifference = Math.floor((now - createdTime) / 1000);
+
+        if (timeDifference < 60) {
+            return `${timeDifference} seconds ago`;
+        } else if (timeDifference < 3600) {
+            const minutes = Math.floor(timeDifference / 60);
+            return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+        } else if (timeDifference < 86400) {
+            const hours = Math.floor(timeDifference / 3600);
+            return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+        } else {
+            const days = Math.floor(timeDifference / 86400);
+            return `${days} day${days > 1 ? "s" : ""} ago`;
+        }
+    };
+
+    if ((isLoggedIn && !currentUserData) || !currentProfileData)
+        return <Loader />;
 
     return (
         <div className="bg-secondary min-h-[800px]">
             Viewing profile of {userId}
-            <br />
-            isOwnProfile : {userId === currentUserData._id ? "Yes" : "No"}
+            <div>
+                <img
+                    src={currentProfileData.avatar ?? default_avatar}
+                    alt={`Profile Photo of ${currentProfileData.name.firstName}`}
+                    className="w-20 h-20"
+                />
+            </div>
+            <div>
+                isOwnProfile : {userId === currentUserData._id ? "Yes" : "No"}
+            </div>
+            <div>
+                Name: {currentProfileData.name.firstName}{" "}
+                {currentProfileData.name.lastName}
+            </div>
+            <div>About: {currentProfileData.about ?? ""}</div>
+            <div>Joined: {getJoinedTime(currentProfileData.createdAt)}</div>
+            <div>Verified: {currentProfileData.kycVerified ? "yes" : "no"}</div>
+            <div>Available: {currentProfileData.available ? "yes" : "no"}</div>
+            <div>Hourly Rate: {currentProfileData.hourlyRate}</div>
+            <div>Rating: {currentProfileData.rating}</div>
         </div>
     );
 }
