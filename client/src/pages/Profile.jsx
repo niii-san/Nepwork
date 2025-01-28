@@ -6,14 +6,13 @@ import toast from "react-hot-toast";
 import api from "../utils/api";
 
 function Profile() {
-    //function to fetch and set current user profile data
-
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
     console.log(currentProfileData);
 
+   //function to fetch and set current user profile data
     const fetchSetCurrentProfileData = async () => {
         try {
             const response = await api.get(`/user/profiles/${userId}`);
@@ -27,6 +26,13 @@ function Profile() {
         fetchSetCurrentProfileData();
     }, [userId]);
 
+
+    useEffect(()=>{
+        const fetchSetProfileData = async ()=>{
+            const response = await api.get("/user/get-profile-data")
+        }
+        fetchSetProfileData()
+    },[])
     if (isLoggedIn && !currentUserData) return <Loader />;
 
     return (
