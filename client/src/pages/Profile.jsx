@@ -55,7 +55,7 @@ function Profile() {
     return (
         <>
             {changeAvatarModal && (
-                <ChangeAvatarModal setModal={setChangeAvatarModal} />
+                <ChangeAvatarModal setModal={setChangeAvatarModal} refetchProfile={fetchSetCurrentProfileData} />
             )}
             <div className="bg-secondary min-h-[800px]">
                 <div>
