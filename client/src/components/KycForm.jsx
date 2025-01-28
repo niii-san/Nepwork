@@ -49,7 +49,7 @@ function KycForm() {
         payload.append("permanentState", data.permanentState);
         payload.append("permanentCity", data.permanentCity);
 
-        // loading documents
+        // loading documenttemporarys
         payload.append("documentId", data.documentId);
         payload.append("documentType", data.documentType);
         payload.append("documentFile", data.documentFile[0]);
@@ -82,50 +82,82 @@ function KycForm() {
                             Personal Information
                         </h2>
                         <div className={gridCols}>
-                            {["First Name", "Middle Name", "Last Name"].map(
-                                (field) => (
-                                    <div key={field}>
-                                        <label className="block text-sm font-medium text-secondaryText mb-2">
-                                            {field}
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id={field
-                                                .toLowerCase()
-                                                .replace(" ", "")}
-                                            {...register(
-                                                field
-                                                    .toLowerCase()
-                                                    .replace(" ", ""),
-                                                {
-                                                    required:
-                                                        field === "Middle Name"
-                                                            ? false
-                                                            : `${field} is required`,
-                                                    pattern: {
-                                                        value: /^[A-Za-z]+$/,
-                                                        message: "Letters only",
-                                                    },
-                                                },
-                                            )}
-                                            className={inputStyling}
-                                        />
-                                        {errors[
-                                            field.toLowerCase().replace(" ", "")
-                                        ] && (
-                                            <p className="text-danger text-sm mt-1">
-                                                {
-                                                    errors[
-                                                        field
-                                                            .toLowerCase()
-                                                            .replace(" ", "")
-                                                    ].message
-                                                }
-                                            </p>
-                                        )}
-                                    </div>
-                                ),
-                            )}
+                            <div>
+                                <label
+                                    htmlFor="firstName"
+                                    className="block text-sm font-medium text-secondaryText mb-2"
+                                >
+                                    First name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    {...register("firstName", {
+                                        required: "First name is required",
+                                        pattern: {
+                                            value: /^[A-Za-z]+$/,
+                                            message: "Letters only",
+                                        },
+                                    })}
+                                    className={inputStyling}
+                                />
+                                {errors.firstName && (
+                                    <p className="text-danger text-sm mt-1">
+                                        {errors.firstName.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="middleName"
+                                    className="block text-sm font-medium text-secondaryText mb-2"
+                                >
+                                    First name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="middleName"
+                                    {...register("middleName", {
+                                        pattern: {
+                                            value: /^[A-Za-z]+$/,
+                                            message: "Letters only",
+                                        },
+                                    })}
+                                    className={inputStyling}
+                                />
+                                {errors.middleName && (
+                                    <p className="text-danger text-sm mt-1">
+                                        {errors.middleName.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="lastName"
+                                    className="block text-sm font-medium text-secondaryText mb-2"
+                                >
+                                    Last name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    {...register("lastName", {
+                                        required: "Last name is required",
+                                        pattern: {
+                                            value: /^[A-Za-z]+$/,
+                                            message: "Letters only",
+                                        },
+                                    })}
+                                    className={inputStyling}
+                                />
+                                {errors.lastName && (
+                                    <p className="text-danger text-sm mt-1">
+                                        {errors.lastName.message}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
 

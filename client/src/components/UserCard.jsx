@@ -9,8 +9,8 @@ const UserCard = ({ userData }) => {
         kycStatus === "pending"
             ? "bg-yellow-500"
             : kycStatus === "verified"
-                ? "bg-green-500"
-                : "bg-red-500";
+              ? "bg-green-500"
+              : "bg-red-500";
 
     return (
         <div className="max-w-md rounded overflow-hidden shadow-lg border p-6 min-w-[400px] my-[60px]">
@@ -92,8 +92,8 @@ const UserCard = ({ userData }) => {
                     {kycStatus === "pending"
                         ? "Pending"
                         : kycStatus === "verified"
-                            ? "Approved"
-                            : "Failed"}
+                          ? "Approved"
+                          : "Failed"}
                 </span>
             </div>
         </div>
