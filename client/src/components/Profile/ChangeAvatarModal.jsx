@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../Button";
+import api from "../../utils/api";
 
 function ChangeAvatarModal({ setModal, refetchProfile }) {
     const {
@@ -9,9 +10,18 @@ function ChangeAvatarModal({ setModal, refetchProfile }) {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async(data) => {
+        const payload = new FormData()
+        payload.append("newAvatar",data.newAvatar[0])
+        console.log(payload)
         
-        console.log(data);
+        try {
+            await api.post("/user/update-avatar",payload)
+            
+        } catch (error) {
+            console.error(error)
+            
+        }
     };
 
     return (
