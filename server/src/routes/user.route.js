@@ -14,6 +14,7 @@ import {
     switchRole,
     getFreelancers,
     getProfileData,
+    updateAvatar,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -37,6 +38,13 @@ userRoute.get("/current-user-info", authenticate, currentUserInfo);
 // switch role route
 userRoute.post("/switch-role", authenticate, verified, switchRole);
 userRoute.get("/get-freelancers", getFreelancers);
+
+userRoute.post(
+    "/update-avatar",
+    authenticate,
+    upload.single("newAvatar"),
+    updateAvatar,
+);
 userRoute.get("/profiles/:userId", getProfileData);
 
 export { userRoute };
