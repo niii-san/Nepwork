@@ -7,23 +7,26 @@ import Button from "./Button";
 
 function KycForm() {
     const navigate = useNavigate();
-
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm();
-
     const documentFile = watch("documentFile");
-
     const [resErrMsg, setResErrMsg] = useState(null);
     const currentYear = new Date().getFullYear() + 57;
     const [uploading, setUploading] = useState(false);
 
+    const inputStyling = `mt-2 p-3 w-full border-2 border-secondary rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200 bg-tertiary text-secondaryText placeholder-gray-400`;
+    const headerStyle =
+        "text-2xl font-semibold text-primaryText bg-primary px-4 py-3 rounded-lg";
+    const sectionHeaderStyle =
+        "text-xl font-semibold text-primary border-l-4 border-primary pl-3 mb-6";
+    const gridCols = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
+
     const onSubmit = (data) => {
         setUploading(true);
-        // create structured payload and hit endpoint
         const payload = new FormData();
         //loading name
         payload.append("firstName", data.firstName);
@@ -51,8 +54,6 @@ function KycForm() {
         payload.append("documentType", data.documentType);
         payload.append("documentFile", data.documentFile[0]);
 
-        console.log(payload);
-
         api.post("/user/upload-kyc", payload)
             .then((res) => {
                 toast.success(res.data.message);
@@ -66,172 +67,77 @@ function KycForm() {
             });
     };
 
-    const inputStyling = `mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200 bg-tertiary text-secondaryText`;
-    // styling for bold header
-    const headerStyle =
-        "text-xl font-bold text-primary border-b-2 border-primary pb-2 mb-4";
-
-    const gridCols = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4";
-
-    const AddressSection = ({ title, prefix }) => (
-        <div className="space-y-4">
-            <h2 className={headerStyle}>{title}</h2>
-            <div className={gridCols}>
-                <div>
-                    <label className="block text-sm font-medium text-secondaryText">
-                        Country
-                    </label>
-                    <input
-                        type="text"
-                        id={`${prefix}Country`}
-                        {...register(`${prefix}Country`, {
-                            required: "Country is required",
-                        })}
-                        className={inputStyling}
-                    />
-                    {errors[`${prefix}Country`] && (
-                        <p className="text-danger text-sm mt-1">
-                            {errors[`${prefix}Country`].message}
-                        </p>
-                    )}
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-secondaryText">
-                        State
-                    </label>
-                    <input
-                        type="text"
-                        id={`${prefix}State`}
-                        {...register(`${prefix}State`, {
-                            required: "State is required",
-                            pattern: {
-                                value: /^[0-9]+$/,
-                                message: "Can only contain numbers",
-                            },
-                        })}
-                        className={inputStyling}
-                    />
-                    {errors[`${prefix}State`] && (
-                        <p className="text-danger text-sm mt-1">
-                            {errors[`${prefix}State`].message}
-                        </p>
-                    )}
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-secondaryText">
-                        City
-                    </label>
-                    <input
-                        type="text"
-                        id={`${prefix}City`}
-                        {...register(`${prefix}City`, {
-                            required: "City is required",
-                        })}
-                        className={inputStyling}
-                    />
-                    {errors[`${prefix}City`] && (
-                        <p className="text-danger text-sm mt-1">
-                            {errors[`${prefix}City`].message}
-                        </p>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-
     return (
-        <div className="min-h-screen bg-secondary py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto bg-tertiary rounded-xl shadow-lg p-6 sm:p-8">
-                <h1 className="text-2xl font-bold text-primaryText bg-primary p-4 rounded-lg mb-8">
-                    KYC Verification Form
-                </h1>
+        <div className="min-h-screen bg-secondary py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto bg-tertiary rounded-2xl shadow-xl p-8">
+                <h1 className={headerStyle}>KYC Form</h1>
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    encType="multipart/form-data"
-                    className="space-y-8"
+                    className="space-y-12 mt-10"
                 >
-                    {/* Name Section */}
-                    <div className="space-y-4">
-                        <h2 className={headerStyle}>Personal Information</h2>
+                    {/* Personal Information Section */}
+                    <div className="space-y-8">
+                        <h2 className={sectionHeaderStyle}>
+                            Personal Information
+                        </h2>
                         <div className={gridCols}>
-                            <div>
-                                <label className="block text-sm font-medium text-secondaryText">
-                                    First Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="firstName"
-                                    {...register("firstName", {
-                                        required: "First name is required",
-                                        pattern: {
-                                            value: /^[A-Za-z]+$/,
-                                            message: "Letters only",
-                                        },
-                                    })}
-                                    className={inputStyling}
-                                />
-                                {errors.firstName && (
-                                    <p className="text-danger text-sm mt-1">
-                                        {errors.firstName.message}
-                                    </p>
-                                )}
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-secondaryText">
-                                    Middle Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="middleName"
-                                    {...register("middleName", {
-                                        pattern: {
-                                            value: /^[A-Za-z]+$/,
-                                            message: "Letters only",
-                                        },
-                                    })}
-                                    className={inputStyling}
-                                />
-                                {errors.middleName && (
-                                    <p className="text-danger text-sm mt-1">
-                                        {errors.middleName.message}
-                                    </p>
-                                )}
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-secondaryText">
-                                    Last Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="lastName"
-                                    {...register("lastName", {
-                                        required: "Last name is required",
-                                        pattern: {
-                                            value: /^[A-Za-z]+$/,
-                                            message: "Letters only",
-                                        },
-                                    })}
-                                    className={inputStyling}
-                                />
-                                {errors.lastName && (
-                                    <p className="text-danger text-sm mt-1">
-                                        {errors.lastName.message}
-                                    </p>
-                                )}
-                            </div>
+                            {["First Name", "Middle Name", "Last Name"].map(
+                                (field) => (
+                                    <div key={field}>
+                                        <label className="block text-sm font-medium text-secondaryText mb-2">
+                                            {field}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id={field
+                                                .toLowerCase()
+                                                .replace(" ", "")}
+                                            {...register(
+                                                field
+                                                    .toLowerCase()
+                                                    .replace(" ", ""),
+                                                {
+                                                    required:
+                                                        field === "Middle Name"
+                                                            ? false
+                                                            : `${field} is required`,
+                                                    pattern: {
+                                                        value: /^[A-Za-z]+$/,
+                                                        message: "Letters only",
+                                                    },
+                                                },
+                                            )}
+                                            className={inputStyling}
+                                        />
+                                        {errors[
+                                            field.toLowerCase().replace(" ", "")
+                                        ] && (
+                                            <p className="text-danger text-sm mt-1">
+                                                {
+                                                    errors[
+                                                        field
+                                                            .toLowerCase()
+                                                            .replace(" ", "")
+                                                    ].message
+                                                }
+                                            </p>
+                                        )}
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </div>
 
                     {/* Date of Birth Section */}
-                    <div className="space-y-4">
-                        <h2 className={headerStyle}>
-                            Date of Birth (Bikram Sambat - BS)
+                    <div className="space-y-8">
+                        <h2 className={sectionHeaderStyle}>
+                            Date of Birth (BS)
                         </h2>
                         <div className={gridCols}>
                             {["year", "month", "day"].map((field) => (
                                 <div key={field}>
-                                    <label className="block text-sm font-medium text-secondaryText capitalize">
+                                    <label className="block text-sm font-medium text-secondaryText mb-2 capitalize">
                                         {field}
                                     </label>
                                     <input
@@ -278,67 +184,218 @@ function KycForm() {
                         </div>
                     </div>
 
-                    {/* Gender and Phone Section */}
-                    <div className={gridCols}>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-secondaryText">
-                                Gender
-                            </label>
-                            <select
-                                id="gender"
-                                {...register("gender", {
-                                    validate: (v) =>
-                                        v !== "not_selected" ||
-                                        "Please select gender",
-                                })}
-                                className={`${inputStyling} cursor-pointer`}
-                            >
-                                <option value="not_selected">
-                                    Select Gender
-                                </option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="others">Others</option>
-                            </select>
-                            {errors.gender && (
-                                <p className="text-danger text-sm mt-1">
-                                    {errors.gender.message}
-                                </p>
-                            )}
-                        </div>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium text-secondaryText">
-                                Phone Number
-                            </label>
-                            <input
-                                id="phone"
-                                {...register("phone", {
-                                    required: "Phone number is required",
-                                })}
-                                className={inputStyling}
-                            />
-                            {errors.phone && (
-                                <p className="text-danger text-sm mt-1">
-                                    {errors.phone.message}
-                                </p>
-                            )}
+                    {/* Contact Information */}
+                    <div className="space-y-8">
+                        <h2 className={sectionHeaderStyle}>
+                            Contact Information
+                        </h2>
+                        <div className={gridCols}>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-secondaryText">
+                                    Gender
+                                </label>
+                                <select
+                                    id="gender"
+                                    {...register("gender", {
+                                        validate: (v) =>
+                                            v !== "not_selected" ||
+                                            "Please select gender",
+                                    })}
+                                    className={`${inputStyling} cursor-pointer`}
+                                >
+                                    <option value="not_selected">
+                                        Select Gender
+                                    </option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="others">Others</option>
+                                </select>
+                                {errors.gender && (
+                                    <p className="text-danger text-sm mt-1">
+                                        {errors.gender.message}
+                                    </p>
+                                )}
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-secondaryText">
+                                    Phone Number
+                                </label>
+                                <input
+                                    type="number"
+                                    id="phone"
+                                    {...register("phone", {
+                                        required: "Phone number is required",
+                                    })}
+                                    className={inputStyling}
+                                />
+                                {errors.phone && (
+                                    <p className="text-danger text-sm mt-1">
+                                        {errors.phone.message}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
 
                     {/* Address Sections */}
-                    <AddressSection
-                        title="Permanent Address"
-                        prefix="permanent"
-                    />
-                    <AddressSection
-                        title="Temporary Address"
-                        prefix="temporary"
-                    />
+                    <div className="space-y-8">
+                        <div className="space-y-6 bg-secondary/20 p-6 rounded-xl">
+                            <h3 className={sectionHeaderStyle}>
+                                Permanent Address
+                            </h3>
+                            <div className={gridCols}>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        Country
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="permanentCountry"
+                                        {...register("permanentCountry", {
+                                            required: "Country is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message: "Letters only",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.permanentCountry && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.permanentCountry.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        State
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="permanentState"
+                                        {...register("permanentState", {
+                                            required: "State is required",
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message:
+                                                    "Can only contain number",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.permanentState && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.permanentState.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        City
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="permanentCity"
+                                        {...register("permanentCity", {
+                                            required: "City is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message: "Letters only",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.permanentCity && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.permanentCity.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-6 bg-secondary/20 p-6 rounded-xl">
+                            <h3 className={sectionHeaderStyle}>
+                                Temporary Address
+                            </h3>
+                            <div className={gridCols}>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        Country
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="temporaryCountry"
+                                        {...register("temporaryCountry", {
+                                            required: "Country is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message: "Letters only",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryCountry && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.temporaryCountry.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        State
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="temporaryState"
+                                        {...register("temporaryState", {
+                                            required: "State is required",
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message:
+                                                    "Can only contain number",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryState && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.temporaryState.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-secondaryText mb-2">
+                                        City
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="temporaryCity"
+                                        {...register("temporaryCity", {
+                                            required: "City is required",
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/,
+                                                message: "Letters only",
+                                            },
+                                        })}
+                                        className={inputStyling}
+                                    />
+                                    {errors.temporaryCity && (
+                                        <p className="text-danger text-sm mt-1">
+                                            {errors.temporaryCity.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Document Section */}
-                    <div className="space-y-4">
-                        <h2 className={headerStyle}>Document Verification</h2>
-                        <div className="space-y-6">
+                    <div className="space-y-8">
+                        <h2 className={sectionHeaderStyle}>
+                            Document Verification
+                        </h2>
+                        <div className="space-y-8">
                             <div className={gridCols}>
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-secondaryText">
@@ -390,20 +447,37 @@ function KycForm() {
                                     )}
                                 </div>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                                 <label className="block text-sm font-medium text-secondaryText">
-                                    Upload Document (Front & Back)
+                                    Upload Document
                                 </label>
                                 <div className="flex items-center justify-center w-full">
-                                    <label className="flex flex-col w-full cursor-pointer">
-                                        <div className="border-2 border-dashed border-secondary rounded-lg p-6 text-center hover:border-primary transition-colors">
-                                            <span className="text-primary font-medium">
-                                                Choose File
-                                            </span>
-                                            <span className="text-sm text-secondaryText ml-2">
-                                                {documentFile?.[0]?.name ||
-                                                    "No file chosen"}
-                                            </span>
+                                    <label className="flex flex-col w-full cursor-pointer group">
+                                        <div
+                                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-all 
+                                            ${errors.documentFile ? "border-danger" : "border-secondary group-hover:border-primary"}`}
+                                        >
+                                            <div className="flex flex-col items-center space-y-2">
+                                                <svg
+                                                    className={`w-12 h-12 ${errors.documentFile ? "text-danger" : "text-primary"}`}
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                    />
+                                                </svg>
+                                                <p
+                                                    className={`text-sm ${errors.documentFile ? "text-danger" : "text-secondaryText"}`}
+                                                >
+                                                    {documentFile?.[0]?.name ||
+                                                        "Click to upload document (JPG, PNG)"}
+                                                </p>
+                                            </div>
                                         </div>
                                         <input
                                             type="file"
@@ -413,14 +487,16 @@ function KycForm() {
                                                 validate: (file) =>
                                                     file?.[0]?.type.startsWith(
                                                         "image/",
-                                                    ) || "Images only",
+                                                    ) ||
+                                                    "Unsupported file format",
                                             })}
                                             className="hidden"
+                                            accept="image/*"
                                         />
                                     </label>
                                 </div>
                                 {errors.documentFile && (
-                                    <p className="text-danger text-sm mt-1">
+                                    <p className="text-danger text-sm mt-2">
                                         {errors.documentFile.message}
                                     </p>
                                 )}
@@ -429,9 +505,9 @@ function KycForm() {
                     </div>
 
                     {/* Submit Section */}
-                    <div className="pt-6">
+                    <div className="pt-8 border-t-2 border-secondary">
                         {resErrMsg && (
-                            <p className="text-danger mb-4 text-center">
+                            <p className="text-danger mb-6 text-center font-medium">
                                 {resErrMsg}
                             </p>
                         )}
@@ -440,9 +516,9 @@ function KycForm() {
                             variant="filled"
                             disabled={uploading}
                             loading={uploading}
-                            className="w-full py-3 font-medium text-lg bg-primary hover:bg-primary/90 text-primaryText rounded-lg transition-colors"
+                            className="w-full py-4 font-semibold text-lg bg-primary hover:bg-primary/90 text-primaryText rounded-xl transition-all"
                         >
-                            {uploading ? "Submitting..." : "Submit KYC"}
+                            {uploading ? "Submitting..." : "Submit"}
                         </Button>
                     </div>
                 </form>
