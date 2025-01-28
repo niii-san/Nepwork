@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-function ChangeAvatarModal() {
+function ChangeAvatarModal({setModal}) {
   return (
     <div>ChangeAvatarModal</div>
   )

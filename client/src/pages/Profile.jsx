@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
-import { Loader } from "../components";
+import { Button, ChangeAvatarModal, Loader } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
 import Tag from "../components/Tag";
 
 function Profile() {
-    //function to fetch and set current user profile data
-
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
 
+    const [changeAvatarModal, setChangeAvatarModal] = useState(false);
+
+    //function to fetch and set current user profile data
     const fetchSetCurrentProfileData = async () => {
         try {
             const response = await api.get(`/user/profiles/${userId}`);
@@ -50,40 +51,49 @@ function Profile() {
     if ((isLoggedIn && !currentUserData) || !currentProfileData)
         return <Loader />;
 
+    const isOwnProfile = userId === currentUserData._id;
+
     return (
-        <div className="bg-secondary min-h-[800px]">
-            Viewing profile of {userId}
-            <div>
-                <img
-                    src={currentProfileData.avatar ?? default_avatar}
-                    alt={`Profile Photo of ${currentProfileData.name.firstName}`}
-                    className="w-20 h-20"
-                />
+        <>
+            {changeAvatarModal && (
+                <ChangeAvatarModal setModal={setChangeAvatarModal} />
+            )}
+            <div className="bg-secondary min-h-[800px]">
+                <div>
+                    <img
+                        src={currentProfileData.avatar ?? default_avatar}
+                        alt={`Profile Photo of ${currentProfileData.name.firstName}`}
+                        className="w-20 h-20"
+                    />
+                    {isOwnProfile && <Button>Change profile</Button>}
+                </div>
+                <div>isOwnProfile : {isOwnProfile ? "Yes" : "No"}</div>
+                <div>
+                    Name: {currentProfileData.name.firstName}{" "}
+                    {currentProfileData.name.lastName}
+                </div>
+                <div>
+                    {currentProfileData.kyc.address.temporary.city.toUpperCase()}
+                    ,{currentProfileData.kyc.address.temporary.state}
+                </div>
+                <div>About: {currentProfileData.about ?? ""}</div>
+                <div>Joined: {getJoinedTime(currentProfileData.createdAt)}</div>
+                <div>
+                    Verified: {currentProfileData.kycVerified ? "yes" : "no"}
+                </div>
+                <div>
+                    Tags:
+                    {currentProfileData?.tags?.map((item) => (
+                        <Tag key={item} title={item} />
+                    ))}
+                </div>
+                <div>
+                    Available: {currentProfileData.available ? "yes" : "no"}
+                </div>
+                <div>Hourly Rate: {currentProfileData.hourlyRate}</div>
+                <div>Rating: {currentProfileData.rating}</div>
             </div>
-            <div>
-                isOwnProfile : {userId === currentUserData._id ? "Yes" : "No"}
-            </div>
-            <div>
-                Name: {currentProfileData.name.firstName}{" "}
-                {currentProfileData.name.lastName}
-            </div>
-            <div>
-                {currentProfileData.kyc.address.temporary.city.toUpperCase()},
-                {currentProfileData.kyc.address.temporary.state}
-            </div>
-            <div>About: {currentProfileData.about ?? ""}</div>
-            <div>Joined: {getJoinedTime(currentProfileData.createdAt)}</div>
-            <div>Verified: {currentProfileData.kycVerified ? "yes" : "no"}</div>
-            <div>
-                Tags:
-                {currentProfileData?.tags?.map((item) => (
-                    <Tag key={item} title={item} />
-                ))}
-            </div>
-            <div>Available: {currentProfileData.available ? "yes" : "no"}</div>
-            <div>Hourly Rate: {currentProfileData.hourlyRate}</div>
-            <div>Rating: {currentProfileData.rating}</div>
-        </div>
+        </>
     );
 }
 
