@@ -37,6 +37,6 @@ userRoute.get("/current-user-info", authenticate, currentUserInfo);
 // switch role route
 userRoute.post("/switch-role", authenticate, verified, switchRole);
 userRoute.get("/get-freelancers", getFreelancers);
-userRoute.get("/get-profile-data", getProfileData);
+userRoute.get("/profiles/:userId", getProfileData);
 
 export { userRoute };

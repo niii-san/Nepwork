@@ -3,7 +3,7 @@ import { User } from "../../models/user.model.js";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 export const getProfileData = asyncHandler(async (req, res) => {
-    const userId = (req.body.userId ?? "").trim();
+    const { userId } = req.params;
 
     if (!userId) throw new ApiError(400, false, "userId is required");
 
