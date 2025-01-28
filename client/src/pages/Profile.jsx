@@ -5,6 +5,7 @@ import { Loader } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
+import Tag from "../components/Tag";
 
 function Profile() {
     //function to fetch and set current user profile data
@@ -66,9 +67,19 @@ function Profile() {
                 Name: {currentProfileData.name.firstName}{" "}
                 {currentProfileData.name.lastName}
             </div>
+            <div>
+                {currentProfileData.kyc.address.temporary.city.toUpperCase()},
+                {currentProfileData.kyc.address.temporary.state}
+            </div>
             <div>About: {currentProfileData.about ?? ""}</div>
             <div>Joined: {getJoinedTime(currentProfileData.createdAt)}</div>
             <div>Verified: {currentProfileData.kycVerified ? "yes" : "no"}</div>
+            <div>
+                Tags:
+                {currentProfileData?.tags?.map((item) => (
+                    <Tag key={item} title={item} />
+                ))}
+            </div>
             <div>Available: {currentProfileData.available ? "yes" : "no"}</div>
             <div>Hourly Rate: {currentProfileData.hourlyRate}</div>
             <div>Rating: {currentProfileData.rating}</div>
