@@ -1,15 +1,30 @@
-import React, { useEffect } from "react";
-import { data, useParams } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
 import { Loader } from "../components";
-import { useState } from "react";
+import toast from "react-hot-toast";
 import api from "../utils/api";
 
 function Profile() {
-    const [currentPorfileData,setCurrentProfileData] = useState(null)
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
+    const [currentProfileData, setCurrentProfileData] = useState(null);
+    console.log(currentProfileData);
+
+   //function to fetch and set current user profile data
+    const fetchSetCurrentProfileData = async () => {
+        try {
+            const response = await api.get(`/user/profiles/${userId}`);
+            setCurrentProfileData(response.data.data);
+        } catch (error) {
+            toast.error("Failed to load profile");
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        fetchSetCurrentProfileData();
+    }, [userId]);
 
 
     useEffect(()=>{
