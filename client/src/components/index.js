@@ -16,6 +16,8 @@ import ClientHomepage from "./Home/ClientHomepage";
 import FreelancerHomePage from "./Home/FreelancerHomePage";
 import EditJobModal from "./EditJobModal";
 import SearchBox from "./SearchBox";
+import KycForm from "./KycForm";
+import ChangeAvatarModal from "./Profile/ChangeAvatarModal";
 
 export {
     NavBar,
@@ -36,4 +38,6 @@ export {
     FreelancerHomePage,
     EditJobModal,
     SearchBox,
+    KycForm,
+    ChangeAvatarModal,
 };

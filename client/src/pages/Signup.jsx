@@ -75,7 +75,7 @@ function Signup() {
                         personal info
                     </p>
                     <button
-                        className="border border-tertiray px-14 py-2 rounded-3xl text-tertiray hover:bg-tertiray hover:bg-opacity-20 active:bg-opacity-50"
+                        className="border border-tertiary px-14 py-2 rounded-3xl text-tertiary hover:bg-tertiary hover:bg-opacity-20 active:bg-opacity-50"
                         onClick={() => navigate("/login")}
                     >
                         SIGN IN

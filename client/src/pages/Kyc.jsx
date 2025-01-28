@@ -1,536 +1,383 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import api from "../utils/api";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
-import { Button, Loader, UserCard } from "../components";
+import React from "react";
+import { Button, KycForm, Loader, UserCard } from "../components";
 import { useUser } from "../stores";
+import { Link } from "react-router";
 
 function Kyc() {
-    const navigate = useNavigate();
     const userData = useUser((state) => state.data);
-    const invalidateUserData = useUser((state) => state.setUserData);
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm();
-
-    const [resErrMsg, setResErrMsg] = useState(null);
-    const currentYear = new Date().getFullYear() + 57;
-    const [uploading, setUploading] = useState(false);
-
-    const onSubmit = (data) => {
-        setUploading(true);
-        // create structured payload and hit endpoint
-        const payload = new FormData();
-        //loading name
-        payload.append("firstName", data.firstName);
-        payload.append("middleName", data.middleName || "");
-        payload.append("lastName", data.lastName);
-
-        //loading dob
-
-        payload.append("dobYear", data.year);
-        payload.append("dobMonth", data.month);
-        payload.append("dobDay", data.day);
-
-        // loading address
-        payload.append("temporaryCountry", data.temporaryCountry);
-        payload.append("temporaryState", data.temporaryState);
-        payload.append("temporaryCity", data.temporaryCity);
-
-        payload.append("permanentCountry", data.permanentCountry);
-        payload.append("permanentState", data.permanentState);
-        payload.append("permanentCity", data.permanentCity);
-
-        // loading documents
-        payload.append("documentId", data.documentId);
-        payload.append("documentType", data.documentType);
-        payload.append("documentFile", data.documentFile[0]);
-
-        api.post("/user/upload-kyc", payload)
-            .then((res) => {
-                toast.success(res.data.message);
-                navigate("/settings");
-            })
-            .catch((err) => {
-                setResErrMsg(err.response.data.message);
-            })
-            .finally(() => {
-                setUploading(false);
-            });
-    };
-
-    // custom styling for input fields
-    const inputStyling =
-        "peer mt-1 p-2 w-full bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md";
-
-    // styling for bold header
-    const headerStyle = "text-lg font-semibold";
-
-    // Invalidating user info before any operation here
-    useEffect(() => {
-        invalidateUserData();
-    }, []);
 
     if (!userData) {
         return <Loader />;
     }
-
-    if (userData.kycStatus === "pending") {
-        return (
-            <>
-                <div className="bg-secondary min-h-[800px] w-full flex flex-col justify-center items-center">
-                    <h1 className="mx-auto text-3xl mt-12">
-                        Your Kyc is pending, Please wait or contact officals
-                    </h1>
-
-                    {userData && <UserCard userData={userData} />}
-                </div>
-            </>
-        );
-    }
-
-    if (userData.kycStatus === "verified") {
-        return (
-            <>
-                <div className="bg-secondary min-h-[800px] w-full flex flex-col justify-center items-center">
-                    <h1 className="mx-auto text-3xl mt-12 font-bold">
-                        Your Kyc is verified 
-                    </h1>
-
-                    {userData && <UserCard userData={userData} />}
-                </div>
-            </>
-        );
-    }
-
     // if kyc status is "not_uploaded"
     if (userData.kycStatus === "not_uploaded") {
+        return <KycForm />;
+    }
+    if (userData.kycStatus === "pending") {
         return (
-            <>
-                <div className="flex justify-center items-center flex-col min-h-[800px] bg-secondary">
-                    <div>
-                        You have not submited Kyc form, Please fill up and
-                        submit
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl mx-auto space-y-8">
+                    {/* Animated Header Section */}
+                    <div className="text-center space-y-6 animate-fade-in">
+                        <div className="relative inline-block">
+                            <div className="absolute -inset-2 bg-blue-200/30 rounded-full blur-lg opacity-75 animate-pulse"></div>
+                            <div className="relative inline-flex items-center justify-center p-6 bg-white rounded-full shadow-lg">
+                                <svg
+                                    className="h-20 w-20 text-blue-600 animate-spin"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="1.5"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
+                                KYC Verification in Progress
+                            </h1>
+                            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                                We're carefully reviewing your submitted
+                                documents. This usually takes{" "}
+                                <span className="font-semibold text-blue-600">
+                                    1-2 business days
+                                </span>
+                                .
+                            </p>
+                        </div>
                     </div>
-                    <br />
-                    <div className="min-h-[800px] max-w-[700px] min-w-[350px] bg-tertiray w-[80%] flex items-center justify-center shadow-md rounded-lg p-6">
-                        <form
-                            onSubmit={handleSubmit(onSubmit)}
-                            encType="multipart/form-data"
-                            className=""
-                        >
-                            <h1 className={`${headerStyle}`}>Name</h1>
-                            <div className="bg-gray-100 p-6 rounded-lg">
-                                <div>
-                                    <label htmlFor="firstName">
-                                        First name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        {...register("firstName", {
-                                            required: "First name is required",
-                                            pattern: {
-                                                value: /^[A-Za-z]+$/,
-                                                message:
-                                                    "Can only contain letters",
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
 
-                                    {errors.firstName && (
-                                        <p className="text-red-500">
-                                            {errors.firstName.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label htmlFor="middleName">
-                                        Middle name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="middleName"
-                                        {...register("middleName", {
-                                            pattern: {
-                                                value: /^[A-Za-z]+$/,
-                                                message:
-                                                    "Can only contain letters",
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.middleName && (
-                                        <p className="text-red-500">
-                                            {errors.middleName.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label htmlFor="lastName">Last name</label>
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        {...register("lastName", {
-                                            required: "Last name is required",
-                                            pattern: {
-                                                value: /^[A-Za-z]+$/,
-                                                message:
-                                                    "Can only contain letters",
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-
-                                    {errors.lastName && (
-                                        <p className="text-red-500">
-                                            {errors.lastName.message}
-                                        </p>
-                                    )}
-                                </div>
+                    {/* Submission Details with Watermark */}
+                    {userData && (
+                        <div className="relative bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100 overflow-hidden">
+                            <div className="absolute -right-20 -top-20 opacity-10">
+                                <svg
+                                    className="w-64 h-64 text-blue-400"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                </svg>
                             </div>
-                            {/* Gender DropDown */}
-                            <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
-                                <h1 className={`${headerStyle} ml-4`}>
-                                    Gender :
-                                </h1>
-                                <div className="p-6">
-                                    <select
-                                        name="gender"
-                                        id="gender"
-                                        className="peer mt-1 p-2 w-50% bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                                Submitted Documents
+                            </h3>
+                            <UserCard userData={userData} />
+                        </div>
+                    )}
+
+                    {/*Contact Section */}
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-xl p-8 text-primary">
+                        <div className="max-w-2xl mx-auto text-center space-y-6">
+                            <h2 className="text-2xl font-bold">
+                                Need Immediate Assistance?
+                            </h2>
+                            <p className="text-blue-100">
+                                Our verification team is available 24/7 to
+                                answer your questions
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <a
+                                    href="mailto:support@company.com"
+                                    className="group flex items-center justify-center gap-3 p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    <svg
+                                        className="w-6 h-6 text-blue-200 group-hover:text-white"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                     >
-                                        <option value="Select Gender" disabled>
-                                            Select Gender
-                                        </option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
-                            </div>
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                        />
+                                    </svg>
+                                    <span className="font-medium">
+                                        Email Support
+                                    </span>
+                                </a>
 
-                            <h1 className={`${headerStyle}`}>
-                                Date of Birth (Bikram Sambat - BS)
-                            </h1>
-                            {/* Year Input */}
-                            <div className="bg-gray-100 p-6 rounded-lg">
-                                <div>
-                                    <label htmlFor="year">Year</label>
-                                    <input
-                                        type="number"
-                                        id="year"
-                                        {...register("year", {
-                                            required: "Year is required",
-                                            valueAsNumber: true,
-                                            min: {
-                                                value: 1980,
-                                                message:
-                                                    "Year must be 1980 or later",
-                                            },
-                                            max: {
-                                                value: currentYear,
-                                                message: `Year cannot be later than ${currentYear}`,
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.year && (
-                                        <p className="text-red-500">
-                                            {errors.year.message}
-                                        </p>
-                                    )}
-                                </div>
-                                {/* Month Input */}
-                                <div>
-                                    <label htmlFor="month">Month</label>
-                                    <input
-                                        type="number"
-                                        id="month"
-                                        {...register("month", {
-                                            required: "Month is required",
-                                            valueAsNumber: true,
-                                            validate: (value) =>
-                                                (value >= 1 && value <= 12) ||
-                                                "Enter a valid month (1-12)",
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.month && (
-                                        <p className="text-red-500">
-                                            {errors.month.message}
-                                        </p>
-                                    )}
-                                </div>
-                                {/* Day Input */}
-                                <div>
-                                    <label htmlFor="day">Day</label>
-                                    <input
-                                        type="number"
-                                        id="day"
-                                        {...register("day", {
-                                            required: "Day is required",
-                                            valueAsNumber: true,
-                                            min: {
-                                                value: 1,
-                                                message:
-                                                    "Day must be at least 1",
-                                            },
-                                            max: {
-                                                value: 32,
-                                                message: `Invalid day, too high?`,
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.day && (
-                                        <p className="text-red-500">
-                                            {errors.day.message}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            {/*Permanent address*/}
-                            <h1 className={`${headerStyle}`}>
-                                Permanent Address
-                            </h1>
-                            <div className="bg-gray-100 p-6 rounded-lg">
-                                <div>
-                                    <label htmlFor="permanentCountry">
-                                        Country
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="permanentCountry"
-                                        {...register("permanentCountry", {
-                                            required: "Country is required",
-                                        })}
-                                        className={inputStyling}
-                                    />{" "}
-                                    {errors.permanentCountry && (
-                                        <p className="text-red-500">
-                                            {errors.permanentCountry.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label htmlFor="permanentState">
-                                        State
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="permanentState"
-                                        {...register("permanentState", {
-                                            required: "State is required",
-                                            pattern: {
-                                                value: /^[0-9]+$/,
-                                                message:
-                                                    "Can only contain number",
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.permanentState && (
-                                        <p className="text-red-500">
-                                            {errors.permanentState.message}
-                                        </p>
-                                    )}{" "}
-                                </div>
-                                <div>
-                                    <label htmlFor="permanentCity">City</label>
-                                    <input
-                                        type="text"
-                                        id="permanentCity"
-                                        {...register("permanentCity", {
-                                            required: "City is required",
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.permanentCity && (
-                                        <p className="text-red-500">
-                                            {errors.permanentCity.message}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            {/* Temporary address */}
-                            <h1 className={`${headerStyle}`}>
-                                Temporary Address
-                            </h1>
-                            <div className="bg-gray-100 p-6 rounded-lg">
-                                <div>
-                                    <label htmlFor="temporaryCountry">
-                                        Country
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="temporaryCountry"
-                                        {...register("temporaryCountry", {
-                                            required: "Country is required",
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.temporaryCountry && (
-                                        <p className="text-red-500">
-                                            {errors.temporaryCountry.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label htmlFor="temporaryState">
-                                        State
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="temporaryState"
-                                        {...register("temporaryState", {
-                                            required: "State is required",
-                                            pattern: {
-                                                value: /^[0-9]+$/,
-                                                message:
-                                                    "Can only contain number",
-                                            },
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.temporaryState && (
-                                        <p className="text-red-500">
-                                            {errors.temporaryState.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label htmlFor="temporaryCity">City</label>
-                                    <input
-                                        type="text"
-                                        id="temporaryCity"
-                                        {...register("temporaryCity", {
-                                            required: "City is required",
-                                        })}
-                                        className={inputStyling}
-                                    />
-                                    {errors.temporaryCity && (
-                                        <p className="text-red-500">
-                                            {errors.temporaryCity.message}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            {/*Documents*/}
-                            <div>
-                                <h1 className={`${headerStyle}`}>
-                                    Document Verification
-                                </h1>
-                                <div className="bg-gray-100 p-6 rounded-lg">
-                                    <div>
-                                        <label htmlFor="documentType">
-                                            Document Type
-                                        </label>
-                                        <select
-                                            id="documentType"
-                                            {...register("documentType", {
-                                                required: "Type is required",
-                                            })}
-                                            className={inputStyling}
-                                        >
-                                            <option value="citizenship">
-                                                Citizenship
-                                            </option>
-                                            <option value="driving_license">
-                                                Driving license
-                                            </option>
-                                            <option value="passport">
-                                                Passport
-                                            </option>
-                                        </select>
-                                        {errors.documentType && (
-                                            <p className="text-red-500">
-                                                {errors.documentType.message}
-                                            </p>
-                                        )}
-                                    </div>
-                                    {/* Document ID Number */}
-                                    <div>
-                                        <label htmlFor="documentId">
-                                            Document ID Number
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="documentId"
-                                            {...register("documentId", {
-                                                required:
-                                                    "Document Id is required",
-                                                pattern: {
-                                                    value: /^[0-9]+$/,
-                                                    message:
-                                                        "Id must only contain numbers",
-                                                },
-                                            })}
-                                            className={inputStyling}
+                                <a
+                                    href="tel:+1234567890"
+                                    className="group flex items-center justify-center gap-3 p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    <svg
+                                        className="w-6 h-6 text-blue-200 group-hover:text-white"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                                         />
-                                        {errors.documentId && (
-                                            <p className="text-red-500">
-                                                {errors.documentId.message}
-                                            </p>
-                                        )}
-                                    </div>{" "}
-                                    <div>
-                                        <label htmlFor="documentFile">
-                                            Document (front and back both){" "}
-                                            <u>Sample</u>
-                                        </label>
-                                        <input
-                                            type="file"
-                                            id="documentFile"
-                                            {...register("documentFile", {
-                                                required:
-                                                    "Document photo is required",
-                                                validate: (file) => {
-                                                    if (
-                                                        file &&
-                                                        !file[0]?.type.startsWith(
-                                                            "image/",
-                                                        )
-                                                    ) {
-                                                        return "Only image files are allowed";
-                                                    }
-                                                    return true;
-                                                },
-                                            })}
-                                            className={inputStyling}
-                                        />
-                                    </div>
-                                    {errors.documentFile && (
-                                        <p className="text-red-500">
-                                            {errors.documentFile.message}
-                                        </p>
-                                    )}
-                                </div>
+                                    </svg>
+                                    <span className="font-medium">
+                                        24/7 Hotline
+                                    </span>
+                                </a>
                             </div>
-                            <br />
-                            <br />
-                            {resErrMsg && (
-                                <p className="text-red-500">{resErrMsg}</p>
-                            )}
-                            <br />
-                            <Button
-                                type="submit"
-                                variant="filled"
-                                disabled={uploading}
-                                loading={uploading}
-                                className="w-full"
-                            >
-                                {uploading ? "Uploading..." : "Submit Kyc"}
-                            </Button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </>
+            </div>
+        );
+    }
+    if (userData.kycStatus === "verified") {
+        return (
+            <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
+                <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                    {/* Success Header */}
+                    <div className="text-center mb-12 space-y-6 animate-fade-in">
+                        <div className="inline-flex items-center justify-center gap-4 text-emerald-600">
+                            <svg
+                                className="h-16 w-16"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                            <div>
+                                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                                    Identity Verified! 🎉
+                                </h1>
+                                <p className="mt-3 text-lg text-emerald-700 max-w-2xl mx-auto">
+                                    Full platform access unlocked - connect,
+                                    collaborate, and grow!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Glowing User Card */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-emerald-200/30 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
+                        <div className="relative">
+                            <UserCard userData={userData} />
+                        </div>
+                    </div>
+
+                    {/* Feature Access Grid */}
+                    <div className="mt-8 bg-white rounded-xl shadow-lg p-6 border-2 border-primary">
+                        <div className="text-center space-y-6">
+                            <h3 className="text-xl font-semibold text-emerald-900">
+                                🔓 Unlocked Features
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-emerald-800">
+                                {/* Post Jobs */}
+                                <div className="feature-card">
+                                    <svg
+                                        className="w-8 h-8 mx-auto"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                                        />
+                                    </svg>
+                                    <span className="mt-2 font-medium">
+                                        Post Jobs
+                                    </span>
+                                    <p className="text-sm mt-1 text-gray-600">
+                                        List new projects and find talent
+                                    </p>
+                                </div>
+
+                                {/* Hire Freelancers */}
+                                <div className="feature-card">
+                                    <svg
+                                        className="w-8 h-8 mx-auto"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                        />
+                                    </svg>
+                                    <span className="mt-2 font-medium">
+                                        Hire Freelancers
+                                    </span>
+                                    <p className="text-sm mt-1 text-gray-600">
+                                        Find and collaborate with experts
+                                    </p>
+                                </div>
+
+                                {/* Be a Freelancer */}
+                                <div className="feature-card">
+                                    <svg
+                                        className="w-8 h-8 mx-auto"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                        />
+                                    </svg>
+                                    <span className="mt-2 font-medium">
+                                        Be a Freelancer
+                                    </span>
+                                    <p className="text-sm mt-1 text-gray-600">
+                                        Offer services and get hired
+                                    </p>
+                                </div>
+
+                                {/* All Features */}
+                                <div className="feature-card">
+                                    <svg
+                                        className="w-8 h-8 mx-auto"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                    <span className="mt-2 font-medium">
+                                        All Features
+                                    </span>
+                                    <p className="text-sm mt-1 text-gray-600">
+                                        Complete platform access
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* CTA Section */}
+                    <div className="mt-8 text-center space-y-4">
+                        <p className="text-primary font-medium">
+                            Ready to get started? Choose your path:
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <Link to="/dashboard">
+                                <Button variant="filled" className="text-white">
+                                    🚀 Post a Job
+                                </Button>
+                            </Link>
+                            <Link to="/settings/switch-role">
+                                <Button className="text-emerald-700 border-2">
+                                    💼 Create Freelancer Profile
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    if (userData.kycStatus === "failed") {
+        return (
+            <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
+                <div className="max-w-3xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                    {/* Failure Header */}
+                    <div className="text-center mb-12 space-y-6 animate-fade-in-up">
+                        <div className="inline-flex items-center justify-center gap-4 text-red-600">
+                            <svg
+                                className="h-16 w-16"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                            <div>
+                                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                                    KYC Verification Unsuccessful
+                                </h1>
+                                <p className="mt-3 text-lg text-red-700 max-w-2xl mx-auto">
+                                    We encountered issues with your submission.
+                                    Please review the details below.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* User Card Container */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-red-200/30 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
+                        <div className="relative">
+                            <UserCard userData={userData} />
+                        </div>
+                    </div>
+
+                    {/* Rejection Details */}
+                    <div className="mt-8 bg-white rounded-xl shadow-lg p-6 border-2 border-red-200">
+                        <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0">
+                                <svg
+                                    className="h-6 w-6 text-red-600"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-red-900 mb-2">
+                                    Required Corrections
+                                </h3>
+                                <div className="prose prose-red">
+                                    <p className="text-red-800">
+                                        {userData.kyc.failedReason ||
+                                            "Specific rejection reasons not provided"}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                        <Button
+                            variant="filled"
+                            className="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg border-none"
+                        >
+                            Resubmit KYC Application
+                        </Button>
+                        <Button className="w-full sm:w-auto px-8 py-3 bg-white hover:bg-gray-50 text-red-700 font-semibold rounded-lg border-2 border-red-200 transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg">
+                            Create Ticket
+                        </Button>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

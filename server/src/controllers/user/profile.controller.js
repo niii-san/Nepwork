@@ -10,9 +10,11 @@ export const getProfileData = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(userId))
         throw new ApiError(400, false, "Invalid userId");
 
-    const userProfileData = await User.findById(userId).select(
-        "-password -refreshToken -lastRoleChange -kyc -kycStatus",
-    );
+    const userProfileData = await User.findById(userId)
+        .select(
+            "-password -refreshToken -lastRoleChange -kycStatus -email -emailVerified -updatedAt -__v",
+        )
+        .populate({ path: "kyc", select: "address.temporary" });
 
     if (!userProfileData) throw new ApiError(404, false, "User not found");
 
