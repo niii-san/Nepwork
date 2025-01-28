@@ -23,7 +23,7 @@ function Kyc() {
                             <div className="absolute -inset-2 bg-blue-200/30 rounded-full blur-lg opacity-75 animate-pulse"></div>
                             <div className="relative inline-flex items-center justify-center p-6 bg-white rounded-full shadow-lg">
                                 <svg
-                                    className="h-20 w-20 text-blue-600 animate-spin"
+                                    className="h-20 w-20 text-primary animate-spin"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -45,7 +45,7 @@ function Kyc() {
                             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                                 We're carefully reviewing your submitted
                                 documents. This usually takes{" "}
-                                <span className="font-semibold text-blue-600">
+                                <span className="font-semibold text-primary">
                                     1-2 business days
                                 </span>
                                 .
@@ -73,7 +73,7 @@ function Kyc() {
                     )}
 
                     {/*Contact Section */}
-                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-xl p-8 text-primary">
+                    <div className="bg-gradient-to-r from-green-600 to-primary rounded-xl shadow-xl p-8 text-white">
                         <div className="max-w-2xl mx-auto text-center space-y-6">
                             <h2 className="text-2xl font-bold">
                                 Need Immediate Assistance?
