@@ -2,12 +2,12 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        screens: {
-            tablet: "640px",
-            // => @media (min-width: 640px)
-            pc: "1200px",
-        },
         extend: {
+            screens: {
+                tablet: "640px",
+                // => @media (min-width: 640px)
+                pc: "1200px",
+            },
             backgroundImage: {
                 signUpPattern: "url(src/assets/SignUp.svg)",
             },
@@ -22,7 +22,7 @@ export default {
                 //gray
                 secondary: "#EDEDED",
                 //white
-                tertiray: "#FFFFFF",
+                tertiary: "#FFFFFF",
                 //red
                 danger: "#d64343",
                 //white text

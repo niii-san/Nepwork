@@ -14,6 +14,10 @@ import AllPostedJobs from "./ClientDashboard/AllPostedJobs";
 import NullLoader from "./NullLoader";
 import ClientHomepage from "./Home/ClientHomepage";
 import FreelancerHomePage from "./Home/FreelancerHomePage";
+import EditJobModal from "./EditJobModal";
+import SearchBox from "./SearchBox";
+import KycForm from "./KycForm";
+import ChangeAvatarModal from "./Profile/ChangeAvatarModal";
 
 export {
     NavBar,
@@ -32,4 +36,8 @@ export {
     NullLoader,
     ClientHomepage,
     FreelancerHomePage,
+    EditJobModal,
+    SearchBox,
+    KycForm,
+    ChangeAvatarModal,
 };

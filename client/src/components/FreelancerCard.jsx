@@ -8,55 +8,82 @@ import { GoVerified } from "react-icons/go";
 import { Link } from "react-router";
 
 function FreelancerCard({ userData }) {
+    const {
+        avatar,
+        rating,
+        name,
+        kycVerified,
+        available,
+        tags = [],
+        hourlyRate,
+        _id,
+    } = userData;
+
     return (
-        <div className="min-w-[290px] max-w-[290px] bg-white shadow-card_shadow rounded-md mt-5">
-            <div className="flex justify-between mx-[25px] mt-[25px]">
-                <div className="flex">
+        <div className="w-72 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+            {/* Header Section */}
+            <div className="flex items-start justify-between p-4 pb-2">
+                <div className="relative">
                     <img
-                        src={userData.avatar ?? default_avatar}
-                        alt="Photo"
-                        className="w-20 rounded-xl h-20 shadow-card_shadow"
+                        src={avatar || default_avatar}
+                        alt={`${name.firstName} ${name.lastName}'s profile`}
+                        className="w-20 h-20 rounded-xl shadow-md border-2 border-white hover:scale-105 transition-transform duration-200"
+                        loading="lazy"
                     />
-                </div>
-                <div className="flex items-start">
-                    <div className="flex items-center">
-                        <CiStar className="text-4xl text-primary" />
-                        <span className="text-lg font-semibold" htmlFor="">
-                            {userData.rating}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div className="flex flex-col px-6">
-                <span className="text-lg  mt-2 flex items-center">
-                    {userData.name.firstName} {userData.name.lastName}
-                    {userData.kycVerified && (
-                        <span>
-                            <GoVerified className="text-blue-600 text-sm mt-1 ml-3" />
-                        </span>
+                    {kycVerified && (
+                        <GoVerified className="absolute -bottom-1 -right-1 text-blue-600 bg-white rounded-full p-0.5" />
                     )}
-                </span>
-                <div className="text-grey_text font-semibold text-[11px]">
-                    <span>Available: </span>
-                    <span
-                        className={`${userData.available ? "text-primary" : "text-red-600"}`}
-                    >
-                        {userData.available ? "Yes" : "No"}
+                </div>
+
+                <div className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
+                    <CiStar className="text-xl text-amber-400" />
+                    <span className="font-semibold text-gray-700">
+                        {rating.toFixed(1)}
                     </span>
                 </div>
             </div>
-            <div className="mx-[25px] flex flex-wrap gap-2 mb-[16px]">
-                {renderTags(userData.tags ?? [])}
-            </div>
-            <div className="mx-[25px] mb-[16px] flex rounded-[3px] justify-center items-center bg-[#F4F4F4] p-3">
-                <span className="font-semibold">
-                    Rs. {userData.hourlyRate} / hr
-                </span>
-            </div>
-            <div className="mx-[25px] mb-[25px] flex  justify-between items-center">
-                <Link to={`/profile/${userData._id}`} className="w-full">
-                    <Button className={"rounded-md w-full "}>
-                        <AiOutlineLogin className=" text-black text-2xl " />
+
+            {/* Body Section */}
+            <div className="p-4 pt-2">
+                <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        {name.firstName} {name.lastName}
+                    </h3>
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-gray-500">
+                            Availability:
+                        </span>
+                        <span
+                            className={`text-xs font-semibold ${available ? "text-green-600" : "text-red-600"
+                                }`}
+                        >
+                            {available ? "Available" : "Not Available"}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {renderTags(tags)}
+                </div>
+
+                {/* Rate Section */}
+                <div className="mb-4 p-3 bg-indigo-50 rounded-lg text-center">
+                    <span className="text-sm font-bold text-indigo-700">
+                        Rs. {hourlyRate.toLocaleString()}/hour
+                    </span>
+                </div>
+
+                {/* Action Button */}
+                <Link to={`/profile/${_id}`} className="block">
+                    <Button
+                        variant="outline"
+                        className="w-full flex items-center justify-center gap-2 hover:bg-indigo-50 transition-colors duration-200"
+                    >
+                        <AiOutlineLogin className="text-lg" />
+                        <span className="text-sm font-semibold">
+                            View Profile
+                        </span>
                     </Button>
                 </Link>
             </div>
@@ -64,19 +91,19 @@ function FreelancerCard({ userData }) {
     );
 }
 
-export default FreelancerCard;
-
 function renderTags(tags) {
-    const tagLength = tags.length;
-    const toRender = 5; // change this as much tag you want to render
-    const remaining = tagLength - toRender;
-    const renderItems = tags.slice(0, toRender);
+    const MAX_VISIBLE_TAGS = 4;
+    const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
+    const remainingCount = tags.length - MAX_VISIBLE_TAGS;
+
     return (
         <>
-            {renderItems.map((item) => (
-                <Tag key={item} title={item} />
+            {visibleTags.map((tag) => (
+                <Tag key={tag} title={tag} className="" />
             ))}
-            {remaining > 0 && <Tag title={`+${remaining}`} />}
+            {remainingCount > 0 && <Tag title={`+${remainingCount}`} />}
         </>
     );
 }
+
+export default FreelancerCard;

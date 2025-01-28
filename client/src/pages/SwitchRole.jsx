@@ -37,13 +37,19 @@ function SwitchRole() {
         if (userData.role === "client") {
             return (
                 <ol>
-                    <li><span className="text-primary">•</span> All your posted jobs should be closed.</li>
+                    <li>
+                        <span className="text-primary">•</span> All your posted
+                        jobs should be closed.
+                    </li>
                 </ol>
             );
         } else if (userData.role === "freelancer") {
             return (
                 <ol>
-                    <li><span className="text-primary">•</span> Must not be involved in any job.</li>
+                    <li>
+                        <span className="text-primary">•</span> Must not be
+                        involved in any job.
+                    </li>
                 </ol>
             );
         }
@@ -52,24 +58,47 @@ function SwitchRole() {
 
     return (
         <div className="p-4 flex justify-center items-center mb-40">
-            <div className="bg-tertiray max-w-[1200px] min-w-[550px] w-[80%] h-[450px] flex flex-col items-center shadow-md rounded-lg p-6">
+            <div className="bg-tertiary max-w-[1200px] min-w-[550px] w-[80%] h-[450px] flex flex-col items-center shadow-md rounded-lg p-6">
                 <div id="Rules" className="text-base font-medium leading-8">
-                    <h1 className="text-center text-2xl font-semibold text-primary">Rules For Switching Roles !</h1>
-                    <hr className="my-2 border-hover_button w-[500px]"/>
-                    <h2 className="font-bold text-primary">Applies if you are currently {userData.role.toUpperCase()}</h2>
+                    <h1 className="text-center text-2xl font-semibold text-primary">
+                        Rules For Switching Roles !
+                    </h1>
+                    <hr className="my-2 border-hover_button w-[500px]" />
+                    <h2 className="font-bold text-primary">
+                        Applies if you are currently{" "}
+                        {userData.role.toUpperCase()}
+                    </h2>
                     {renderRules()}
-                    <h2 className="font-bold text-primary">Applies to All Users</h2>
+                    <h2 className="font-bold text-primary">
+                        Applies to All Users
+                    </h2>
                     <ol>
-                        <li><span className="text-primary">•</span> Email Address should be verified</li>
-                        <li><span className="text-primary">•</span> Kyc should be verified</li>
-                        <li><span className="text-primary">•</span> Can only switch once every 14 days.</li>
+                        <li>
+                            <span className="text-primary">•</span> Email
+                            Address should be verified
+                        </li>
+                        <li>
+                            <span className="text-primary">•</span> Kyc should
+                            be verified
+                        </li>
+                        <li>
+                            <span className="text-primary">•</span> Can only
+                            switch once every 14 days.
+                        </li>
                     </ol>
                 </div>
 
-                <div id="switching-actions" className="mt-8 flex flex-col justify-center items-center gap-2">
+                <div
+                    id="switching-actions"
+                    className="mt-8 flex flex-col justify-center items-center gap-2"
+                >
                     <div>
-                        <label htmlFor="" className="text-base font-semibold">You're currently:{" "}</label>
-                        <strong className="text-primary">{userData.role.toUpperCase()}</strong>
+                        <label htmlFor="" className="text-base font-semibold">
+                            You're currently:{" "}
+                        </label>
+                        <strong className="text-primary">
+                            {userData.role.toUpperCase()}
+                        </strong>
                     </div>
                     <Button onClick={() => setOpenModal(true)}>
                         Switch to{" "}

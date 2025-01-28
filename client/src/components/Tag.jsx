@@ -1,11 +1,10 @@
-function Tag({title, className}) {
+function Tag({ title, className }) {
     return (
         <span
-            className={`border border-grey_border rounded-xl text-xs px-2 py-1 ${className}`}
+            className={`bg-primary bg-opacity-20 text-gray-800  px-2.5 py-1 rounded-xl text-xs ${className}`}
         >
             {title}
         </span>
-
     );
 }
 
