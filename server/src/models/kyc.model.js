@@ -11,6 +11,20 @@ const kycSchema = new mongoose.Schema(
                 required: true,
             },
         },
+        gender: {
+            type: String,
+            required: true,
+        },
+        contact: {
+            phoneNumber: {
+                type: Number,
+                required: true,
+            },
+            email: {
+                type: String,
+                required: true,
+            },
+        },
         dob: {
             year: { type: Number, required: true },
             month: { type: Number, required: true },

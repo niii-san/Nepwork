@@ -119,7 +119,9 @@ function SingleKyc() {
                         </div>
                         <div className="flex">
                             <strong>Gender: </strong>
-                            <p className="ml-1">{data.gender ?? "Male"}</p>
+                            <p className="ml-1">
+                                {data.gender ?? "Not provided"}
+                            </p>
                         </div>
                     </div>
                     <hr className="border-hover_button" />
@@ -186,11 +188,12 @@ function SingleKyc() {
                                     </p>
                                 </span>
                                 <span className="flex  gap-1">
-                                    <label className="font-semibold">
+                                    <span className="font-semibold">
                                         Phone:
-                                    </label>
+                                    </span>
                                     <p>
-                                        {data.contact?.phone ?? "Phone number"}
+                                        {data.contact?.phoneNumber ??
+                                            "Phone number"}
                                     </p>
                                 </span>
                             </div>
@@ -270,7 +273,7 @@ function SingleKyc() {
                                 <div className="w-full">
                                     <h1>Reason</h1>
                                     <textarea
-                                    className="w-full border border-hover_button rounded shadow-lg"
+                                        className="w-full border border-hover_button rounded shadow-lg"
                                         disabled={!editStatus}
                                         id="reason"
                                         {...register("reason", {

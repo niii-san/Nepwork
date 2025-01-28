@@ -29,9 +29,10 @@ function Kyc() {
         payload.append("firstName", data.firstName);
         payload.append("middleName", data.middleName || "");
         payload.append("lastName", data.lastName);
+        payload.append("gender", data.gender);
+        payload.append("phoneNumber",data.phone)
 
         //loading dob
-
         payload.append("dobYear", data.year);
         payload.append("dobMonth", data.month);
         payload.append("dobDay", data.day);
@@ -49,6 +50,8 @@ function Kyc() {
         payload.append("documentId", data.documentId);
         payload.append("documentType", data.documentType);
         payload.append("documentFile", data.documentFile[0]);
+
+        console.log(payload)
 
         api.post("/user/upload-kyc", payload)
             .then((res) => {
@@ -98,7 +101,7 @@ function Kyc() {
             <>
                 <div className="bg-secondary min-h-[800px] w-full flex flex-col justify-center items-center">
                     <h1 className="mx-auto text-3xl mt-12 font-bold">
-                        Your Kyc is verified 
+                        Your Kyc is verified
                     </h1>
 
                     {userData && <UserCard userData={userData} />}
@@ -194,26 +197,6 @@ function Kyc() {
                                     )}
                                 </div>
                             </div>
-                            {/* Gender DropDown */}
-                            <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
-                                <h1 className={`${headerStyle} ml-4`}>
-                                    Gender :
-                                </h1>
-                                <div className="p-6">
-                                    <select
-                                        name="gender"
-                                        id="gender"
-                                        className="peer mt-1 p-2 w-50% bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
-                                    >
-                                        <option value="Select Gender" disabled>
-                                            Select Gender
-                                        </option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <h1 className={`${headerStyle}`}>
                                 Date of Birth (Bikram Sambat - BS)
@@ -295,6 +278,60 @@ function Kyc() {
                                     )}
                                 </div>
                             </div>
+                            {/* Gender DropDown */}
+                            <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
+                                <h1 className={`${headerStyle} ml-4`}>
+                                    Gender :
+                                </h1>
+                                <div className="p-6">
+                                    <select
+                                        id="gender"
+                                        {...register("gender", {
+                                            validate: (value) =>
+                                                value !== "not_selected" ||
+                                                "Please select gender",
+                                        })}
+                                        className="peer mt-1 p-2 w-50% bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                                    >
+                                        <option value="not_selected" selected>
+                                            Select Gender
+                                        </option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="others">Others</option>
+                                    </select>
+
+                                    {errors.gender && (
+                                        <p className="text-red-500">
+                                            {errors.gender.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/*Phone number*/}
+                            <div className="flex items-center bg-gray-100 mt-4 rounded-lg">
+                                <h1 className={`${headerStyle} ml-4`}>
+                                    Phone:
+                                </h1>
+                                <div className="p-6">
+                                    <input
+                                        id="phoneNumber"
+                                        {...register("phone", {
+                                            required:
+                                                "Phone number is required",
+                                        })}
+                                        className="peer mt-1 p-2 w-50% bg-transparent outline-none px-4 text-base rounded-md bg-white border border-hover_button focus:shadow-md"
+                                    />
+
+                                    {errors.phone && (
+                                        <p className="text-red-500">
+                                            {errors.phone.message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
                             {/*Permanent address*/}
                             <h1 className={`${headerStyle}`}>
                                 Permanent Address

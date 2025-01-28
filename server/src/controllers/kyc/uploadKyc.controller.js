@@ -31,6 +31,19 @@ export const uploadKyc = asyncHandler(async (req, res) => {
             .json(new ApiError(400, true, "Last name not provided"));
     }
 
+    const gender = (body.gender ?? "").trim();
+
+    if (!gender) throw new ApiError(400, true, "Gender is required");
+
+    const allowedGenders = ["male", "female", "others"];
+
+    if (!allowedGenders.includes(gender))
+        throw new ApiError(
+            400,
+            true,
+            "Invalid gender, [male,female,others] only",
+        );
+
     // Date of birth
     const year = body.dobYear || 0;
     const month = body.dobMonth || 0;
@@ -52,6 +65,14 @@ export const uploadKyc = asyncHandler(async (req, res) => {
             .status(400)
             .json(new ApiError(400, true, "DOB: day not provided"));
     }
+
+    const phoneNumber = Number(body.phoneNumber);
+    if (isNaN(phoneNumber))
+        throw new ApiError(
+            400,
+            true,
+            "Phone number is invalid or not provided",
+        );
 
     /*
      * Validation for document
@@ -214,6 +235,11 @@ export const uploadKyc = asyncHandler(async (req, res) => {
     const kyc = await Kyc.create({
         user: user,
         name: { firstName, middleName, lastName },
+        gender: gender,
+        contact: {
+            email: user.email,
+            phoneNumber,
+        },
         dob: { year, month, day },
         document: {
             url: documentUrl,
