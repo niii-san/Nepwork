@@ -22,7 +22,7 @@ export default {
                 //gray
                 secondary: "#EDEDED",
                 //white
-                tertiray: "#FFFFFF",
+                tertiary: "#FFFFFF",
                 //red
                 danger: "#d64343",
                 //white text

@@ -58,7 +58,7 @@ function SwitchRole() {
 
     return (
         <div className="p-4 flex justify-center items-center mb-40">
-            <div className="bg-tertiray max-w-[1200px] min-w-[550px] w-[80%] h-[450px] flex flex-col items-center shadow-md rounded-lg p-6">
+            <div className="bg-tertiary max-w-[1200px] min-w-[550px] w-[80%] h-[450px] flex flex-col items-center shadow-md rounded-lg p-6">
                 <div id="Rules" className="text-base font-medium leading-8">
                     <h1 className="text-center text-2xl font-semibold text-primary">
                         Rules For Switching Roles !
