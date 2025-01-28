@@ -12,7 +12,6 @@ function Profile() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
-
     const [changeAvatarModal, setChangeAvatarModal] = useState(false);
 
     //function to fetch and set current user profile data
@@ -50,9 +49,9 @@ function Profile() {
 
     if ((isLoggedIn && !currentUserData) || !currentProfileData)
         return <Loader />;
-
+        
     const isOwnProfile = userId === currentUserData._id;
-
+  
     return (
         <>
             {changeAvatarModal && (
