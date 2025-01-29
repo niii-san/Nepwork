@@ -97,3 +97,36 @@ export const updateAbout = asyncHandler(async (req, res) => {
             ),
         );
 });
+
+export const updateHourlyRate = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+
+    const newHourlyRate = req.body.newHourlyRate ?? 0;
+
+    if (!newHourlyRate)
+        throw new ApiError(400, true, "newHourlyrate is required");
+
+    if (isNaN(newHourlyRate))
+        throw new ApiError(
+            400,
+            true,
+            "Invalid newHourlyRate, it should be number",
+        );
+
+    const user = await User.findById(userId);
+
+    user.hourlyRate = newHourlyRate;
+    await user.save();
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                true,
+                true,
+                `${user.name.firstName} hourly rate updated`,
+                { newHourlyRate },
+            ),
+        );
+});

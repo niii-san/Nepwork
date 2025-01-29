@@ -25,6 +25,7 @@ import {
     getProfileData,
     updateProfileTags,
     updateAbout,
+    updateHourlyRate,
 } from "./user/profile.controller.js";
 import { updateAvatar } from "./user/updateAvatar.controller.js";
 
@@ -56,4 +57,5 @@ export {
     updateAvatar,
     updateProfileTags,
     updateAbout,
+    updateHourlyRate,
 };
