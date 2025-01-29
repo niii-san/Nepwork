@@ -49,13 +49,13 @@ function Profile() {
 
     if ((isLoggedIn && !currentUserData) || !currentProfileData)
         return <Loader />;
-        
+
     const isOwnProfile = userId === currentUserData._id;
-  
+
     return (
         <>
             {changeAvatarModal && (
-                <ChangeAvatarModal setModal={setChangeAvatarModal} />
+                <ChangeAvatarModal setModal={setChangeAvatarModal} refetchProfile={fetchSetCurrentProfileData} />
             )}
             <div className="bg-secondary min-h-[800px]">
                 <div>
@@ -64,7 +64,11 @@ function Profile() {
                         alt={`Profile Photo of ${currentProfileData.name.firstName}`}
                         className="w-20 h-20"
                     />
-                    {isOwnProfile && <Button>Change profile</Button>}
+                    {isOwnProfile && (
+                        <Button onClick={() => setChangeAvatarModal(true)}>
+                            Change profile
+                        </Button>
+                    )}
                 </div>
                 <div>isOwnProfile : {isOwnProfile ? "Yes" : "No"}</div>
                 <div>
