@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
-import { Button, ChangeAvatarModal, Loader } from "../components";
+import { Button, ChangeAvatarModal, Loader, Review } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
@@ -183,6 +183,21 @@ function Profile() {
                     <p className="text-[#787878] text-base font-medium mt-1">
                         {currentProfileData.about ?? "No description added yet"}
                     </p>
+                </div>
+                <span className="text-3xl font-semibold mt-6">Reviews</span>
+                <div className="mt-6 flex flex-wrap gap-6 mb-8">
+                    {[...Array(3)].map((_, index) => (
+                        <Review key={index} />
+                    ))}
+                </div>
+
+                <div className="text-right">
+                    <button
+                        className="bg-primary text-whitetext px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
+                        onClick={() => console.log("Write review clicked")}
+                    >
+                        Write a Review
+                    </button>
                 </div>
             </div>
         </>

@@ -18,6 +18,7 @@ import EditJobModal from "./EditJobModal";
 import SearchBox from "./SearchBox";
 import KycForm from "./KycForm";
 import ChangeAvatarModal from "./Profile/ChangeAvatarModal";
+import Review from "./Profile/ReviewCard";
 
 export {
     NavBar,
@@ -40,4 +41,5 @@ export {
     SearchBox,
     KycForm,
     ChangeAvatarModal,
+    Review
 };
