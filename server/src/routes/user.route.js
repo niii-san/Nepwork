@@ -16,6 +16,7 @@ import {
     getProfileData,
     updateAvatar,
     updateProfileTags,
+    updateAbout,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -48,6 +49,7 @@ userRoute.post(
 );
 
 userRoute.post("/update-profile-tags", authenticate, updateProfileTags);
+userRoute.post("/update-about", authenticate, updateAbout);
 
 userRoute.get("/profiles/:userId", getProfileData);
 

@@ -68,7 +68,32 @@ export const updateProfileTags = asyncHandler(async (req, res) => {
                 true,
                 true,
                 `${user.name.firstName} tags updated`,
-                newTags
+                newTags,
+            ),
+        );
+});
+
+export const updateAbout = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+
+    const newAbout = req.body.newAbout ?? "";
+
+    if (!newAbout) throw new ApiError(400, true, "newAbout is required");
+
+    const user = await User.findById(userId);
+
+    user.about = newAbout;
+    await user.save();
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                true,
+                true,
+                `${user.name.firstName} about updated`,
+                { newAbout: user.about },
             ),
         );
 });

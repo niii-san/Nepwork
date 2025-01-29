@@ -24,6 +24,7 @@ import { getFreelancers } from "./user/getFreelancers.controller.js";
 import {
     getProfileData,
     updateProfileTags,
+    updateAbout,
 } from "./user/profile.controller.js";
 import { updateAvatar } from "./user/updateAvatar.controller.js";
 
@@ -54,4 +55,5 @@ export {
     getProfileData,
     updateAvatar,
     updateProfileTags,
+    updateAbout,
 };
