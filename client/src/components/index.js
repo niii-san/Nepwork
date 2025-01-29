@@ -19,7 +19,7 @@ import SearchBox from "./SearchBox";
 import KycForm from "./KycForm";
 import ChangeAvatarModal from "./Profile/ChangeAvatarModal";
 import SettingSlide from "./SettingSlide";
-
+import Review from "./Profile/ReviewCard";
 export {
     NavBar,
     Footer,
@@ -42,4 +42,5 @@ export {
     KycForm,
     ChangeAvatarModal,
     SettingSlide,
+    Review
 };
