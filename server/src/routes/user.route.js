@@ -15,6 +15,9 @@ import {
     getFreelancers,
     getProfileData,
     updateAvatar,
+    updateProfileTags,
+    updateAbout,
+    updateHourlyRate,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -45,6 +48,11 @@ userRoute.post(
     upload.single("newAvatar"),
     updateAvatar,
 );
+
+userRoute.post("/update-profile-tags", authenticate, updateProfileTags);
+userRoute.post("/update-about", authenticate, updateAbout);
+userRoute.post("/update-hourly-rate", authenticate, updateHourlyRate);
+
 userRoute.get("/profiles/:userId", getProfileData);
 
 export { userRoute };

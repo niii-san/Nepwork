@@ -22,7 +22,7 @@ export const getFreelancers = asyncHandler(async (req, res) => {
 
     // if userId not provided send all freelancers
     const ranFreelancers = await User.find({ role: "freelancer" }).select(
-        "name avatar _id rating available hourlyRate kycVerified",
+        "name avatar _id rating available hourlyRate kycVerified tags about",
     );
     return res
         .status(200)
