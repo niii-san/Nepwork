@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
@@ -8,9 +8,11 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import nepwork_logo from "../assets/nepwork_logo.svg";
-import { useAuth, useUser } from "../stores";
+import { useAuth, useSetting, useUser } from "../stores";
 
 function NavBar() {
+    const [rotation, setRotation] = useState(0);
+    const openSetting = useSetting((state) => state.open);
     const navigate = useNavigate();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const userData = useUser((state) => state.data);
@@ -130,10 +132,19 @@ function NavBar() {
                                 </span>
                             </div>
                         </NavLink>
-
-                        <NavLink to="/settings" className="px-2 sm:px-3 py-2">
-                            <IoSettingsOutline className="text-lg sm:text-xl text-gray-500 hover:text-primary transition-colors" />
-                        </NavLink>
+                        <span className="px-2 sm:px-3 py-2">
+                            <IoSettingsOutline
+                                onClick={() => openSetting()}
+                                onMouseEnter={() =>
+                                    setRotation((prev) => prev + 90)
+                                }
+                                className="text-lg sm:text-xl text-gray-500 hover:text-primary cursor-pointer duration-300"
+                                style={{
+                                    transform: `rotate(${rotation}deg)`,
+                                    transition: "transform 300ms",
+                                }}
+                            />
+                        </span>{" "}
                     </div>
                 </div>
             </nav>
