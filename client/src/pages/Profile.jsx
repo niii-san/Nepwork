@@ -55,7 +55,7 @@ function Profile() {
     if ((isLoggedIn && !currentUserData) || !currentProfileData)
         return <Loader />;
 
-    const isOwnProfile = userId === currentUserData._id;
+    const isOwnProfile = userId === currentUserData?._id;
 
     return (
         <>
