@@ -15,6 +15,8 @@ function Profile() {
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
+    console.log(currentProfileData);
+
     const [changeAvatarModal, setChangeAvatarModal] = useState(false);
 
     //function to fetch and set current user profile data
@@ -63,9 +65,9 @@ function Profile() {
                     refetchProfile={fetchSetCurrentProfileData}
                 />
             )}
-            <div className="flex mb-4 flex-col border border-black justify-center items-center">
-                <div className="border border-black mt-8 flex w-[1000px]">
-                    <div className="flex border gap border-red-600 gap-2 items-center flex-col">
+            <div className="flex mb-4 flex-col justify-center items-center">
+                <div className="mt-8 flex w-[1100px]">
+                    <div className="flex gap-2 items-center flex-col">
                         <img
                             src={currentProfileData.avatar ?? default_avatar}
                             alt={`Profile Photo of ${currentProfileData.name.firstName}`}
@@ -101,8 +103,8 @@ function Profile() {
                         </div>
                     </div>
                     {/* <div>isOwnProfile : {isOwnProfile ? "Yes" : "No"}</div> */}
-                    <div className="flex ml-[26px] border mt-10 w-[80%] border-purple-600 flex-col">
-                        <div className="text-[#292d32] border border-blue-600 flex justify-between items-center  font-semibold text-[40px]">
+                    <div className="flex ml-[26px] mt-10 w-[80%] flex-col">
+                        <div className="text-[#292d32] flex justify-between items-center  font-semibold text-[40px]">
                             <div>
                                 {currentProfileData.name.firstName}{" "}
                                 {currentProfileData.name.lastName}
@@ -127,7 +129,12 @@ function Profile() {
                         </div>
                         <div className="text-[#868686] flex items-center text-sm font-medium">
                             <IoLocationOutline />
-                            <span>Kathmandu, Nepal</span>
+                            <span>
+                                {/* {currentProfileData.kyc.address.temporary.city.toUpperCase()}
+                                ,
+                                {currentProfileData.kyc.address.temporary.state} */}
+                                Kathmandu, Nepal
+                            </span>
                         </div>
                         <div className="text-base font-medium mt-2">
                             Available to work:{" "}
@@ -143,7 +150,7 @@ function Profile() {
                         </div>
                         <div>
                             {/* {currentProfileData.kyc.address.temporary.city.toUpperCase()}
-                        ,{currentProfileData.kyc.address.temporary.state} */}
+                            ,{currentProfileData.kyc.address.temporary.state} */}
                         </div>
                         <div>
                             {/* Verified:{" "}
@@ -169,7 +176,7 @@ function Profile() {
                         </div>
                     </div>
                 </div>
-                <div className="w-[1000px] mt-4 border border-black relative group">
+                <div className="w-[1100px] mt-4 relative group">
                     <div className="flex justify-between items-center">
                         <h3 className="text-[#292d32] text-[26px] font-medium flex items-center gap-2">
                             About
@@ -191,13 +198,15 @@ function Profile() {
                     ))}
                 </div>
 
-                <div className="text-right">
-                    <button
-                        className="bg-primary text-whitetext px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
-                        onClick={() => console.log("Write review clicked")}
-                    >
-                        Write a Review
-                    </button>
+                <div className="text-right w-[1100px]">
+                    {!isOwnProfile && (
+                        <Button
+                            className="bg-green-100 w-full"
+                            onClick={() => console.log("Write review clicked")}
+                        >
+                            Write Your Review....
+                        </Button>
+                    )}
                 </div>
             </div>
         </>
