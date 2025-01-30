@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
@@ -8,23 +8,24 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import nepwork_logo from "../assets/nepwork_logo.svg";
-import { useAuth, useUser } from "../stores";
+import { useAuth, useSetting, useUser } from "../stores";
 
 function NavBar() {
+    const [rotation, setRotation] = useState(0);
+    const openSetting = useSetting((state) => state.open);
     const navigate = useNavigate();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const userData = useUser((state) => state.data);
 
-    const activeNavItemStyle = "text-primary font-semibold before:scale-x-100";
-    const inactiveNavItemStyle =
-        "text-gray-600 hover:text-primary transition-colors";
-    const navItemStyle =
-        "flex items-center gap-1 sm:gap-2 relative px-2 sm:px-4 py-2 group";
+    const activeNavItemStyle = "text-primary font-semibold";
+    const inactiveNavItemStyle = "text-secondaryText hover:text-primary";
+    const navItemStyle = "flex items-center gap-2 relative p-2 sm:px-3 group";
 
     if (isLoggedIn) {
         return (
-            <nav className="bg-white shadow-md sticky w-full top-0 z-50">
-                <div className="max-w-7xl mx-auto px-2 sm:px-4 h-14 sm:h-16 flex items-center justify-between">
+            <nav className="bg-tertiary shadow-sm sticky w-full top-0 z-50 border-b border-secondary">
+                <div className=" mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+                    {/* Logo */}
                     <div className="flex items-center flex-shrink-0">
                         <img
                             src={nepwork_logo}
@@ -35,7 +36,7 @@ function NavBar() {
                     </div>
 
                     {/* Main Navigation - Center */}
-                    <div className="flex-1 flex items-center justify-center gap-1 sm:gap-2">
+                    <div className="flex-1 flex items-center justify-center gap-1 sm:gap-2 mx-2">
                         <NavLink
                             to="/"
                             className={({ isActive }) =>
@@ -45,12 +46,14 @@ function NavBar() {
                             {({ isActive }) => (
                                 <>
                                     <GoHome
-                                        className={`text-lg sm:text-xl ${isActive ? "fill-primary" : "fill-gray-500"}`}
+                                        className={`text-xl ${isActive ? "fill-primary" : "fill-secondaryText"} transition-colors`}
                                     />
-                                    <span className="hidden md:inline-block">
+                                    <span className="hidden md:inline-block text-sm sm:text-base">
                                         Home
                                     </span>
-                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 origin-bottom transform scale-x-0 group-hover:scale-x-100"></span>
+                                    <span
+                                        className={`absolute bottom-0 left-0 w-full h-0.5 ${isActive ? "bg-primary" : "bg-transparent"} transition-all duration-300`}
+                                    ></span>
                                 </>
                             )}
                         </NavLink>
@@ -64,12 +67,14 @@ function NavBar() {
                             {({ isActive }) => (
                                 <>
                                     <MdOutlineSpaceDashboard
-                                        className={`text-lg sm:text-xl ${isActive ? "fill-primary" : "fill-gray-500"}`}
+                                        className={`text-xl ${isActive ? "fill-primary" : "fill-secondaryText"} transition-colors`}
                                     />
-                                    <span className="hidden md:inline-block">
+                                    <span className="hidden md:inline-block text-sm sm:text-base">
                                         Dashboard
                                     </span>
-                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 origin-bottom transform scale-x-0 group-hover:scale-x-100"></span>
+                                    <span
+                                        className={`absolute bottom-0 left-0 w-full h-0.5 ${isActive ? "bg-primary" : "bg-transparent"} transition-all duration-300`}
+                                    ></span>
                                 </>
                             )}
                         </NavLink>
@@ -83,12 +88,14 @@ function NavBar() {
                             {({ isActive }) => (
                                 <>
                                     <LuUserRound
-                                        className={`text-lg sm:text-xl ${isActive ? "stroke-primary" : "stroke-gray-500"}`}
+                                        className={`text-xl ${isActive ? "stroke-primary" : "stroke-secondaryText"} transition-colors`}
                                     />
-                                    <span className="hidden md:inline-block">
+                                    <span className="hidden md:inline-block text-sm sm:text-base">
                                         Profile
                                     </span>
-                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 origin-bottom transform scale-x-0 group-hover:scale-x-100"></span>
+                                    <span
+                                        className={`absolute bottom-0 left-0 w-full h-0.5 ${isActive ? "bg-primary" : "bg-transparent"} transition-all duration-300`}
+                                    ></span>
                                 </>
                             )}
                         </NavLink>
@@ -102,46 +109,59 @@ function NavBar() {
                             {({ isActive }) => (
                                 <>
                                     <HiOutlineChatAlt2
-                                        className={`text-lg sm:text-xl ${isActive ? "stroke-primary" : "stroke-gray-500"}`}
+                                        className={`text-xl ${isActive ? "stroke-primary" : "stroke-secondaryText"} transition-colors`}
                                     />
-                                    <span className="hidden md:inline-block">
+                                    <span className="hidden md:inline-block text-sm sm:text-base">
                                         Inbox
                                     </span>
-                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 origin-bottom transform scale-x-0 group-hover:scale-x-100"></span>
+                                    <span
+                                        className={`absolute bottom-0 left-0 w-full h-0.5 ${isActive ? "bg-primary" : "bg-transparent"} transition-all duration-300`}
+                                    ></span>
                                 </>
                             )}
                         </NavLink>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-4 ml-4">
+                    {/* Right-aligned Icons */}
+                    <div className="flex items-center gap-2 sm:gap-3 ml-auto">
                         <NavLink
                             to="/notifications"
-                            className="relative px-2 sm:px-3 py-2 group"
+                            className="p-1.5 sm:p-2 rounded-full hover:bg-secondary transition-colors duration-200 relative"
                         >
-                            <div className="relative">
-                                <IoMdNotificationsOutline className="text-lg sm:text-xl text-gray-500 hover:text-primary transition-colors" />
-                                <span className="absolute -top-1 -right-1 sm:-right-2">
-                                    <span className="relative flex h-3 w-3 sm:h-4 sm:w-4">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-3 w-3 sm:h-4 sm:w-4 bg-red-500 text-white text-[8px] sm:text-xs items-center justify-center">
-                                            !
-                                        </span>
+                            <IoMdNotificationsOutline className="text-2xl text-secondaryText hover:text-primary" />
+                            <span className="absolute top-0 right-0">
+                                <span className="relative flex h-3 w-3 sm:h-4 sm:w-4">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 sm:h-4 sm:w-4 bg-danger text-tertiary text-[8px] sm:text-xs items-center justify-center">
+                                        3
                                     </span>
                                 </span>
-                            </div>
+                            </span>
                         </NavLink>
 
-                        <NavLink to="/settings" className="px-2 sm:px-3 py-2">
-                            <IoSettingsOutline className="text-lg sm:text-xl text-gray-500 hover:text-primary transition-colors" />
-                        </NavLink>
+                        <button
+                            onClick={openSetting}
+                            onMouseEnter={() =>
+                                setRotation((prev) => prev + 90)
+                            }
+                            className="p-1.5 sm:p-2 rounded-full hover:bg-secondary transition-colors duration-200"
+                        >
+                            <IoSettingsOutline
+                                className="text-2xl text-secondaryText hover:text-primary"
+                                style={{
+                                    transform: `rotate(${rotation}deg)`,
+                                    transition: "transform 300ms",
+                                }}
+                            />
+                        </button>
                     </div>
                 </div>
             </nav>
         );
     } else {
         return (
-            <nav className="bg-white shadow-md sticky w-full top-0 z-50">
-                <div className="max-w-7xl mx-auto px-2 sm:px-4 h-14 sm:h-16 flex items-center justify-between">
+            <nav className="bg-tertiary shadow-sm sticky w-full top-0 z-50 border-b border-secondary">
+                <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center flex-shrink-0">
                         <img
@@ -157,23 +177,28 @@ function NavBar() {
                         <NavLink
                             to="/"
                             className={({ isActive }) =>
-                                `px-2 sm:px-4 py-1 sm:py-2 text-sm sm:text-base ${isActive ? "text-primary font-semibold" : "text-gray-600 hover:text-primary"}`
+                                `px-3 py-1.5 rounded-full text-sm sm:text-base ${
+                                    isActive
+                                        ? "text-primary font-semibold bg-secondary"
+                                        : "text-secondaryText hover:text-primary hover:bg-secondary"
+                                } transition-colors duration-200`
                             }
                         >
                             Home
                         </NavLink>
 
-                        <div className="flex gap-2 sm:gap-4">
+                        <div className="flex gap-2 sm:gap-3">
                             <Button
                                 variant="filled"
                                 onClick={() => navigate("/signup")}
-                                className="px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full bg-gradient-to-r from-primary to-blue-400 hover:from-blue-500 hover:to-primary transition-all transform hover:scale-105 shadow-md"
+                                className="px-3 sm:px-5 py-1.5 text-xs sm:text-sm rounded-full bg-primary hover:bg-primary/90 transition-colors shadow-md"
                             >
                                 Join Now
                             </Button>
                             <Button
+                                variant="outline"
                                 onClick={() => navigate("/login")}
-                                className="px-3 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-full border-2 border-primary text-primary hover:bg-primary/10 transition-colors transform hover:scale-105"
+                                className="px-3 sm:px-5 py-1.5 text-xs sm:text-sm rounded-full border-2 border-primary text-primary hover:bg-secondary transition-colors"
                             >
                                 Sign In
                             </Button>

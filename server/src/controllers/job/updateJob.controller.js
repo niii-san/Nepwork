@@ -49,29 +49,35 @@ export const updateJob = asyncHandler(async (req, res) => {
             "Invalid hourly rate, must be a positive number",
         );
 
-    const updatedJob = await Job.findOneAndUpdate(
-        { _id: jobId, postedBy: userId },
-        {
-            title: jobTitle,
-            description: jobDescription,
-            hourlyRate,
-            tags: jobTags,
-            status: status,
-        },
-        { new: true },
-    );
+    const job = await Job.findOne({ _id: jobId, postedBy: userId });
+    if (!job) throw new ApiError(400, true, "Job not found");
 
-    if (!updatedJob) throw new ApiError(400, true, "Job not found");
+    if (
+        status === "open" &&
+        (job.status === "finished" || job.status === "in_progress")
+    )
+        throw new ApiError(400, true, `Cannot set from ${job.status} to open`);
+
+    if (
+        status === "closed" &&
+        (job.status === "in_progress" || job.status === "finished")
+    )
+        throw new ApiError(
+            400,
+            true,
+            `Cannot set job to closed, job status is ${job.status}`,
+        );
+    // if (status === "in_progress")
+    // if (status === "finished") job.title = jobTitle;
+    job.description = jobDescription;
+    job.hourlyRate = hourlyRate;
+    job.tags = jobTags;
+    job.status = status;
+    await job.save();
 
     return res
         .status(200)
         .json(
-            new ApiResponse(
-                200,
-                true,
-                true,
-                `Job updated: ${updatedJob.title}`,
-                updatedJob,
-            ),
+            new ApiResponse(200, true, true, `Job updated: ${job.title}`, job),
         );
 });

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
 import { useTags } from "../contexts/tagContext";
@@ -19,6 +19,7 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
     } = useForm();
 
     const selectedTags = watch("tags", []);
+    const [resErr, setResErr] = useState(null);
 
     // Initialize form with job data
     useEffect(() => {
@@ -59,16 +60,17 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
             return;
         }
 
+        if(resErr) setResErr(null)
+
         const payload = { ...data, id: jobData._id };
-        console.log(payload)
+        console.log(payload);
         try {
             await api.post("/jobs/update-job", payload);
             toast.success("Job updated");
             await refetchJobFn();
             setModalStatus(false);
         } catch (error) {
-            toast.error("Job update failed!");
-            console.error(error);
+            setResErr(error.response.data.message)
         }
     };
 
@@ -134,10 +136,11 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                                     {tags?.map((tag) => (
                                         <label
                                             key={tag}
-                                            className={`cursor-pointer inline-flex items-center px-2 py-1 tablet:px-3 tablet:py-1 border rounded-xl text-xs tablet:text-sm ${selectedTags?.includes(tag)
+                                            className={`cursor-pointer inline-flex items-center px-2 py-1 tablet:px-3 tablet:py-1 border rounded-xl text-xs tablet:text-sm ${
+                                                selectedTags?.includes(tag)
                                                     ? "bg-primary text-white border-primary"
                                                     : "bg-gray-100 text-gray-700 border-gray-300"
-                                                }`}
+                                            }`}
                                         >
                                             <input
                                                 type="checkbox"
@@ -203,6 +206,10 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                                 </div>
                             </div>
                         </div>
+
+                        {resErr && (
+                        <div className="text-red-500">{resErr}</div>
+                        )}
 
                         {/* Buttons */}
                         <div className="flex flex-col tablet:flex-row gap-4 mt-8 tablet:justify-end">

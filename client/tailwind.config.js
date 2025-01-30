@@ -3,6 +3,15 @@ export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
         extend: {
+            keyframes: {
+                slideIn: {
+                    "0%": { transform: "translateX(100%)" },
+                    "100%": { transform: "translateX(0)" },
+                },
+            },
+            animation: {
+                slideIn: "slideIn 0.3s ease-out",
+            },
             screens: {
                 tablet: "640px",
                 // => @media (min-width: 640px)
@@ -26,7 +35,7 @@ export default {
                 //red
                 danger: "#d64343",
                 //white text
-                primaryText: "#FFFFFF",
+                primaryText: "#000000",
                 secondaryText: "#505050",
 
                 //light green for card

@@ -19,6 +19,11 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
 
+        isPaid: {
+            type: Boolean,
+            default: false,
+        },
+
         appliedBy: {
             type: [
                 {

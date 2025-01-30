@@ -21,7 +21,13 @@ import {
 import { updateJob } from "./job/updateJob.controller.js";
 import { getHomePageJobs } from "./job/getHomePageJobs.controller.js";
 import { getFreelancers } from "./user/getFreelancers.controller.js";
-import { getProfileData } from "./user/profile.controller.js";
+import {
+    getProfileData,
+    updateProfileTags,
+    updateAbout,
+    updateHourlyRate,
+} from "./user/profile.controller.js";
+import { updateAvatar } from "./user/updateAvatar.controller.js";
 
 export {
     login,
@@ -48,4 +54,8 @@ export {
     getHomePageJobs,
     getFreelancers,
     getProfileData,
+    updateAvatar,
+    updateProfileTags,
+    updateAbout,
+    updateHourlyRate,
 };

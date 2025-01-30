@@ -7,7 +7,7 @@ export const getHomePageJobs = asyncHandler(async (req, res) => {
 
     // if userId not provided send all jobs
     if (!userId) {
-        const jobs = await Job.find().populate({
+        const jobs = await Job.find({ status: "open" }).populate({
             path: "postedBy",
             select: "name avatar _id",
         });
@@ -34,7 +34,7 @@ export const getHomePageJobs = asyncHandler(async (req, res) => {
 
     // TODO: send jobs that would be more relevent if userId is provided
     async function getRecommendedJobs(userId) {
-        const jobs = await Job.find().populate({
+        const jobs = await Job.find({ status: "open" }).populate({
             path: "postedBy",
             select: "name avatar _id",
         });
