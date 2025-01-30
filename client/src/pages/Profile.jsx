@@ -403,20 +403,17 @@ function Profile() {
                         <h2 className="text-lg font-semibold text-gray-900">
                             Reviews
                         </h2>
-                        {!isOwnProfile && (
-                            <Button
-                                variant="filled"
-                                className="rounded-full px-5 py-2 text-sm"
-                            >
-                                Share Your Experience
-                            </Button>
-                        )}
                     </div>
-                    <div className="space-y-5">
+                    <div className="flex flex-wrap gap-y-8 px-8">
                         <Review />
                         <Review />
                         <Review />
                     </div>
+                    {!isOwnProfile && (
+                        <Button variant="filled" className={"text-sm w-full mt-10"}>
+                            Share Your Experience
+                        </Button>
+                    )}
                 </section>
             </div>
         </>
