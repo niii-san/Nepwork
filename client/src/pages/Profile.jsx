@@ -1,61 +1,103 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
 import { Button, ChangeAvatarModal, Loader, Review } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
-import { IoLocationOutline } from "react-icons/io5";
-import { CiStar } from "react-icons/ci";
-import { BiMessageRoundedDots } from "react-icons/bi";
 import Tag from "../components/Tag";
+import {
+    FiEdit,
+    FiMessageCircle,
+    FiMapPin,
+    FiClock,
+    FiDollarSign,
+    FiCheckCircle,
+    FiUserPlus,
+    FiStar,
+    FiUsers,
+} from "react-icons/fi";
+
+const clientJobs = [
+    {
+        id: 1,
+        title: "Website Development",
+        description: "Need a responsive website for my bakery business",
+        hourlyRate: "$1500",
+        date: "2024-03-15",
+    },
+    {
+        id: 2,
+        title: "Mobile App Design",
+        description: "UI/UX design for a fitness tracking application",
+        hourlyRate: "$2500",
+        date: "2024-03-20",
+    },
+];
 
 function Profile() {
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
-    console.log(currentProfileData);
-
     const [changeAvatarModal, setChangeAvatarModal] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [userRating, setUserRating] = useState(3);
+    const [editHourlyRate, setEditHourlyRate] = useState(false);
+    const [hourlyRateInput, setHourlyRateInput] = useState("");
 
-    //function to fetch and set current user profile data
     const fetchSetCurrentProfileData = async () => {
         try {
             const response = await api.get(`/user/profiles/${userId}`);
             setCurrentProfileData(response.data.data);
+            setHourlyRateInput(response.data.data.hourlyRate || "");
         } catch (error) {
             toast.error("Failed to load profile");
             console.error(error);
         }
     };
-    useEffect(() => {
-        fetchSetCurrentProfileData();
-    }, [userId]);
-
     const getJoinedTime = (createdAt) => {
         const now = new Date();
         const createdTime = new Date(createdAt);
         const timeDifference = Math.floor((now - createdTime) / 1000);
 
-        if (timeDifference < 60) {
-            return `${timeDifference} seconds ago`;
-        } else if (timeDifference < 3600) {
+        if (timeDifference < 60) return `${timeDifference} seconds ago`;
+        if (timeDifference < 3600) {
             const minutes = Math.floor(timeDifference / 60);
             return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-        } else if (timeDifference < 86400) {
+        }
+        if (timeDifference < 86400) {
             const hours = Math.floor(timeDifference / 3600);
             return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-        } else {
-            const days = Math.floor(timeDifference / 86400);
-            return `${days} day${days > 1 ? "s" : ""} ago`;
+        }
+        const days = Math.floor(timeDifference / 86400);
+        return `${days} day${days > 1 ? "s" : ""} ago`;
+    };
+
+    const handleHourlyRateUpdate = async () => {
+        try {
+            await api.patch(`/user/profiles/${userId}`, {
+                hourlyRate: hourlyRateInput,
+            });
+            setEditHourlyRate(false);
+            toast.success("Hourly rate updated!");
+            fetchSetCurrentProfileData();
+        } catch (error) {
+            toast.error("Failed to update hourly rate");
+            console.error(error);
         }
     };
+
+    useEffect(() => {
+        fetchSetCurrentProfileData();
+    }, [userId]);
 
     if ((isLoggedIn && !currentUserData) || !currentProfileData)
         return <Loader />;
 
     const isOwnProfile = userId === currentUserData?._id;
+    const isFreelancer = currentProfileData.role === "freelancer";
+    const isClient = currentProfileData.role === "client";
 
     return (
         <>
@@ -65,152 +107,319 @@ function Profile() {
                     refetchProfile={fetchSetCurrentProfileData}
                 />
             )}
-            <div className="flex mb-4 flex-col justify-center items-center">
-                <div className="mt-8 flex w-[1100px]">
-                    <div className="flex gap-2 items-center flex-col">
-                        <img
-                            src={currentProfileData.avatar ?? default_avatar}
-                            alt={`Profile Photo of ${currentProfileData.name.firstName}`}
-                            className="w-[280px] h-[280px] rounded-[35px] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25)]"
-                        />
-                        <div className="flex justify-evenly text-lg font-medium w-full">
-                            <span>22 followers</span>
-                            <span>22 following</span>
-                        </div>
 
-                        <div
-                            className={
-                                isOwnProfile
-                                    ? "w-full"
-                                    : "w-[90%] flex justify-between"
-                            }
-                        >
-                            {isOwnProfile ? (
-                                <Button
-                                    className={"w-full"}
+            <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
+                {/* Profile Header Section */}
+                <div className="flex flex-col md:flex-row gap-8 mb-8">
+                    {/* Left Column - Avatar & Actions */}
+                    <div className="w-full md:w-64 flex flex-col items-center space-y-4">
+                        <div className="relative group">
+                            <img
+                                src={
+                                    currentProfileData.avatar ?? default_avatar
+                                }
+                                alt={`Profile Photo of ${currentProfileData.name.firstName}`}
+                                className="w-48 h-48 rounded-full shadow-lg object-cover border-4 border-white hover:border-gray-100 transition-all"
+                            />
+                            {isOwnProfile && (
+                                <button
                                     onClick={() => setChangeAvatarModal(true)}
+                                    className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md hover:shadow-lg transition-shadow"
                                 >
-                                    Edit Profile
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button>Follow</Button>
-                                    <button className="bg-[#1C98F7] text-xl text-whitetext rounded-[10px] px-4">
-                                        <BiMessageRoundedDots />
-                                    </button>
-                                </>
+                                    <FiEdit className="w-5 h-5 text-gray-700" />
+                                </button>
                             )}
                         </div>
+
+                        {/* Social Stats */}
+                        <div className="flex justify-center gap-6 w-full">
+                            <div className="text-center">
+                                <div className="font-semibold text-gray-900">
+                                    22
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                    Following
+                                </div>
+                            </div>
+                            <div className="text-center">
+                                <div className="font-semibold text-gray-900">
+                                    22
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                    Followers
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        {!isOwnProfile && (
+                            <div className="w-full flex justify-evenly ">
+                                <Button
+                                    variant={isFollowing ? "outline" : "filled"}
+                                    className=" text-sm flex items-center justify-center gap-2"
+                                    onClick={() => setIsFollowing(!isFollowing)}
+                                >
+                                    <FiUserPlus className="w-4 h-4" />
+                                    {isFollowing ? "Unfollow" : "Follow"}
+                                </Button>
+                                <Button
+                                    variant="filled"
+                                    className="text-sm flex w-fit rounded-full bg-blue-600 border-blue-600 items-center justify-center gap-2"
+                                >
+                                    <FiMessageCircle className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        )}
                     </div>
-                    {/* <div>isOwnProfile : {isOwnProfile ? "Yes" : "No"}</div> */}
-                    <div className="flex ml-[26px] mt-10 w-[80%] flex-col">
-                        <div className="text-[#292d32] flex justify-between items-center  font-semibold text-[40px]">
-                            <div>
-                                {currentProfileData.name.firstName}{" "}
-                                {currentProfileData.name.lastName}
-                                <span className="border border-[#868686] px-2 ml-2 py-[2px] rounded-[15px] text-[#868686] text-[10px] font-medium">
+
+                    {/* Right Column - Profile Details */}
+                    <div className="flex-1 space-y-6">
+                        {/* Name & Basic Info */}
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-2xl font-bold text-gray-900">
+                                    {currentProfileData.name.firstName}{" "}
+                                    {currentProfileData.name.lastName}
+                                </h1>
+                                <div className="flex items-center gap-2">
+                                    <FiStar className="w-5 h-5 text-yellow-500" />
+                                    <span className="font-medium text-gray-700">
+                                        {currentProfileData.rating}/5
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 text-gray-600">
+                                <FiMapPin className="w-5 h-5" />
+                                <span>
+                                    {
+                                        currentProfileData.kyc.address.temporary
+                                            .city
+                                    }
+                                    ,
+                                    {
+                                        currentProfileData.kyc.address.temporary
+                                            .state
+                                    }
+                                </span>
+                            </div>
+
+                            <div className="flex items-center gap-2 text-gray-600">
+                                <FiClock className="w-5 h-5" />
+                                <span>
                                     Joined{" "}
                                     {getJoinedTime(
                                         currentProfileData.createdAt,
                                     )}
                                 </span>
                             </div>
-                            <div className="flex flex-col items-center mr-2">
-                                <div className="flex items-center">
-                                    <CiStar className="text-primary" />{" "}
-                                    {currentProfileData.rating}
+                        </div>
+
+                        {/* Verification Status */}
+                        {currentProfileData.kycVerified && (
+                            <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full w-fit">
+                                <FiCheckCircle className="w-5 h-5 text-green-600" />
+                                <span className="text-sm text-green-700">
+                                    Verified Profile
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Freelancer Specific Info */}
+                        {isFreelancer && (
+                            <div className="space-y-4">
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
+                                        <FiDollarSign className="w-5 h-5 text-blue-600" />
+                                        {editHourlyRate ? (
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="number"
+                                                    value={hourlyRateInput}
+                                                    onChange={(e) =>
+                                                        setHourlyRateInput(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="w-24 px-2 py-1 rounded border border-blue-200 bg-white text-sm"
+                                                />
+                                                <button
+                                                    onClick={
+                                                        handleHourlyRateUpdate
+                                                    }
+                                                    className="text-blue-600 hover:text-blue-700 text-sm"
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        setEditHourlyRate(false)
+                                                    }
+                                                    className="text-gray-500 hover:text-gray-700 text-sm"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <span className="font-medium text-blue-700">
+                                                    $
+                                                    {
+                                                        currentProfileData.hourlyRate
+                                                    }
+                                                    /hr
+                                                </span>
+                                                {isOwnProfile && (
+                                                    <button
+                                                        onClick={() =>
+                                                            setEditHourlyRate(
+                                                                true,
+                                                            )
+                                                        }
+                                                        className="text-blue-600 hover:text-blue-700"
+                                                    >
+                                                        <FiEdit className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                    <div
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-full ${
+                                            currentProfileData.available
+                                                ? "bg-green-50 text-green-700"
+                                                : "bg-red-50 text-red-700"
+                                        }`}
+                                    >
+                                        <span className="text-sm font-medium">
+                                            {currentProfileData.available
+                                                ? "Available Now"
+                                                : "Not Available"}
+                                        </span>
+                                    </div>
                                 </div>
+
                                 {!isOwnProfile && (
-                                    <span className="font-semibold text-xl text-[#5c5f65] mt-1">
-                                        Your Rating: 3
-                                    </span>
+                                    <Button
+                                        variant="filled"
+                                        className="rounded-full px-6 py-2.5 text-sm font-medium"
+                                    >
+                                        Hire Now
+                                    </Button>
                                 )}
                             </div>
-                        </div>
-                        <div className="text-[#868686] flex items-center text-sm font-medium">
-                            <IoLocationOutline />
-                            <span>
-                                {/* {currentProfileData.kyc.address.temporary.city.toUpperCase()}
-                                ,
-                                {currentProfileData.kyc.address.temporary.state} */}
-                                Kathmandu, Nepal
-                            </span>
-                        </div>
-                        <div className="text-base font-medium mt-2">
-                            Available to work:{" "}
-                            {currentProfileData.available ? "Yes" : "No"}
-                        </div>
-                        <div className="bg-[#E4E4E4] text-xl font-medium rounded-sm w-[250px] h-[50px] flex px-2 items-center mt-2 group relative justify-between">
-                            <span>Rs.{currentProfileData.hourlyRate} / Hr</span>
-                            {isOwnProfile && (
-                                <span className="text-xs text-gray-500 hover:text-gray-700 cursor-pointer flex items-center gap-1 border border-[#868686] rounded-lg px-2 py-[1px]">
-                                    <u>Edit Price</u>
-                                </span>
-                            )}
-                        </div>
-                        <div>
-                            {/* {currentProfileData.kyc.address.temporary.city.toUpperCase()}
-                            ,{currentProfileData.kyc.address.temporary.state} */}
-                        </div>
-                        <div>
-                            {/* Verified:{" "}
-                            {currentProfileData.kycVerified ? "yes" : "no"} */}
-                        </div>
-                        <div className="mt-2 flex gap-2 flex-wrap">
-                            <Tag title="Design" />
-                            <Tag title="Frontend" />
-                            <Tag title="Figma" />
-                            <Tag title="Graphic" />
-                            <Tag title="Canva" />
-                            <Tag title="Design" />
-                            <Tag title="Frontend" />
-                            <Tag title="Figma" />
-                            {currentProfileData?.tags?.map((item) => (
-                                <Tag key={item} title={item} />
-                            ))}
-                            {isOwnProfile && (
-                                <span className="text-xs text-primary hover:text-gray-700 cursor-pointer flex items-center gap-1 border border-primary rounded-lg px-2 py-[1px]">
-                                    <u>Update Tags</u>
-                                </span>
-                            )}
-                        </div>
+                        )}
+
+                        {/* Tags Section */}
+                        {isFreelancer && (
+                            <div className="pt-4">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h2 className="text-lg font-semibold text-gray-900">
+                                        Skills
+                                    </h2>
+                                    {isOwnProfile && (
+                                        <button className="flex items-center text-blue-600 hover:text-blue-700 text-sm">
+                                            <FiEdit className="mr-1 w-4 h-4" />
+                                            Edit
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {currentProfileData.tags.map((item) => (
+                                        <Tag
+                                            key={item}
+                                            title={item}
+                                            variant="primary"
+                                            size="sm"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
-                <div className="w-[1100px] mt-4 relative group">
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-[#292d32] text-[26px] font-medium flex items-center gap-2">
-                            About
-                            {isOwnProfile && (
-                                <span className="mt-2 text-xs text-gray-500 hover:text-gray-700 cursor-pointer flex items-center gap-1 border border-[#868686] rounded-lg px-2 py-[1px]">
-                                    <u>Update About</u>
-                                </span>
-                            )}
-                        </h3>
-                    </div>
-                    <p className="text-[#787878] text-base font-medium mt-1">
-                        {currentProfileData.about ?? "No description added yet"}
-                    </p>
-                </div>
-                <span className="text-3xl font-semibold mt-6">Reviews</span>
-                <div className="mt-6 flex flex-wrap gap-6 mb-8">
-                    {[...Array(3)].map((_, index) => (
-                        <Review key={index} />
-                    ))}
                 </div>
 
-                <div className="text-right w-[1100px]">
-                    {!isOwnProfile && (
-                        <Button
-                            className="bg-green-100 w-full"
-                            onClick={() => console.log("Write review clicked")}
-                        >
-                            Write Your Review....
-                        </Button>
-                    )}
-                </div>
+                {/* About Section */}
+                <section className="bg-white rounded-xl p-6 shadow-sm mb-8">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                            About
+                        </h2>
+                        {isOwnProfile && (
+                            <button className="flex items-center text-blue-600 hover:text-blue-700 text-sm">
+                                <FiEdit className="mr-1 w-4 h-4" />
+                                Edit
+                            </button>
+                        )}
+                    </div>
+                    <p className="text-gray-600 leading-relaxed text-sm">
+                        {currentProfileData.about || "No description provided"}
+                    </p>
+                </section>
+
+                {/* Client Jobs Section */}
+                {isClient && (
+                    <section className="bg-white rounded-xl p-6 shadow-sm mb-8">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                            Posted Jobs
+                        </h2>
+                        <div className="grid gap-4 md:grid-cols-2">
+                            {clientJobs.map((job) => (
+                                <div
+                                    key={job.id}
+                                    className="border rounded-xl p-5 hover:shadow-md transition-shadow"
+                                >
+                                    <div className="flex justify-between items-start mb-3">
+                                        <h3 className="text-base font-semibold text-gray-900">
+                                            {job.title}
+                                        </h3>
+                                        <span className="text-xs text-gray-500">
+                                            {job.date}
+                                        </span>
+                                    </div>
+                                    <p className="text-gray-600 text-sm mb-4">
+                                        {job.description}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-medium text-blue-600 text-sm">
+                                            {job.hourlyRate}
+                                        </span>
+                                        <Button
+                                            variant="outlined"
+                                            className="px-3 py-1.5 text-sm"
+                                        >
+                                            View Details
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Reviews Section */}
+                <section className="bg-white rounded-xl p-6 shadow-sm">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                            Reviews
+                        </h2>
+                        {!isOwnProfile && (
+                            <Button
+                                variant="filled"
+                                className="rounded-full px-5 py-2 text-sm"
+                            >
+                                Share Your Experience
+                            </Button>
+                        )}
+                    </div>
+                    <div className="space-y-5">
+                        <Review />
+                        <Review />
+                        <Review />
+                    </div>
+                </section>
             </div>
         </>
     );
 }
-
 export default Profile;
