@@ -92,7 +92,7 @@ function EditTagsModal({ setModalFn, profileData, refetchProfileFn }) {
                                 className={`p-2 rounded-lg border transition-all duration-200 flex items-center justify-center
                                     ${
                                         currentTags.includes(tag)
-                                            ? "bg-primary/10 border-primary text-primaryText font-semibold"
+                                            ? "bg-primary/10 border-primary text-primary font-semibold"
                                             : "border-secondary hover:border-primary/50 text-secondaryText"
                                     }
                                     ${
@@ -107,9 +107,7 @@ function EditTagsModal({ setModalFn, profileData, refetchProfileFn }) {
                                     !currentTags.includes(tag)
                                 }
                             >
-                                <span className="text-sm font-medium">
-                                    {tag}
-                                </span>
+                                <span className="text-sm">{tag}</span>
                             </button>
                         ))}
                     </div>
