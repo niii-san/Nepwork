@@ -166,7 +166,7 @@ function ChangeAvatarModal({ setModal, refetchProfile }) {
                         disabled={uploading || !newAvatar}
                         loading={uploading}
                         variant="filled"
-                        className="bg-primary text-primaryText hover:bg-primary/90 px-6 py-2 disabled:opacity-70"
+                        className="bg-primary text-primaryText border-primary/90 hover:bg-primary/90 px-6 py-2 disabled:opacity-70"
                     >
                         {uploading ? "Uploading..." : "Save Changes"}
                     </Button>

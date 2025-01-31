@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { TbMessageDots } from "react-icons/tb";
 import { Link, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
-import { Button, ChangeAvatarModal, Loader, Review } from "../components";
+import {
+    Button,
+    ChangeAvatarModal,
+    EditAboutModal,
+    EditHourlyRateModal,
+    EditTagsModal,
+    Loader,
+    Review,
+} from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
-import Tag from "../components/Tag";
+import { Tag } from "../components";
 import {
     FiEdit,
     FiMessageCircle,
@@ -41,16 +50,14 @@ function Profile() {
     const currentUserData = useUser((state) => state.data);
     const [currentProfileData, setCurrentProfileData] = useState(null);
     const [changeAvatarModal, setChangeAvatarModal] = useState(false);
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [userRating, setUserRating] = useState(3);
-    const [editHourlyRate, setEditHourlyRate] = useState(false);
-    const [hourlyRateInput, setHourlyRateInput] = useState("");
+    const [editHourlyRateModal, setEditHourlyRateModal] = useState(false);
+    const [editAboutModal, setEditAboutModal] = useState(false);
+    const [editTagsModal, setEditTagsModal] = useState(false);
 
     const fetchSetCurrentProfileData = async () => {
         try {
             const response = await api.get(`/user/profiles/${userId}`);
             setCurrentProfileData(response.data.data);
-            setHourlyRateInput(response.data.data.hourlyRate || "");
         } catch (error) {
             toast.error("Failed to load profile");
             console.error(error);
@@ -74,20 +81,6 @@ function Profile() {
         return `${days} day${days > 1 ? "s" : ""} ago`;
     };
 
-    const handleHourlyRateUpdate = async () => {
-        try {
-            await api.patch(`/user/profiles/${userId}`, {
-                hourlyRate: hourlyRateInput,
-            });
-            setEditHourlyRate(false);
-            toast.success("Hourly rate updated!");
-            fetchSetCurrentProfileData();
-        } catch (error) {
-            toast.error("Failed to update hourly rate");
-            console.error(error);
-        }
-    };
-
     useEffect(() => {
         fetchSetCurrentProfileData();
     }, [userId]);
@@ -105,6 +98,29 @@ function Profile() {
                 <ChangeAvatarModal
                     setModal={setChangeAvatarModal}
                     refetchProfile={fetchSetCurrentProfileData}
+                />
+            )}
+
+            {editHourlyRateModal && (
+                <EditHourlyRateModal
+                    setModalFn={setEditHourlyRateModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
+                />
+            )}
+            {editTagsModal && (
+                <EditTagsModal
+                    setModalFn={setEditTagsModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
+                />
+            )}
+
+            {editAboutModal && (
+                <EditAboutModal
+                    setModalFn={setEditAboutModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
                 />
             )}
 
@@ -133,40 +149,48 @@ function Profile() {
 
                         {/* Social Stats */}
                         <div className="flex justify-center gap-6 w-full">
-                            <div className="text-center">
+                            <Link
+                                to={`/following/${currentProfileData._id}`}
+                                className="text-center cursor-pointer"
+                            >
                                 <div className="font-semibold text-gray-900">
                                     22
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Following
                                 </div>
-                            </div>
-                            <div className="text-center">
+                            </Link>
+                            <span className="border border-gray-300"></span>
+                            <Link
+                                to={`/followers/${currentProfileData._id}`}
+                                className="text-center cursor-pointer"
+                            >
                                 <div className="font-semibold text-gray-900">
                                     22
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Followers
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
                         {/* Action Buttons */}
                         {!isOwnProfile && (
-                            <div className="w-full flex justify-evenly ">
+                            <div className="w-full flex items-center justify-evenly ">
                                 <Button
-                                    variant={isFollowing ? "outline" : "filled"}
+                                    variant={"filled"}
                                     className=" text-sm flex items-center justify-center gap-2"
-                                    onClick={() => setIsFollowing(!isFollowing)}
                                 >
                                     <FiUserPlus className="w-4 h-4" />
-                                    {isFollowing ? "Unfollow" : "Follow"}
+                                    Unfollow
                                 </Button>
                                 <Button
+                                    className={
+                                        "py-1 px-3 bg-blue-500 border-blue-500"
+                                    }
                                     variant="filled"
-                                    className="text-sm flex w-fit rounded-full bg-blue-600 border-blue-600 items-center justify-center gap-2"
                                 >
-                                    <FiMessageCircle className="w-4 h-4" />
+                                    <TbMessageDots className="h-7 w-7" />
                                 </Button>
                             </div>
                         )}
@@ -230,59 +254,26 @@ function Profile() {
                             <div className="space-y-4">
                                 <div className="flex flex-wrap items-center gap-3">
                                     <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                                        <FiDollarSign className="w-5 h-5 text-blue-600" />
-                                        {editHourlyRate ? (
-                                            <div className="flex items-center gap-2">
-                                                <input
-                                                    type="number"
-                                                    value={hourlyRateInput}
-                                                    onChange={(e) =>
-                                                        setHourlyRateInput(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="w-24 px-2 py-1 rounded border border-blue-200 bg-white text-sm"
-                                                />
-                                                <button
-                                                    onClick={
-                                                        handleHourlyRateUpdate
-                                                    }
-                                                    className="text-blue-600 hover:text-blue-700 text-sm"
-                                                >
-                                                    Save
-                                                </button>
+                                        <span className=" font-bold text-blue-600" >Rs.</span>
+
+                                        <>
+                                            <span className="font-medium text-blue-700">
+                                                {currentProfileData.hourlyRate}
+                                                /hr
+                                            </span>
+                                            {isOwnProfile && (
                                                 <button
                                                     onClick={() =>
-                                                        setEditHourlyRate(false)
+                                                        setEditHourlyRateModal(
+                                                            true,
+                                                        )
                                                     }
-                                                    className="text-gray-500 hover:text-gray-700 text-sm"
+                                                    className="text-blue-600 hover:text-blue-700"
                                                 >
-                                                    Cancel
+                                                    <FiEdit className="w-4 h-4" />
                                                 </button>
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <span className="font-medium text-blue-700">
-                                                    $
-                                                    {
-                                                        currentProfileData.hourlyRate
-                                                    }
-                                                    /hr
-                                                </span>
-                                                {isOwnProfile && (
-                                                    <button
-                                                        onClick={() =>
-                                                            setEditHourlyRate(
-                                                                true,
-                                                            )
-                                                        }
-                                                        className="text-blue-600 hover:text-blue-700"
-                                                    >
-                                                        <FiEdit className="w-4 h-4" />
-                                                    </button>
-                                                )}
-                                            </>
-                                        )}
+                                            )}
+                                        </>
                                     </div>
                                     <div
                                         className={`flex items-center gap-2 px-4 py-2 rounded-full ${
@@ -318,7 +309,12 @@ function Profile() {
                                         Skills
                                     </h2>
                                     {isOwnProfile && (
-                                        <button className="flex items-center text-blue-600 hover:text-blue-700 text-sm">
+                                        <button
+                                            onClick={() =>
+                                                setEditTagsModal(true)
+                                            }
+                                            className="flex items-center text-blue-600 hover:text-blue-700 text-sm"
+                                        >
                                             <FiEdit className="mr-1 w-4 h-4" />
                                             Edit
                                         </button>
@@ -346,7 +342,10 @@ function Profile() {
                             About
                         </h2>
                         {isOwnProfile && (
-                            <button className="flex items-center text-blue-600 hover:text-blue-700 text-sm">
+                            <button
+                                onClick={() => setEditAboutModal(true)}
+                                className="flex items-center text-blue-600 hover:text-blue-700 text-sm"
+                            >
                                 <FiEdit className="mr-1 w-4 h-4" />
                                 Edit
                             </button>
@@ -385,7 +384,7 @@ function Profile() {
                                             {job.hourlyRate}
                                         </span>
                                         <Button
-                                            variant="outlined"
+                                            variant="outline"
                                             className="px-3 py-1.5 text-sm"
                                         >
                                             View Details
@@ -404,13 +403,16 @@ function Profile() {
                             Reviews
                         </h2>
                     </div>
-                    <div className="flex flex-wrap gap-y-8 px-8">
+                    <div className="flex flex-wrap justify-center md:justify-normal  gap-10 md:pl-9">
                         <Review />
                         <Review />
                         <Review />
                     </div>
                     {!isOwnProfile && (
-                        <Button variant="filled" className={"text-sm w-full mt-10"}>
+                        <Button
+                            variant="filled"
+                            className={"text-sm w-full mt-10"}
+                        >
                             Share Your Experience
                         </Button>
                     )}

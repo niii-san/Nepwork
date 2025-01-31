@@ -10,18 +10,22 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         setValue,
         reset,
-        setError,
         watch,
-        clearErrors,
     } = useForm();
 
     const selectedTags = watch("tags", []);
+    const [searchQuery, setSearchQuery] = useState("");
     const [resErr, setResErr] = useState(null);
+    const [tagErr, setTagErr] = useState(null);
 
-    // Initialize form with job data
+    // Filter tags based on search query
+    const filteredTags = tags.filter((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
     useEffect(() => {
         if (jobData) {
             reset({
@@ -35,42 +39,35 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
     }, [jobData, reset]);
 
     const toggleTag = (tag) => {
-        const updatedTags = selectedTags.includes(tag)
-            ? selectedTags.filter((t) => t !== tag)
-            : [...selectedTags, tag];
-
-        setValue("tags", updatedTags);
-
-        if (updatedTags.length === 0) {
-            setError("tags", {
-                type: "manual",
-                message: "At least one tag is required",
-            });
+        if (selectedTags.includes(tag)) {
+            const updatedTags = selectedTags.filter((t) => t !== tag);
+            setValue("tags", updatedTags);
+            setTagErr(null);
         } else {
-            clearErrors("tags");
+            if (selectedTags.length >= 15) {
+                setTagErr("Maximum 15 tags allowed");
+                return;
+            }
+            setValue("tags", [...selectedTags, tag]);
+            setTagErr(null);
         }
     };
 
     const onSubmit = async (data) => {
         if (data.tags.length === 0) {
-            setError("tags", {
-                type: "manual",
-                message: "At least one tag is required",
-            });
+            setTagErr("At least one tag is required");
             return;
         }
 
-        if(resErr) setResErr(null)
-
-        const payload = { ...data, id: jobData._id };
-        console.log(payload);
         try {
+            setResErr(null);
+            const payload = { ...data, id: jobData._id };
             await api.post("/jobs/update-job", payload);
-            toast.success("Job updated");
+            toast.success("Job updated successfully");
             await refetchJobFn();
             setModalStatus(false);
         } catch (error) {
-            setResErr(error.response.data.message)
+            setResErr(error.response?.data?.message || "Failed to update job");
         }
     };
 
@@ -86,7 +83,7 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
 
                 <div className="p-4 pc:p-6">
                     <h1 className="text-center font-bold text-xl pc:text-2xl mb-4">
-                        Editing Job
+                        Edit Job Posting
                     </h1>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -108,7 +105,6 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                                     </p>
                                 )}
                             </div>
-
                             {/* Job Description */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">
@@ -126,42 +122,93 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                                     </p>
                                 )}
                             </div>
-
-                            {/* Tags */}
+                            {/* Tags Section */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Tags
-                                </label>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {tags?.map((tag) => (
-                                        <label
-                                            key={tag}
-                                            className={`cursor-pointer inline-flex items-center px-2 py-1 tablet:px-3 tablet:py-1 border rounded-xl text-xs tablet:text-sm ${
-                                                selectedTags?.includes(tag)
-                                                    ? "bg-primary text-white border-primary"
-                                                    : "bg-gray-100 text-gray-700 border-gray-300"
-                                            }`}
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                value={tag}
-                                                checked={selectedTags?.includes(
-                                                    tag,
-                                                )}
-                                                onChange={() => toggleTag(tag)}
-                                                className="hidden"
-                                            />
-                                            {tag}
-                                        </label>
-                                    ))}
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Tags (Max 15)
+                                    </label>
+                                    <span className="text-sm text-secondaryText">
+                                        {selectedTags.length}/15 selected
+                                    </span>
                                 </div>
-                                {errors.tags && (
-                                    <p className="text-red-600 text-sm mt-1">
-                                        {errors.tags.message}
-                                    </p>
-                                )}
-                            </div>
 
+                                <input
+                                    type="text"
+                                    placeholder="Search tags..."
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                    className="w-full p-2.5 rounded-md border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary/20 mb-3"
+                                />
+
+                                <div className="max-h-[250px] overflow-y-auto p-2 border rounded-lg">
+                                    {filteredTags.length === 0 ? (
+                                        <div className="text-center text-gray-400 py-4">
+                                            No tags found matching "
+                                            {searchQuery}"
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                                            {filteredTags.map((tag) => (
+                                                <label
+                                                    key={tag}
+                                                    className={`
+                            relative inline-flex items-center justify-center px-3 py-1.5 border rounded-lg text-sm
+                            transition-colors duration-200  ${
+                                selectedTags.includes(tag)
+                                    ? "bg-primary/10 border-primary text-primary font-semibold"
+                                    : "border-gray-300 text-gray-600 hover:border-primary/40"
+                            }
+                            ${
+                                selectedTags.length >= 15 &&
+                                !selectedTags.includes(tag)
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : "cursor-pointer"
+                            }`}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        value={tag}
+                                                        checked={selectedTags?.includes(
+                                                            tag,
+                                                        )}
+                                                        onChange={() =>
+                                                            toggleTag(tag)
+                                                        }
+                                                        className="hidden"
+                                                        disabled={
+                                                            selectedTags.length >=
+                                                                15 &&
+                                                            !selectedTags.includes(
+                                                                tag,
+                                                            )
+                                                        }
+                                                    />
+                                                    {tag}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                {tagErr && (
+                                    <div className="mt-2 flex items-center text-danger">
+                                        <svg
+                                            className="w-5 h-5 mr-1"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                        <p className="text-sm">{tagErr}</p>
+                                    </div>
+                                )}
+                            </div>{" "}
                             {/* Rate and Status */}
                             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
                                 <div>
@@ -207,16 +254,31 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                             </div>
                         </div>
 
+                        {/* Error Messages */}
                         {resErr && (
-                        <div className="text-red-500">{resErr}</div>
+                            <div className="mt-4 p-3 bg-red-50 rounded-lg flex items-center">
+                                <svg
+                                    className="w-5 h-5 text-red-500 mr-2"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                <p className="text-red-600 text-sm">{resErr}</p>
+                            </div>
                         )}
 
-                        {/* Buttons */}
+                        {/* Action Buttons */}
                         <div className="flex flex-col tablet:flex-row gap-4 mt-8 tablet:justify-end">
                             <Button
                                 variant="outline"
                                 className="w-full tablet:w-auto justify-center border-red-500 text-red-500 hover:bg-red-50"
                                 onClick={() => setModalStatus(false)}
+                                disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
@@ -224,8 +286,10 @@ function EditJobModal({ jobData, setModalStatus, refetchJobFn }) {
                                 variant="filled"
                                 type="submit"
                                 className="w-full tablet:w-auto justify-center bg-primary hover:bg-primary-dark text-white"
+                                loading={isSubmitting}
+                                disabled={isSubmitting}
                             >
-                                Save Changes
+                                {isSubmitting ? "Saving..." : "Save Changes"}
                             </Button>
                         </div>
                     </form>

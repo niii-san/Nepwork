@@ -20,6 +20,12 @@ import KycForm from "./KycForm";
 import ChangeAvatarModal from "./Profile/ChangeAvatarModal";
 import SettingSlide from "./SettingSlide";
 import Review from "./Profile/ReviewCard";
+import EditHourlyRateModal from "./Profile/EditHourlyRateModal";
+import EditTagsModal from "./Profile/EditTagsModal";
+import EditAboutModal from "./Profile/EditAboutModal";
+import Tag from "./Tag";
+import ConfirmModal from "./ConfirmModal";
+
 export {
     NavBar,
     Footer,
@@ -42,5 +48,10 @@ export {
     KycForm,
     ChangeAvatarModal,
     SettingSlide,
-    Review
+    Review,
+    EditHourlyRateModal,
+    EditTagsModal,
+    EditAboutModal,
+    Tag,
+    ConfirmModal,
 };

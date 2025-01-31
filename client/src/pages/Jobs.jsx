@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import api from "../utils/api";
-import { Button, EditJobModal, Loader } from "../components";
+import { Button, ConfirmModal, EditJobModal, Loader } from "../components";
 import default_avatar from "../assets/default_avatar.svg";
 import { useUser } from "../stores";
 import Tag from "../components/Tag";
+import { FaRegTrashAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
+import ApplicantsList from "../components/ApplicantsList";
 
 function Jobs() {
+    const navigate = useNavigate();
     const { jobId } = useParams();
     const userData = useUser((state) => state.data);
     const [currentJob, setCurrentJob] = useState(null);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteResErr, setDeleteResErr] = useState(null);
+    const [deleting, setDeleting] = useState(false);
 
     const statusStyles = {
         open: "bg-primary text-whitetext",
@@ -48,8 +56,35 @@ function Jobs() {
             return `${days} day${days > 1 ? "s" : ""} ago`;
         }
     };
+
+    const handleDelete = async () => {
+        setDeleting(true);
+        if (deleteResErr) setDeleteResErr(null);
+
+        try {
+            await api.delete(`/jobs/delete-job/${jobId}`);
+            toast.success("Job deleted");
+            navigate("/dashboard");
+            setShowDeleteModal(false);
+        } catch (error) {
+            setDeleteResErr(error.response.data.message);
+        } finally {
+            setDeleting(false);
+        }
+    };
+
     return (
         <>
+            {showDeleteModal && (
+                <ConfirmModal
+                    setShowModalFn={setShowDeleteModal}
+                    title={`Are you sure want to delete "${currentJob.title}"`}
+                    err={deleteResErr}
+                    loading={deleting}
+                    onConfirmFn={handleDelete}
+                />
+            )}
+
             {showEditJobModal && (
                 <EditJobModal
                     jobData={currentJob}
@@ -89,9 +124,9 @@ function Jobs() {
                                             {currentJob.status === "in_progress"
                                                 ? "In Progress"
                                                 : currentJob.status
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                currentJob.status.slice(1)}
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                  currentJob.status.slice(1)}
                                         </span>
                                         <span className="text-gray-500">•</span>
                                         <span className="text-gray-600">
@@ -139,7 +174,7 @@ function Jobs() {
                                         Applicants
                                     </h3>
                                     <p className="text-lg text-gray-900">
-                                        {currentJob.appliedBy.length}
+                                        {currentJob.applications.length}
                                     </p>
                                 </div>
                                 <div>
@@ -177,14 +212,31 @@ function Jobs() {
 
                             {/* Action Button */}
                             {userData &&
-                                currentJob.postedBy._id === userData._id ? (
-                                <Button
-                                    variant="filled"
-                                    className="w-full py-3 font-semibold bg-blue-600 border-blue-600 hover:bg-blue-700 text-white"
-                                    onClick={() => setShowEditJobModal(true)}
-                                >
-                                    Edit Job Post
-                                </Button>
+                            currentJob.postedBy._id === userData._id ? (
+                                <div className="flex justify-between">
+                                    <Button
+                                        variant="filled"
+                                        className="w-4/5 font-semibold bg-blue-600 border-blue-600 hover:bg-blue-700 text-white"
+                                        onClick={() =>
+                                            setShowEditJobModal(true)
+                                        }
+                                    >
+                                        Edit Job
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            setShowDeleteModal(true);
+                                            if (deleteResErr)
+                                                setDeleteResErr(null);
+                                        }}
+                                        variant="filled"
+                                        className={
+                                            "w-1/6 bg-red-500 border-red-500 p-0"
+                                        }
+                                    >
+                                        <FaRegTrashAlt className="w-5 h-5" />
+                                    </Button>
+                                </div>
                             ) : (
                                 <Button
                                     variant="filled"
@@ -198,52 +250,11 @@ function Jobs() {
                 </div>
 
                 {/*Applicants List */}
-                {currentJob && (
-                    <div className="w-full md:w-96">
-                        <div className="bg-white rounded-lg shadow-md p-6">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                                Applicants ({currentJob.appliedBy.length})
-                            </h2>
-                            <div className="space-y-4">
-                                {currentJob.appliedBy.length > 0 ? (
-                                    currentJob.appliedBy.map((applicant) => (
-                                        <div
-                                            key={applicant._id}
-                                            className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
-                                        >
-                                            <img
-                                                src={
-                                                    applicant.avatar ??
-                                                    default_avatar
-                                                }
-                                                alt="Applicant"
-                                                className="w-10 h-10 rounded-full object-cover"
-                                            />
-                                            <div className="flex-1">
-                                                <h3 className="font-medium text-gray-900">
-                                                    {applicant.name.firstName}{" "}
-                                                    {applicant.name.lastName}
-                                                </h3>
-                                                <p className="text-sm text-gray-500">
-                                                    {applicant.title}
-                                                </p>
-                                            </div>
-                                            {currentJob.postedBy._id ===
-                                                userData?._id && (
-                                                    <Button className="text-sm px-3 py-1">
-                                                        View Profile
-                                                    </Button>
-                                                )}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="text-center text-gray-500 py-4">
-                                        No applicants yet
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                {currentJob && userData && (
+                    <ApplicantsList
+                        currentJobData={currentJob}
+                        userData={userData}
+                    />
                 )}
             </div>
         </>
