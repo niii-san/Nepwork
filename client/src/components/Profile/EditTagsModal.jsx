@@ -92,14 +92,14 @@ function EditTagsModal({ setModalFn, profileData, refetchProfileFn }) {
                                 className={`p-2 rounded-lg border transition-all duration-200 flex items-center justify-center
                                     ${
                                         currentTags.includes(tag)
-                                            ? "bg-primary/10 border-primary text-primaryText"
+                                            ? "bg-primary/10 border-primary text-primaryText font-semibold"
                                             : "border-secondary hover:border-primary/50 text-secondaryText"
                                     }
                                     ${
                                         currentTags.length >= 15 &&
                                         !currentTags.includes(tag)
                                             ? "opacity-50 cursor-not-allowed"
-                                            : "hover:bg-secondary/20"
+                                            : ""
                                     }
                                 `}
                                 disabled={
@@ -110,9 +110,6 @@ function EditTagsModal({ setModalFn, profileData, refetchProfileFn }) {
                                 <span className="text-sm font-medium">
                                     {tag}
                                 </span>
-                                {currentTags.includes(tag) && (
-                                    <span className="ml-2 text-primary">✓</span>
-                                )}
                             </button>
                         ))}
                     </div>
@@ -157,7 +154,7 @@ function EditTagsModal({ setModalFn, profileData, refetchProfileFn }) {
                         <Button
                             onClick={handleSubmit}
                             variant="filled"
-                            isLoading={isUpdating}
+                            loading={isUpdating}
                             disabled={isUpdating}
                             className={""}
                         >
