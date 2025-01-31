@@ -30,6 +30,7 @@ import {
 import { updateAvatar } from "./user/updateAvatar.controller.js";
 import { deleteJob } from "./job/deleteJob.controller.js";
 import { applyJob } from "./job/applyJob.controller.js";
+import { getApplicants } from "./job/getApplicants.controller.js";
 
 export {
     login,
@@ -62,4 +63,5 @@ export {
     updateHourlyRate,
     deleteJob,
     applyJob,
+    getApplicants,
 };

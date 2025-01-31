@@ -35,12 +35,10 @@ export const getSingleJob = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(jobId))
         throw new ApiError(400, false, "Invalid job id");
 
-    const job = await Job.findById(jobId)
-        .select("-isPaid -applications -acceptedFreelancer")
-        .populate({
-            path: "postedBy",
-            select: "name avatar _id",
-        });
+    const job = await Job.findById(jobId).populate({
+        path: "postedBy",
+        select: "name avatar _id",
+    });
 
     if (!job) throw new ApiError(404, false, "Job not found");
 

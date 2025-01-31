@@ -7,10 +7,12 @@ export const getHomePageJobs = asyncHandler(async (req, res) => {
 
     // if userId not provided send all jobs
     if (!userId) {
-        const jobs = await Job.find({ status: "open" }).populate({
-            path: "postedBy",
-            select: "name avatar _id",
-        });
+        const jobs = await Job.find({ status: "open" })
+            .select("-applications -acceptedFreelancer")
+            .populate({
+                path: "postedBy",
+                select: "name avatar _id",
+            });
         return res
             .status(200)
             .json(new ApiResponse(200, true, false, "fetched all jobs", jobs));

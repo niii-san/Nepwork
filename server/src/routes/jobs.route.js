@@ -9,6 +9,7 @@ import {
     applyJob,
     createJob,
     deleteJob,
+    getApplicants,
     // getAllJobs,
     getHomePageJobs,
     getJobsPostedByCurrentUser,
@@ -31,5 +32,6 @@ jobRouter.delete("/delete-job/:jobId", authenticate, clientOnly, deleteJob);
 jobRouter.get("/get-home-jobs", getHomePageJobs);
 
 jobRouter.post("/apply", authenticate, freelancerOnly, applyJob);
+jobRouter.get("/applicants/:jobId", getApplicants);
 
 jobRouter.get("/:id", getSingleJob);
