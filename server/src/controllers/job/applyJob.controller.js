@@ -16,6 +16,9 @@ export const applyJob = asyncHandler(async (req, res) => {
     const user = await User.findById(userId);
     if (!job) throw new ApiError(404, true, "Job not found");
 
+    if (job.postedBy.toString() === userId)
+        throw new ApiError(400, true, "Cannot apply to self posted job");
+
     const alreadyApplied = await JobApplication.findOne({
         appliedBy: user._id,
         appliedTo: job._id,
