@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../utils/api";
-import { Button, ConfirmModal, EditJobModal, Loader } from "../components";
+import {
+    ApplyJobModal,
+    Button,
+    ConfirmModal,
+    EditJobModal,
+    Loader,
+} from "../components";
 import default_avatar from "../assets/default_avatar.svg";
 import { useUser } from "../stores";
 import Tag from "../components/Tag";
@@ -15,10 +21,12 @@ function Jobs() {
     const userData = useUser((state) => state.data);
     const [currentJob, setCurrentJob] = useState(null);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
-
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteResErr, setDeleteResErr] = useState(null);
     const [deleting, setDeleting] = useState(false);
+    const [applyJobModal, setApplyJobModal] = useState(false);
+
+    const [crLoading, setCrLoading] = useState(true);
 
     const statusStyles = {
         open: "bg-primary text-whitetext",
@@ -32,6 +40,8 @@ function Jobs() {
             setCurrentJob(response.data.data);
         } catch (error) {
             console.error(`failed to fetch job`, error);
+        } finally {
+            setCrLoading(false);
         }
     };
 
@@ -73,8 +83,18 @@ function Jobs() {
         }
     };
 
+    if (crLoading) return <Loader />;
+
     return (
         <>
+            {applyJobModal && (
+                <ApplyJobModal
+                    jobData={currentJob}
+                    setModalFn={setApplyJobModal}
+                    refetchJobFn={fetchSetCurrentJob}
+                />
+            )}
+
             {showDeleteModal && (
                 <ConfirmModal
                     setShowModalFn={setShowDeleteModal}
@@ -239,6 +259,7 @@ function Jobs() {
                                 </div>
                             ) : (
                                 <Button
+                                    onClick={() => setApplyJobModal(true)}
                                     variant="filled"
                                     className="w-full py-3 font-semibold"
                                 >

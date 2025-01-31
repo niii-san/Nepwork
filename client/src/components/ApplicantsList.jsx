@@ -24,7 +24,7 @@ function ApplicantsList({ currentJobData, userData }) {
 
     useEffect(() => {
         fetchSetApplicants();
-    }, []);
+    }, [currentJobData]);
 
     return (
         <div className="w-full md:w-96 lg:w-[420px]">
