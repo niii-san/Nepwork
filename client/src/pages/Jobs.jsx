@@ -7,6 +7,7 @@ import { useUser } from "../stores";
 import Tag from "../components/Tag";
 import { FaRegTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
+import ApplicantsList from "../components/ApplicantsList";
 
 function Jobs() {
     const navigate = useNavigate();
@@ -173,7 +174,7 @@ function Jobs() {
                                         Applicants
                                     </h3>
                                     <p className="text-lg text-gray-900">
-                                        {currentJob.appliedBy.length}
+                                        {currentJob.applications.length}
                                     </p>
                                 </div>
                                 <div>
@@ -249,52 +250,11 @@ function Jobs() {
                 </div>
 
                 {/*Applicants List */}
-                {currentJob && (
-                    <div className="w-full md:w-96">
-                        <div className="bg-white rounded-lg shadow-md p-6">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                                Applicants ({currentJob.appliedBy.length})
-                            </h2>
-                            <div className="space-y-4">
-                                {currentJob.appliedBy.length > 0 ? (
-                                    currentJob.appliedBy.map((applicant) => (
-                                        <div
-                                            key={applicant._id}
-                                            className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
-                                        >
-                                            <img
-                                                src={
-                                                    applicant.avatar ??
-                                                    default_avatar
-                                                }
-                                                alt="Applicant"
-                                                className="w-10 h-10 rounded-full object-cover"
-                                            />
-                                            <div className="flex-1">
-                                                <h3 className="font-medium text-gray-900">
-                                                    {applicant.name.firstName}{" "}
-                                                    {applicant.name.lastName}
-                                                </h3>
-                                                <p className="text-sm text-gray-500">
-                                                    {applicant.title}
-                                                </p>
-                                            </div>
-                                            {currentJob.postedBy._id ===
-                                                userData?._id && (
-                                                <Button className="text-sm px-3 py-1">
-                                                    View Profile
-                                                </Button>
-                                            )}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="text-center text-gray-500 py-4">
-                                        No applicants yet
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                {currentJob && userData && (
+                    <ApplicantsList
+                        currentJobData={currentJob}
+                        userData={userData}
+                    />
                 )}
             </div>
         </>

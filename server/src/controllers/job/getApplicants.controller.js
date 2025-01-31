@@ -6,7 +6,7 @@ export const getApplicants = asyncHandler(async (req, res) => {
 
     const jobApplicants = await JobApplication.find({ appliedTo: jobId })
         .select("-appliedTo -_id  -updatedAt -__v")
-        .populate({ path: "appliedBy", select: "avatar -_id name " });
+        .populate({ path: "appliedBy", select: "avatar name " });
 
     return res
         .status(200)
