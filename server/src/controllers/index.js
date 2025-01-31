@@ -28,6 +28,7 @@ import {
     updateHourlyRate,
 } from "./user/profile.controller.js";
 import { updateAvatar } from "./user/updateAvatar.controller.js";
+import { deleteJob } from "./job/deleteJob.controller.js";
 
 export {
     login,
@@ -58,4 +59,5 @@ export {
     updateProfileTags,
     updateAbout,
     updateHourlyRate,
+    deleteJob,
 };

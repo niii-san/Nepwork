@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authenticate, verified, clientOnly } from "../middlewares/index.js";
 import {
     createJob,
+    deleteJob,
     getAllJobs,
     getHomePageJobs,
     getJobsPostedByCurrentUser,
@@ -20,6 +21,6 @@ jobRouter.get(
     clientOnly,
     getJobsPostedByCurrentUser,
 );
+jobRouter.delete("/delete-job/:jobId", authenticate, clientOnly, deleteJob);
 jobRouter.get("/get-home-jobs", getHomePageJobs);
 jobRouter.get("/:id", getSingleJob);
-
