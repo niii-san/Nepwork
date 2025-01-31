@@ -29,6 +29,7 @@ import {
 } from "./user/profile.controller.js";
 import { updateAvatar } from "./user/updateAvatar.controller.js";
 import { deleteJob } from "./job/deleteJob.controller.js";
+import { applyJob } from "./job/applyJob.controller.js";
 
 export {
     login,
@@ -60,4 +61,5 @@ export {
     updateAbout,
     updateHourlyRate,
     deleteJob,
+    applyJob,
 };

@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema(
                 enum: tags,
             },
         ],
+        jobsApplied: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "JobApplication",
+            },
+        ],
         password: {
             type: String,
             required: true,

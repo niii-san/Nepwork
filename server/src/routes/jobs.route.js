@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { authenticate, verified, clientOnly } from "../middlewares/index.js";
 import {
+    authenticate,
+    verified,
+    clientOnly,
+    freelancerOnly,
+} from "../middlewares/index.js";
+import {
+    applyJob,
     createJob,
     deleteJob,
-    getAllJobs,
+    // getAllJobs,
     getHomePageJobs,
     getJobsPostedByCurrentUser,
     getSingleJob,
@@ -13,7 +19,7 @@ import {
 export const jobRouter = Router();
 
 jobRouter.post("/create-job", authenticate, verified, clientOnly, createJob);
-jobRouter.get("/", getAllJobs);
+// jobRouter.get("/", getAllJobs);
 jobRouter.post("/update-job", authenticate, verified, clientOnly, updateJob);
 jobRouter.get(
     "/get-jobs-posted-by-current-user",
@@ -23,4 +29,7 @@ jobRouter.get(
 );
 jobRouter.delete("/delete-job/:jobId", authenticate, clientOnly, deleteJob);
 jobRouter.get("/get-home-jobs", getHomePageJobs);
+
+jobRouter.post("/apply", authenticate, freelancerOnly, applyJob);
+
 jobRouter.get("/:id", getSingleJob);
