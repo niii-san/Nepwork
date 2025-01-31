@@ -1,7 +1,11 @@
+import { twMerge } from "tailwind-merge";
+
 function Tag({ title, className }) {
     return (
         <span
-            className={`bg-primary bg-opacity-20 text-gray-800  px-2.5 py-1 rounded-xl text-xs ${className}`}
+            className={twMerge(
+                `bg-primary bg-opacity-20 text-gray-800  px-2.5 py-1 rounded-xl text-xs ${className}`,
+            )}
         >
             {title}
         </span>

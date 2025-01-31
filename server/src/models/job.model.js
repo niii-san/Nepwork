@@ -1,6 +1,28 @@
 import mongoose from "mongoose";
 import { tags } from "../constants.js";
 
+const jobApplicationSchema = new mongoose.Schema(
+    {
+        appliedTo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Job",
+        },
+        appliedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+        message: {
+            type: String,
+        },
+    },
+    { timestamps: true },
+);
+
+export const JobApplication = mongoose.model(
+    "JobApplication",
+    jobApplicationSchema,
+);
+
 const jobSchema = new mongoose.Schema(
     {
         title: {
@@ -24,16 +46,12 @@ const jobSchema = new mongoose.Schema(
             default: false,
         },
 
-        appliedBy: {
-            type: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User",
-                },
-            ],
-            default: [],
-        },
-
+        applications: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "JobApplication",
+            },
+        ],
         acceptedFreelancer: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

@@ -22,7 +22,7 @@ export const getProfileData = asyncHandler(async (req, res) => {
 
     const userProfileData = await User.findById(userId)
         .select(
-            "-password -refreshToken -lastRoleChange -kycStatus -email -emailVerified -updatedAt -__v",
+            "-password -refreshToken -lastRoleChange -kycStatus -email -emailVerified -updatedAt -__v -jobsApplied",
         )
         .populate({ path: "kyc", select: "address.temporary" });
 

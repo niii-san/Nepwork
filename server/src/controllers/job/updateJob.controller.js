@@ -52,23 +52,44 @@ export const updateJob = asyncHandler(async (req, res) => {
     const job = await Job.findOne({ _id: jobId, postedBy: userId });
     if (!job) throw new ApiError(400, true, "Job not found");
 
-    if (
-        status === "open" &&
-        (job.status === "finished" || job.status === "in_progress")
-    )
-        throw new ApiError(400, true, `Cannot set from ${job.status} to open`);
-
-    if (
-        status === "closed" &&
-        (job.status === "in_progress" || job.status === "finished")
-    )
+    // job status validation
+    if (status === "open" && job.status !== "closed") {
         throw new ApiError(
             400,
             true,
-            `Cannot set job to closed, job status is ${job.status}`,
+            "Can only set job status to open if job is closed",
         );
-    // if (status === "in_progress")
-    // if (status === "finished") job.title = jobTitle;
+    }
+
+    if (status === "closed" && job.status !== "open") {
+        throw new ApiError(
+            400,
+            true,
+            "Can only set job status to close if job is open",
+        );
+    }
+
+    if (
+        status === "in_progress" &&
+        (job.status !== "open" || !job.acceptedFreelancer)
+    ) {
+        throw new ApiError(
+            400,
+            true,
+            "Job must be open and have selected freelancer to set 'In Progress'",
+        );
+    }
+
+    if (status === "finished" && job.status !== "in_progress") {
+        throw new ApiError(
+            400,
+            true,
+            "Job must be in progress before can be finished",
+        );
+    }
+
+    //TODO: when setting to in progress start the timer of startTime
+    //and set end time when the job is finished
     job.description = jobDescription;
     job.hourlyRate = hourlyRate;
     job.tags = jobTags;

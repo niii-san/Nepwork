@@ -24,14 +24,21 @@ export function PostJobModal({ setShowPostJobModal }) {
     const [tagErr, setTagErr] = useState(null);
     const [resErr, setResErr] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Filter tags based on search query
+    const filteredTags = tags.filter((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
     const onSubmit = (data) => {
         if (selectedTags.length === 0) {
-            setTagErr("Atleast one tag is required");
+            setTagErr("At least one tag is required");
         } else {
             setUploading(true);
-            if (tagErr) setTagErr(null);
-            if (resErr) setResErr(null);
+            setTagErr(null);
+            setResErr(null);
+
             const payload = {
                 title: data.jobTitle,
                 description: data.jobDescription,
@@ -49,7 +56,9 @@ export function PostJobModal({ setShowPostJobModal }) {
                     setShowPostJobModal(false);
                 })
                 .catch((err) => {
-                    setResErr(err.response.data.message);
+                    setResErr(
+                        err.response?.data?.message || "Failed to post job",
+                    );
                 })
                 .finally(() => {
                     setUploading(false);
@@ -58,10 +67,19 @@ export function PostJobModal({ setShowPostJobModal }) {
     };
 
     const toggleTag = (tag) => {
-        const updatedTags = selectedTags.includes(tag)
-            ? selectedTags.filter((t) => t !== tag)
-            : [...selectedTags, tag];
-        setValue("tags", updatedTags);
+        if (selectedTags.includes(tag)) {
+            setValue(
+                "tags",
+                selectedTags.filter((t) => t !== tag),
+            );
+        } else {
+            if (selectedTags.length >= 15) {
+                setTagErr("Maximum 15 tags allowed");
+                return;
+            }
+            setValue("tags", [...selectedTags, tag]);
+            setTagErr(null);
+        }
     };
 
     return (
@@ -119,37 +137,86 @@ export function PostJobModal({ setShowPostJobModal }) {
                                 )}
                             </div>
 
-                            {/* Tags */}
+                            {/* Tags Section */}
                             <div>
-                                <Note>Tags are helpful for better reach</Note>
-                                <label className="block text-sm font-medium text-gray-700 mt-2">
-                                    Tags
-                                </label>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {tags.map((tag) => (
-                                        <label
-                                            key={tag}
-                                            className={`cursor-pointer inline-flex items-center px-2 py-1 tablet:px-3 tablet:py-1 border rounded-xl text-xs tablet:text-sm ${selectedTags.includes(tag)
-                                                    ? "bg-primary text-white border-primary"
-                                                    : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
-                                                }`}
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                value={tag}
-                                                checked={selectedTags.includes(
-                                                    tag,
-                                                )}
-                                                onChange={() => toggleTag(tag)}
-                                                className="hidden"
-                                            />
-                                            {tag}
-                                        </label>
-                                    ))}
+                                <Note>
+                                    Tags are helpful for better reach (Max 15
+                                    tags)
+                                </Note>
+                                <div className="mt-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Search tags..."
+                                        value={searchQuery}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
+                                        className="w-full p-2.5 rounded-md border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary/20 mb-3"
+                                    />
+
+                                    <div className="text-sm text-gray-500 mb-2">
+                                        Selected: {selectedTags.length}/15
+                                    </div>
+
+                                    <div className="max-h-[250px] overflow-y-auto p-2 border rounded-lg">
+                                        {filteredTags.length === 0 ? (
+                                            <div className="text-center text-gray-400 py-4">
+                                                No tags found matching "
+                                                {searchQuery}"
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                                                {filteredTags.map((tag) => (
+                                                    <label
+                                                        key={tag}
+                                                        className={`
+                                                            relative inline-flex items-center justify-center px-3 py-1.5 border rounded-lg text-sm
+                                                            transition-colors duration-200 ${
+                                                                selectedTags.includes(
+                                                                    tag,
+                                                                )
+                                                                    ? "bg-primary/10 border-primary text-primary font-semibold"
+                                                                    : "border-gray-300 text-gray-600 hover:border-primary/40"
+                                                            }
+                                                            ${
+                                                                selectedTags.length >=
+                                                                    15 &&
+                                                                !selectedTags.includes(
+                                                                    tag,
+                                                                )
+                                                                    ? "opacity-50 cursor-not-allowed"
+                                                                    : "cursor-pointer"
+                                                            }
+                                                        `}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            value={tag}
+                                                            checked={selectedTags.includes(
+                                                                tag,
+                                                            )}
+                                                            onChange={() =>
+                                                                toggleTag(tag)
+                                                            }
+                                                            className="hidden"
+                                                            disabled={
+                                                                selectedTags.length >=
+                                                                    15 &&
+                                                                !selectedTags.includes(
+                                                                    tag,
+                                                                )
+                                                            }
+                                                        />
+                                                        {tag}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                                {errors.tags && (
-                                    <p className="text-red-600 text-sm mt-1">
-                                        {errors.tags.message}
+                                {tagErr && (
+                                    <p className="text-red-600 text-sm mt-2">
+                                        {tagErr}
                                     </p>
                                 )}
                             </div>
@@ -182,10 +249,21 @@ export function PostJobModal({ setShowPostJobModal }) {
                         </div>
 
                         {/* Root Error */}
-                        {errors.root && (
-                            <p className="text-red-600 text-sm mt-4">
-                                {errors.root.message}
-                            </p>
+                        {resErr && (
+                            <div className="mt-4 p-3 bg-red-50 rounded-lg flex items-center">
+                                <svg
+                                    className="w-5 h-5 text-red-500 mr-2"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                <p className="text-red-600 text-sm">{resErr}</p>
+                            </div>
                         )}
 
                         {/* Buttons */}
@@ -204,7 +282,7 @@ export function PostJobModal({ setShowPostJobModal }) {
                                 type="submit"
                                 className="w-full tablet:w-auto justify-center bg-primary hover:bg-primary-dark text-white"
                             >
-                                Post Job
+                                {uploading ? "Posting..." : "Post Job"}
                             </Button>
                         </div>
                     </form>
