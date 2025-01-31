@@ -22,11 +22,11 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
         setIsUpdating(true);
         if (err) setErr(null);
         try {
-            const response = await api.post("/user/update-about", {
+            response = await api.post("/user/update-about", {
                 newAbout: aboutData,
             });
             await refetchProfileFn();
-            toast.success(response.data.message);
+            toast.success("About updated");
             setModalFn(false);
         } catch (error) {
             setErr(error.response.data.message);
@@ -86,17 +86,17 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
                 <div className="flex gap-3 justify-end">
                     <Button
                         onClick={handleCloseModal}
-                        variant="secondary"
+                        variant="filled"
                         disabled={isUpdating}
-                        className="px-6 py-3 text-base"
+                        className={"bg-red-400 border-red-400 text-white" }
                     >
                         Cancel
                     </Button>
                     <Button
+                        variant="filled"
                         onClick={handleSubmit}
                         loading={isUpdating}
                         disabled={isUpdating}
-                        className="px-6 py-3 text-base"
                     >
                         {isUpdating ? "Saving" : "Save"}
                     </Button>
