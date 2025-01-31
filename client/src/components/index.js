@@ -24,6 +24,7 @@ import EditHourlyRateModal from "./Profile/EditHourlyRateModal";
 import EditTagsModal from "./Profile/EditTagsModal";
 import EditAboutModal from "./Profile/EditAboutModal";
 import Tag from "./Tag";
+import ConfirmModal from "./ConfirmModal";
 
 export {
     NavBar,
@@ -52,4 +53,5 @@ export {
     EditTagsModal,
     EditAboutModal,
     Tag,
+    ConfirmModal,
 };
