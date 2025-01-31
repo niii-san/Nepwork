@@ -2,11 +2,19 @@ import React, { useEffect, useState } from "react";
 import { TbMessageDots } from "react-icons/tb";
 import { Link, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
-import { Button, ChangeAvatarModal, Loader, Review } from "../components";
+import {
+    Button,
+    ChangeAvatarModal,
+    EditAboutModal,
+    EditHourlyRateModal,
+    EditTagsModal,
+    Loader,
+    Review,
+} from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api";
 import default_avatar from "../assets/default_avatar.svg";
-import Tag from "../components/Tag";
+import { Tag } from "../components";
 import {
     FiEdit,
     FiMessageCircle,
@@ -91,6 +99,15 @@ function Profile() {
                     setModal={setChangeAvatarModal}
                     refetchProfile={fetchSetCurrentProfileData}
                 />
+            )}
+
+            {editHourlyRateModal && (
+                <EditHourlyRateModal setModalFn={setEditHourlyRateModal} />
+            )}
+            {editTagsModal && <EditTagsModal setModalFn={setEditTagsModal} />}
+
+            {editAboutModal && (
+                <EditAboutModal setModalFn={setEditAboutModal} />
             )}
 
             <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
