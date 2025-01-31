@@ -38,7 +38,7 @@ export const getSingleJob = asyncHandler(async (req, res) => {
     const job = await Job.findById(jobId).populate({
         path: "postedBy",
         select: "name avatar _id",
-    });
+    }).populate("applications","appliedBy");
 
     if (!job) throw new ApiError(404, false, "Job not found");
 
