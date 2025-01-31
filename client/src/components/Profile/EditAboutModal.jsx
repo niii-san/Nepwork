@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
     const [isUpdating, setIsUpdating] = useState(false);
     const [err, setErr] = useState(null);
-    const [aboutData, setAboutData] = useState(profileData.about);
+    const [aboutData, setAboutData] = useState(profileData.about || "");
 
     const handleCloseModal = () => {
         if (!isUpdating) {
@@ -22,7 +22,7 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
         setIsUpdating(true);
         if (err) setErr(null);
         try {
-            response = await api.post("/user/update-about", {
+            await api.post("/user/update-about", {
                 newAbout: aboutData,
             });
             await refetchProfileFn();
