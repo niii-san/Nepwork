@@ -31,6 +31,9 @@ function Button({
     const ButtonVariants = {
         outline: "text-black hover:bg-primary hover:bg-opacity-20",
         filled: "bg-primary text-white hover:bg-opacity-80 ",
+        primary: "bg-primary hover:bg-primary/90 text-tertiary",
+        secondary: "bg-secondary hover:bg-secondary/80 text-primaryText",
+        danger: "bg-danger hover:bg-danger/90 text-tertiary",
     };
 
     const disabledStyle =

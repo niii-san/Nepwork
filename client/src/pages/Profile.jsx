@@ -102,12 +102,26 @@ function Profile() {
             )}
 
             {editHourlyRateModal && (
-                <EditHourlyRateModal setModalFn={setEditHourlyRateModal} />
+                <EditHourlyRateModal
+                    setModalFn={setEditHourlyRateModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
+                />
             )}
-            {editTagsModal && <EditTagsModal setModalFn={setEditTagsModal} />}
+            {editTagsModal && (
+                <EditTagsModal
+                    setModalFn={setEditTagsModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
+                />
+            )}
 
             {editAboutModal && (
-                <EditAboutModal setModalFn={setEditAboutModal} />
+                <EditAboutModal
+                    setModalFn={setEditAboutModal}
+                    profileData={currentProfileData}
+                    refetchProfileFn={fetchSetCurrentProfileData}
+                />
             )}
 
             <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
