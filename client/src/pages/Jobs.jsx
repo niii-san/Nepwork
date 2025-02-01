@@ -265,12 +265,19 @@ function Jobs() {
                                 </div>
                             ) : (
                                 <Button
-                                    disabled={hasApplied}
+                                    disabled={
+                                        hasApplied ||
+                                        currentJob.acceptedFreelancer
+                                    }
                                     onClick={() => setApplyJobModal(true)}
                                     variant="filled"
                                     className="w-full py-3 font-semibold"
                                 >
-                                    {hasApplied ? "Job applied" : "Apply"}
+                                    {currentJob.acceptedFreelancer
+                                        ? "Freelancer selected"
+                                        : hasApplied
+                                          ? "Job applied"
+                                          : "Apply"}
                                 </Button>
                             )}
                         </div>

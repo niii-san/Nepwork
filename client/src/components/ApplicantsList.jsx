@@ -124,7 +124,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
         return (
             <div
                 className={`group p-4 rounded-lg transition-all duration-200 hover:bg-gray-50 border-2 ${
-                    currentJobData?.acceptedFreelancer._id ===
+                    currentJobData?.acceptedFreelancer?._id ===
                     applicantData?.appliedBy._id
                         ? "border-green-500 bg-green-50 hover:bg-green-50"
                         : "border-gray-100 hover:border-gray-300"
@@ -173,7 +173,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                     <span className="truncate">Message</span>
                                 </Button>
                                 <Button
-                                    disabled={currentJobData.acceptedFreelancer}
+                                    disabled={currentJobData.acceptedFreelancer?true:false}
                                     variant="filled"
                                     className={`text-sm px-3 py-2 w-full justify-center gap-1 ${
                                         currentJobData.acceptedFreelancer
@@ -181,7 +181,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                             : "bg-green-600 hover:bg-green-700"
                                     } ${
                                         currentJobData.acceptedFreelancer
-                                            ._id === applicantData.appliedBy._id
+                                            ?._id === applicantData.appliedBy._id
                                             ? "bg-primary border-primary text-white"
                                             : ""
                                     }
@@ -196,7 +196,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                     <FiUserCheck className="w-4 h-4 flex-shrink-0" />
                                     <span className="truncate">
                                         {currentJobData.acceptedFreelancer
-                                            ._id === applicantData.appliedBy._id
+                                            ?._id === applicantData.appliedBy._id
                                             ? "Accepted"
                                             : "Accept"}
                                     </span>
