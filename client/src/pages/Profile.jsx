@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TbMessageDots } from "react-icons/tb";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
 import {
     Button,
@@ -52,6 +52,7 @@ const MapState = {
 };
 
 function Profile() {
+    const navigate = useNavigate();
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
@@ -101,10 +102,14 @@ function Profile() {
     const isClient = currentProfileData.role === "client";
 
     const isFollowing = currentProfileData?.followers?.some(
-        (item) => item.userId === currentUserData._id,
+        (item) => item.userId === currentUserData?._id,
     );
 
     const handleToogleFollowUnfollow = async (currentlyFollowing) => {
+        if (!isLoggedIn) {
+            navigate("/login");
+            return;
+        }
         setFollowBtnLoading(true);
 
         if (currentlyFollowing) {
