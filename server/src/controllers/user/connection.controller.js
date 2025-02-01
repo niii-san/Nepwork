@@ -119,7 +119,10 @@ export const getFollowing = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(targetId))
         throw new ApiError(400, false, "Invalid targetId");
 
-    const user = await User.findById(targetId);
+    const user = await User.findById(targetId).populate(
+        "following.userId",
+        "avatar name _id",
+    );
 
     if (!user) throw new ApiError(404, false, "User not found");
 
@@ -144,7 +147,10 @@ export const getFollowers = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(targetId))
         throw new ApiError(400, false, "Invalid targetId");
 
-    const user = await User.findById(targetId);
+    const user = await User.findById(targetId).populate(
+        "followers.userId",
+        "avatar _id name",
+    );
 
     if (!user) throw new ApiError(404, false, "User not found");
 
