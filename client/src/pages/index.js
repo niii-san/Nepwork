@@ -11,6 +11,9 @@ import Kyc from "./Kyc";
 import SwitchRole from "./SwitchRole";
 import Jobs from "./Jobs";
 import Inbox from "./Inbox";
+import Account from "./Account";
+import Followers from "./Followers";
+import Following from "./Following";
 
 export {
     Home,
@@ -26,4 +29,7 @@ export {
     SwitchRole,
     Jobs,
     Inbox,
+    Account,
+    Followers,
+    Following,
 };

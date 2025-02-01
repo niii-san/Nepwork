@@ -16,7 +16,10 @@ export const getAllJobs = asyncHandler(async (_, res) => {
 });
 
 export const getJobsPostedByCurrentUser = asyncHandler(async (req, res) => {
-    const jobs = await Job.find({ postedBy: req.user._id });
+    const jobs = await Job.find({ postedBy: req.user._id }).populate(
+        "acceptedFreelancer",
+        "name avatar",
+    );
 
     return res
         .status(200)
@@ -42,7 +45,8 @@ export const getSingleJob = asyncHandler(async (req, res) => {
             path: "postedBy",
             select: "name avatar _id",
         })
-        .populate("applications", "appliedBy").populate("acceptedFreelancer","name _id avatar");
+        .populate("applications", "appliedBy")
+        .populate("acceptedFreelancer", "name _id avatar");
 
     if (!job) throw new ApiError(404, false, "Job not found");
 
