@@ -1,17 +1,46 @@
 import { useNavigate } from "react-router";
 import Button from "./Button";
 import default_avatar from "../assets/default_avatar.svg";
+import { useState } from "react";
+import api from "../utils/api";
+import toast from "react-hot-toast";
 
 function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const isCurrentLoggedUserFollowing = loggedInUserData?.following.some(
         (item) => item?.userId === listData?._id,
     );
 
     const handleToogleFollowUnfollow = async (targetId) => {
-        console.log(targetId);
-        //TODO:
+        if (!isLoggedIn) {
+            navigate("/login");
+            return;
+        }
+        setLoading(true);
+
+        if (targetId) {
+            try {
+                await api.post(`/user/${targetId}/unfollow`);
+                toast.success("Unfollowed user");
+            } catch (error) {
+                toast.error("Failed to unfollow");
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            try {
+                await api.post(`/user/${targetId}/follow`);
+                toast.success("Followed user");
+            } catch (error) {
+                toast.error("Failed to follow");
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
     return (
@@ -36,6 +65,8 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
 
             {isLoggedIn && loggedInUserData ? (
                 <Button
+                    loading={loading}
+                    disabled={loading}
                     variant={
                         isCurrentLoggedUserFollowing ? "outline" : "filled"
                     }
