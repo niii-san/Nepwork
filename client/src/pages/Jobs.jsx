@@ -149,9 +149,9 @@ function Jobs() {
                                             {currentJob.status === "in_progress"
                                                 ? "In Progress"
                                                 : currentJob.status
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                currentJob.status.slice(1)}
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                  currentJob.status.slice(1)}
                                         </span>
                                         <span className="text-gray-500">•</span>
                                         <span className="text-gray-600">
@@ -207,8 +207,9 @@ function Jobs() {
                                         Accepted Freelancer
                                     </h3>
                                     <p className="text-lg text-gray-900">
-                                        {currentJob.acceptedFreelancer ??
-                                            "Not selected"}
+                                        {!currentJob.acceptedFreelancer
+                                            ? "Not selected"
+                                            : `${currentJob.acceptedFreelancer.name.firstName} ${currentJob.acceptedFreelancer.name.lastName}`}
                                     </p>
                                 </div>
                             </div>
@@ -237,7 +238,7 @@ function Jobs() {
 
                             {/* Action Button */}
                             {userData &&
-                                currentJob.postedBy._id === userData._id ? (
+                            currentJob.postedBy._id === userData._id ? (
                                 <div className="flex justify-between">
                                     <Button
                                         variant="filled"
@@ -281,6 +282,7 @@ function Jobs() {
                     <ApplicantsList
                         currentJobData={currentJob}
                         userData={userData}
+                        refetchJobFn={fetchSetCurrentJob}
                     />
                 )}
             </div>

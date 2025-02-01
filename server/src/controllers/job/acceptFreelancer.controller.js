@@ -33,7 +33,7 @@ export const acceptFreelancer = asyncHandler(async (req, res) => {
     if (!application)
         throw new ApiError(400, true, "Freelancer has not applied yet");
 
-    job.acceptedFreelancer = userId;
+    job.acceptedFreelancer = acceptedFreelancerId;
     job.acceptedApplication = application;
 
     await job.save();
