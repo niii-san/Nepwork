@@ -70,7 +70,7 @@ function Login() {
                 if (resMsg) setResMsg(null);
             })
             .catch((err) => {
-                console.log(err.message);
+                console.error(err.message);
                 setResMsg(err.response.data.message);
             });
     };

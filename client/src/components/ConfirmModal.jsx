@@ -5,7 +5,7 @@ function ConfirmModal({
     onConfirmFn,
     loading,
     title,
-    isDelete,
+    isDelete = false,
     err,
 }) {
     const handleConfirm = () => {

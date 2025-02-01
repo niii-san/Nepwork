@@ -3,10 +3,12 @@ import { Job } from "../../models/index.js";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 export const getAllJobs = asyncHandler(async (_, res) => {
-    const jobs = await Job.find().populate({
-        path: "postedBy",
-        select: "name avatar ",
-    });
+    const jobs = await Job.find()
+        .populate({
+            path: "postedBy",
+            select: "name avatar ",
+        })
+        .populate("acceptedFreelancer");
 
     return res
         .status(200)
@@ -14,7 +16,10 @@ export const getAllJobs = asyncHandler(async (_, res) => {
 });
 
 export const getJobsPostedByCurrentUser = asyncHandler(async (req, res) => {
-    const jobs = await Job.find({ postedBy: req.user._id });
+    const jobs = await Job.find({ postedBy: req.user._id }).populate(
+        "acceptedFreelancer",
+        "name avatar",
+    );
 
     return res
         .status(200)
@@ -35,10 +40,13 @@ export const getSingleJob = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(jobId))
         throw new ApiError(400, false, "Invalid job id");
 
-    const job = await Job.findById(jobId).populate({
-        path: "postedBy",
-        select: "name avatar _id",
-    }).populate("applications","appliedBy");
+    const job = await Job.findById(jobId)
+        .populate({
+            path: "postedBy",
+            select: "name avatar _id",
+        })
+        .populate("applications", "appliedBy")
+        .populate("acceptedFreelancer", "name _id avatar");
 
     if (!job) throw new ApiError(404, false, "Job not found");
 

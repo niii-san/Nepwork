@@ -17,6 +17,9 @@ import {
     SwitchRole,
     Jobs,
     Inbox,
+    Following,
+    Followers,
+    Account,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -76,6 +79,14 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
+                    <Route
+                        path="settings/account"
+                        element={
+                            <Protected>
+                                <Account />
+                            </Protected>
+                        }
+                    />
 
                     <Route
                         path="jobs/:jobId"
@@ -94,6 +105,8 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
+                    <Route path="following/:userId" element={<Following />} />
+                    <Route path="followers/:userId" element={<Followers />} />
 
                     <Route path="signup" element={<Signup />} />
                     <Route path="login" element={<Login />} />

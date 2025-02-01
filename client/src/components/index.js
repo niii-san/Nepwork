@@ -26,6 +26,7 @@ import EditAboutModal from "./Profile/EditAboutModal";
 import Tag from "./Tag";
 import ConfirmModal from "./ConfirmModal";
 import ApplyJobModal from "./ApplyJobModal";
+import ConnectionUserList from "./ConnectionUserList";
 
 export {
     NavBar,
@@ -56,4 +57,5 @@ export {
     Tag,
     ConfirmModal,
     ApplyJobModal,
+    ConnectionUserList,
 };

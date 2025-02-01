@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import JobListCard from "../JobListCard";
 import { usePostedJobs } from "../../stores";
 import NullLoader from "../NullLoader";

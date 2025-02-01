@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TbMessageDots } from "react-icons/tb";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useAuth, useUser } from "../stores";
 import {
     Button,
@@ -17,15 +17,13 @@ import default_avatar from "../assets/default_avatar.svg";
 import { Tag } from "../components";
 import {
     FiEdit,
-    FiMessageCircle,
     FiMapPin,
     FiClock,
-    FiDollarSign,
     FiCheckCircle,
     FiUserPlus,
     FiStar,
-    FiUsers,
 } from "react-icons/fi";
+import capitalize from "../utils/capitalize";
 
 const clientJobs = [
     {
@@ -43,8 +41,18 @@ const clientJobs = [
         date: "2024-03-20",
     },
 ];
+const MapState = {
+    1: "Koshi",
+    2: "Madesh",
+    3: "Bagmati",
+    4: "Gandaki",
+    5: "Lumbini",
+    6: "Karnali",
+    7: "Sudurpaschim",
+};
 
 function Profile() {
+    const navigate = useNavigate();
     const { userId } = useParams();
     const isLoggedIn = useAuth((state) => state.isLoggedIn);
     const currentUserData = useUser((state) => state.data);
@@ -53,6 +61,7 @@ function Profile() {
     const [editHourlyRateModal, setEditHourlyRateModal] = useState(false);
     const [editAboutModal, setEditAboutModal] = useState(false);
     const [editTagsModal, setEditTagsModal] = useState(false);
+    const [followBtnLoading, setFollowBtnLoading] = useState(false);
 
     const fetchSetCurrentProfileData = async () => {
         try {
@@ -91,6 +100,44 @@ function Profile() {
     const isOwnProfile = userId === currentUserData?._id;
     const isFreelancer = currentProfileData.role === "freelancer";
     const isClient = currentProfileData.role === "client";
+
+    const isFollowing = currentProfileData?.followers?.some(
+        (item) => item.userId === currentUserData?._id,
+    );
+
+    const handleToogleFollowUnfollow = async (currentlyFollowing) => {
+        if (!isLoggedIn) {
+            navigate("/login");
+            return;
+        }
+        setFollowBtnLoading(true);
+
+        if (currentlyFollowing) {
+            // if currently following > unfollow
+            try {
+                await api.post(`/user/${currentProfileData?._id}/unfollow`);
+                await fetchSetCurrentProfileData();
+                toast.success("Unfollowed user");
+            } catch (error) {
+                toast.error("Failed to unfollow");
+                console.error(error);
+            } finally {
+                setFollowBtnLoading(false);
+            }
+        } else {
+            // not following > follow
+            try {
+                await api.post(`/user/${currentProfileData?._id}/follow`);
+                await fetchSetCurrentProfileData();
+                toast.success("Followed user");
+            } catch (error) {
+                toast.error("Failed to follow");
+                console.error(error);
+            } finally {
+                setFollowBtnLoading(false);
+            }
+        }
+    };
 
     return (
         <>
@@ -134,7 +181,7 @@ function Profile() {
                                 src={
                                     currentProfileData.avatar ?? default_avatar
                                 }
-                                alt={`Profile Photo of ${currentProfileData.name.firstName}`}
+                                alt={`Profile Photo of ${currentProfileData?.name?.firstName}`}
                                 className="w-48 h-48 rounded-full shadow-lg object-cover border-4 border-white hover:border-gray-100 transition-all"
                             />
                             {isOwnProfile && (
@@ -150,11 +197,11 @@ function Profile() {
                         {/* Social Stats */}
                         <div className="flex justify-center gap-6 w-full">
                             <Link
-                                to={`/following/${currentProfileData._id}`}
+                                to={`/following/${currentProfileData?._id}`}
                                 className="text-center cursor-pointer"
                             >
                                 <div className="font-semibold text-gray-900">
-                                    22
+                                    {currentProfileData?.following?.length ?? 0}
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Following
@@ -162,11 +209,11 @@ function Profile() {
                             </Link>
                             <span className="border border-gray-300"></span>
                             <Link
-                                to={`/followers/${currentProfileData._id}`}
+                                to={`/followers/${currentProfileData?._id}`}
                                 className="text-center cursor-pointer"
                             >
                                 <div className="font-semibold text-gray-900">
-                                    22
+                                    {currentProfileData?.followers?.length ?? 0}
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Followers
@@ -178,12 +225,20 @@ function Profile() {
                         {!isOwnProfile && (
                             <div className="w-full flex items-center justify-evenly ">
                                 <Button
-                                    variant={"filled"}
-                                    className=" text-sm flex items-center justify-center gap-2"
+                                    onClick={() =>
+                                        handleToogleFollowUnfollow(isFollowing)
+                                    }
+                                    disabled={followBtnLoading}
+                                    loading={followBtnLoading}
+                                    variant={isFollowing ? "outline" : "filled"}
+                                    className={`text-sm flex items-center justify-center`}
                                 >
-                                    <FiUserPlus className="w-4 h-4" />
-                                    Unfollow
+                                    <span className="flex items-center justify-center gap-2">
+                                        <FiUserPlus className="w-4 h-4" />
+                                        {isFollowing ? "Unfollow" : "Follow"}
+                                    </span>
                                 </Button>
+
                                 <Button
                                     className={
                                         "py-1 px-3 bg-blue-500 border-blue-500"
@@ -202,13 +257,17 @@ function Profile() {
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <h1 className="text-2xl font-bold text-gray-900">
-                                    {currentProfileData.name.firstName}{" "}
-                                    {currentProfileData.name.lastName}
+                                    {capitalize(
+                                        currentProfileData?.name?.firstName,
+                                    )}{" "}
+                                    {capitalize(
+                                        currentProfileData?.name?.lastName,
+                                    )}
                                 </h1>
                                 <div className="flex items-center gap-2">
                                     <FiStar className="w-5 h-5 text-yellow-500" />
                                     <span className="font-medium text-gray-700">
-                                        {currentProfileData.rating}/5
+                                        {currentProfileData?.rating}/5
                                     </span>
                                 </div>
                             </div>
@@ -216,15 +275,19 @@ function Profile() {
                             <div className="flex items-center gap-2 text-gray-600">
                                 <FiMapPin className="w-5 h-5" />
                                 <span>
-                                    {
-                                        currentProfileData.kyc.address.temporary
-                                            .city
-                                    }
-                                    ,
-                                    {
-                                        currentProfileData.kyc.address.temporary
-                                            .state
-                                    }
+                                    {capitalize(
+                                        currentProfileData?.kyc?.address
+                                            ?.temporary.city,
+                                    ) ?? "N/A"}
+
+                                    {", "}
+                                    {currentProfileData?.kyc?.address?.temporary
+                                        .state
+                                        ? MapState[
+                                              currentProfileData.kyc.address
+                                                  .temporary.state
+                                          ]
+                                        : "N/A"}
                                 </span>
                             </div>
 
@@ -254,7 +317,9 @@ function Profile() {
                             <div className="space-y-4">
                                 <div className="flex flex-wrap items-center gap-3">
                                     <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                                        <span className=" font-bold text-blue-600" >Rs.</span>
+                                        <span className=" font-bold text-blue-600">
+                                            Rs.
+                                        </span>
 
                                         <>
                                             <span className="font-medium text-blue-700">
@@ -284,7 +349,7 @@ function Profile() {
                                     >
                                         <span className="text-sm font-medium">
                                             {currentProfileData.available
-                                                ? "Available Now"
+                                                ? "Available"
                                                 : "Not Available"}
                                         </span>
                                     </div>
