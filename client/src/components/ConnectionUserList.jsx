@@ -4,7 +4,7 @@ import default_avatar from "../assets/default_avatar.svg";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
 import toast from "react-hot-toast";
-import { useUser } from "../stores";
+import capitalize from "../utils/capitalize";
 
 function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
     const navigate = useNavigate();
@@ -35,9 +35,13 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
             try {
                 await api.post(`/user/${targetId}/unfollow`);
                 setIsCurrentLoggedUserFollowing(false);
-                toast.success("Unfollowed user");
+                toast.success(
+                    `Unfollowed ${capitalize(listData.name.firstName)} ${capitalize(listData.name.lastName)}`,
+                );
             } catch (error) {
-                toast.error("Failed to unfollow");
+                toast.error(
+                    `Failed to unfollow ${capitalize(listData.name.firstName)} ${capitalize(listData.name.lastName)}`,
+                );
                 console.error(error);
             } finally {
                 setLoading(false);
@@ -46,9 +50,13 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
             try {
                 await api.post(`/user/${targetId}/follow`);
                 setIsCurrentLoggedUserFollowing(true);
-                toast.success("Followed user");
+                toast.success(
+                    `Followed ${capitalize(listData.name.firstName)} ${capitalize(listData.name.lastName)}`,
+                );
             } catch (error) {
-                toast.error("Failed to follow");
+                toast.error(
+                    `Failed to follow ${capitalize(listData.name.firstName)} ${capitalize(listData.name.lastName)}`,
+                );
                 console.error(error);
             } finally {
                 setLoading(false);
@@ -66,7 +74,8 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
                 />
                 <div>
                     <h3 className="font-semibold text-gray-800">
-                        {listData?.name?.firstName} {listData?.name?.lastName}
+                        {capitalize(listData?.name?.firstName)}{" "}
+                        {capitalize(listData?.name?.lastName)}
                     </h3>
                     {listData?.bio && (
                         <p className="text-sm text-gray-500 line-clamp-1 mt-1">
