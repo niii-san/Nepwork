@@ -1,17 +1,28 @@
 import { useNavigate } from "react-router";
 import Button from "./Button";
 import default_avatar from "../assets/default_avatar.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../utils/api";
 import toast from "react-hot-toast";
+import { useUser } from "../stores";
 
 function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [isCurrentLoggedUserFollowing, setIsCurrentLoggedUserFollowing] =
+        useState(false);
 
-    const isCurrentLoggedUserFollowing = loggedInUserData?.following.some(
-        (item) => item?.userId === listData?._id,
-    );
+    useEffect(() => {
+        validateFollowing();
+    }, []);
+
+    const validateFollowing = () => {
+        const isCurrentLoggedUserFollowing = loggedInUserData?.following.some(
+            (item) => item?.userId === listData?._id,
+        );
+        if (isCurrentLoggedUserFollowing) setIsCurrentLoggedUserFollowing(true);
+        else setIsCurrentLoggedUserFollowing(false);
+    };
 
     const handleToogleFollowUnfollow = async (targetId) => {
         if (!isLoggedIn) {
@@ -20,9 +31,10 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
         }
         setLoading(true);
 
-        if (targetId) {
+        if (isCurrentLoggedUserFollowing) {
             try {
                 await api.post(`/user/${targetId}/unfollow`);
+                setIsCurrentLoggedUserFollowing(false);
                 toast.success("Unfollowed user");
             } catch (error) {
                 toast.error("Failed to unfollow");
@@ -33,6 +45,7 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
         } else {
             try {
                 await api.post(`/user/${targetId}/follow`);
+                setIsCurrentLoggedUserFollowing(true);
                 toast.success("Followed user");
             } catch (error) {
                 toast.error("Failed to follow");
