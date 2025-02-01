@@ -60,7 +60,7 @@ function Profile() {
     const [editHourlyRateModal, setEditHourlyRateModal] = useState(false);
     const [editAboutModal, setEditAboutModal] = useState(false);
     const [editTagsModal, setEditTagsModal] = useState(false);
-    const [followBtnLoading,setFollowBtnLoading] = useState(false)
+    const [followBtnLoading, setFollowBtnLoading] = useState(false);
 
     const fetchSetCurrentProfileData = async () => {
         try {
@@ -100,16 +100,38 @@ function Profile() {
     const isFreelancer = currentProfileData.role === "freelancer";
     const isClient = currentProfileData.role === "client";
 
-
     const isFollowing = currentProfileData?.followers?.some(
         (item) => item.userId === currentUserData._id,
     );
 
-    const handleToogleFollowUnfollow = async () => {
-        setFollowBtnLoading(true)
+    const handleToogleFollowUnfollow = async (currentlyFollowing) => {
+        setFollowBtnLoading(true);
 
-
-
+        if (currentlyFollowing) {
+            // if currently following > unfollow
+            try {
+                await api.post(`/user/${currentProfileData?._id}/unfollow`);
+                await fetchSetCurrentProfileData();
+                toast.success("Unfollowed user");
+            } catch (error) {
+                toast.error("Failed to unfollow");
+                console.error(error);
+            } finally {
+                setFollowBtnLoading(false);
+            }
+        } else {
+            // not following > follow
+            try {
+                await api.post(`/user/${currentProfileData?._id}/follow`);
+                await fetchSetCurrentProfileData();
+                toast.success("Followed user");
+            } catch (error) {
+                toast.error("Failed to follow");
+                console.error(error);
+            } finally {
+                setFollowBtnLoading(false);
+            }
+        }
     };
 
     return (
@@ -198,14 +220,18 @@ function Profile() {
                         {!isOwnProfile && (
                             <div className="w-full flex items-center justify-evenly ">
                                 <Button
-                                    onClick={handleToogleFollowUnfollow}
+                                    onClick={() =>
+                                        handleToogleFollowUnfollow(isFollowing)
+                                    }
                                     disabled={followBtnLoading}
                                     loading={followBtnLoading}
                                     variant={isFollowing ? "outline" : "filled"}
-                                    className=" text-sm flex items-center justify-center gap-2"
+                                    className={`text-sm flex items-center justify-center`}
                                 >
-                                    <FiUserPlus className="w-4 h-4" />
-                                    {isFollowing ? "Unfollow" : "Follow"}
+                                    <span className="flex items-center justify-center gap-2">
+                                        <FiUserPlus className="w-4 h-4" />
+                                        {isFollowing ? "Unfollow" : "Follow"}
+                                    </span>
                                 </Button>
 
                                 <Button

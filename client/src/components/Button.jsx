@@ -61,7 +61,7 @@ function Button({
         >
             {loading ? (
                 <div className="flex justify-center items-center gap-x-2">
-                    <span className="w-6 h-6 border-4 border-t-primary border-secondary rounded-full animate-spin"></span>
+                    <span className="w-5 h-5 border-4 border-t-primary border-secondary rounded-full animate-spin"></span>
                     <span>{children}</span>
                 </div>
             ) : (
