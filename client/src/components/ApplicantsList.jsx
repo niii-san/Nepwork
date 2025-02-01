@@ -7,6 +7,7 @@ import { FiMessageSquare, FiUserCheck } from "react-icons/fi";
 import { HiOutlineClock } from "react-icons/hi";
 import { Link } from "react-router";
 import ConfirmModal from "./ConfirmModal";
+import capitalize from "../utils/capitalize";
 
 function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
     const [applicants, setApplicants] = useState([]);
@@ -116,11 +117,6 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
             return `Applied ${days} day${days > 1 ? "s" : ""} ago`;
         };
 
-        console.log(currentJobData.acceptedApplication === applicantData._id);
-        console.log({
-            jId: currentJobData.acceptedFreelancer,
-            aId: applicantData.appliedBy._id,
-        });
         return (
             <div
                 className={`group p-4 rounded-lg transition-all duration-200 hover:bg-gray-50 border-2 ${
@@ -149,8 +145,12 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                 to={`/profile/${applicantData.appliedBy._id}`}
                                 className="text-lg font-semibold text-gray-900 hover:text-blue-600 hover:underline truncate"
                             >
-                                {applicantData.appliedBy.name.firstName}{" "}
-                                {applicantData.appliedBy.name.lastName}
+                                {capitalize(
+                                    applicantData.appliedBy.name.firstName,
+                                )}{" "}
+                                {capitalize(
+                                    applicantData.appliedBy.name.lastName,
+                                )}
                             </Link>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -170,10 +170,14 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                     }
                                 >
                                     <FiMessageSquare className="w-4 h-4 flex-shrink-0" />
-                                    <span className="truncate">Message</span>
+                                    <span className="truncate">View Msg</span>
                                 </Button>
                                 <Button
-                                    disabled={currentJobData.acceptedFreelancer?true:false}
+                                    disabled={
+                                        currentJobData.acceptedFreelancer
+                                            ? true
+                                            : false
+                                    }
                                     variant="filled"
                                     className={`text-sm px-3 py-2 w-full justify-center gap-1 ${
                                         currentJobData.acceptedFreelancer
@@ -181,7 +185,8 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                             : "bg-green-600 hover:bg-green-700"
                                     } ${
                                         currentJobData.acceptedFreelancer
-                                            ?._id === applicantData.appliedBy._id
+                                            ?._id ===
+                                        applicantData.appliedBy._id
                                             ? "bg-primary border-primary text-white"
                                             : ""
                                     }
@@ -196,7 +201,8 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                     <FiUserCheck className="w-4 h-4 flex-shrink-0" />
                                     <span className="truncate">
                                         {currentJobData.acceptedFreelancer
-                                            ?._id === applicantData.appliedBy._id
+                                            ?._id ===
+                                        applicantData.appliedBy._id
                                             ? "Accepted"
                                             : "Accept"}
                                     </span>

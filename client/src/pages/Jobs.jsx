@@ -14,6 +14,7 @@ import Tag from "../components/Tag";
 import { FaRegTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 import ApplicantsList from "../components/ApplicantsList";
+import capitalize from "../utils/capitalize";
 
 function Jobs() {
     const navigate = useNavigate();
@@ -167,14 +168,14 @@ function Jobs() {
                                                 to={`/profile/${currentJob.postedBy._id}`}
                                             >
                                                 <span className="ml-1 hover:text-black font-bold">
-                                                    {
+                                                    {capitalize(
                                                         currentJob.postedBy.name
-                                                            .firstName
-                                                    }{" "}
-                                                    {
+                                                            .firstName,
+                                                    )}{" "}
+                                                    {capitalize(
                                                         currentJob.postedBy.name
-                                                            .lastName
-                                                    }
+                                                            .lastName,
+                                                    )}
                                                 </span>
                                             </Link>
                                         </div>
@@ -206,11 +207,27 @@ function Jobs() {
                                     <h3 className="text-sm font-medium text-gray-500">
                                         Accepted Freelancer
                                     </h3>
-                                    <p className="text-lg text-gray-900">
-                                        {!currentJob.acceptedFreelancer
-                                            ? "Not selected"
-                                            : `${currentJob.acceptedFreelancer.name.firstName} ${currentJob.acceptedFreelancer.name.lastName}`}
-                                    </p>
+                                    <span className="text-lg text-gray-900">
+                                        {!currentJob.acceptedFreelancer ? (
+                                            "Not selected"
+                                        ) : (
+                                            <Link
+                                                to={`/profile/${currentJob?.acceptedFreelancer?._id}`}
+                                                className="cursor-pointer w-fit hover:underline hover:text-blue-600"
+                                            >
+                                                {capitalize(
+                                                    currentJob
+                                                        ?.acceptedFreelancer
+                                                        ?.name?.firstName,
+                                                )}{" "}
+                                                {capitalize(
+                                                    currentJob
+                                                        ?.acceptedFreelancer
+                                                        ?.name?.lastName,
+                                                )}
+                                            </Link>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
 

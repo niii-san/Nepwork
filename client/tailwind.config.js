@@ -35,7 +35,7 @@ export default {
                 //red
                 danger: "#d64343",
                 //white text
-                primaryText: "#000000",
+                primaryText: "#FFFFFF",
                 secondaryText: "#505050",
 
                 //light green for card

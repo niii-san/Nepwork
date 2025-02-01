@@ -6,6 +6,7 @@ import Button from "./Button";
 import default_avatar from "../assets/default_avatar.svg";
 import { GoVerified } from "react-icons/go";
 import { Link } from "react-router";
+import capitalize from "../utils/capitalize";
 
 function FreelancerCard({ userData }) {
     const {
@@ -47,15 +48,16 @@ function FreelancerCard({ userData }) {
             <div className="p-4 pt-2">
                 <div className="mb-3">
                     <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                        {name.firstName} {name.lastName}
+                        {capitalize(name.firstName)} {capitalize(name.lastName)}
                     </h3>
                     <div className="flex items-center gap-2">
                         <span className="text-xs font-medium text-gray-500">
                             Availability:
                         </span>
                         <span
-                            className={`text-xs font-semibold ${available ? "text-green-600" : "text-red-600"
-                                }`}
+                            className={`text-xs font-semibold ${
+                                available ? "text-green-600" : "text-red-600"
+                            }`}
                         >
                             {available ? "Available" : "Not Available"}
                         </span>
