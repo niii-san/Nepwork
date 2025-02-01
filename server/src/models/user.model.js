@@ -40,6 +40,32 @@ const userSchema = new mongoose.Schema(
             default: false,
         },
 
+        following: [
+            {
+                userId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
+                at: {
+                    type: Date,
+                    required: true,
+                },
+            },
+        ],
+        followers: [
+            {
+                userId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
+                at: {
+                    type: Date,
+                    required: true,
+                },
+            },
+        ],
         kycStatus: {
             type: String,
             enum: ["not_uploaded", "pending", "verified", "failed"],

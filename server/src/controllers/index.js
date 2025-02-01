@@ -32,6 +32,7 @@ import { deleteJob } from "./job/deleteJob.controller.js";
 import { applyJob } from "./job/applyJob.controller.js";
 import { getApplicants } from "./job/getApplicants.controller.js";
 import { acceptFreelancer } from "./job/acceptFreelancer.controller.js";
+import { followUser, unFollowUser } from "./user/connection.controller.js";
 
 export {
     login,
@@ -66,4 +67,6 @@ export {
     applyJob,
     getApplicants,
     acceptFreelancer,
+    followUser,
+    unFollowUser,
 };
