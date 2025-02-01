@@ -112,3 +112,53 @@ export const unFollowUser = asyncHandler(async (req, res) => {
         throw new ApiError(500, true, "Failed to unfollow!, try again");
     }
 });
+
+export const getFollowing = asyncHandler(async (req, res) => {
+    const { targetId } = req.params;
+
+    if (!mongoose.isValidObjectId(targetId))
+        throw new ApiError(400, false, "Invalid targetId");
+
+    const user = await User.findById(targetId);
+
+    if (!user) throw new ApiError(404, false, "User not found");
+
+    const followingList = user.following;
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                true,
+                false,
+                "Following list fetched",
+                followingList,
+            ),
+        );
+});
+
+export const getFollowers = asyncHandler(async (req, res) => {
+    const { targetId } = req.params;
+
+    if (!mongoose.isValidObjectId(targetId))
+        throw new ApiError(400, false, "Invalid targetId");
+
+    const user = await User.findById(targetId);
+
+    if (!user) throw new ApiError(404, false, "User not found");
+
+    const followersList = user.followers;
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                true,
+                false,
+                "Followers list fetched",
+                followersList,
+            ),
+        );
+});
