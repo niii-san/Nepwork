@@ -60,6 +60,7 @@ function Profile() {
     const [editHourlyRateModal, setEditHourlyRateModal] = useState(false);
     const [editAboutModal, setEditAboutModal] = useState(false);
     const [editTagsModal, setEditTagsModal] = useState(false);
+    const [followBtnLoading,setFollowBtnLoading] = useState(false)
 
     const fetchSetCurrentProfileData = async () => {
         try {
@@ -98,6 +99,18 @@ function Profile() {
     const isOwnProfile = userId === currentUserData?._id;
     const isFreelancer = currentProfileData.role === "freelancer";
     const isClient = currentProfileData.role === "client";
+
+
+    const isFollowing = currentProfileData?.followers?.some(
+        (item) => item.userId === currentUserData._id,
+    );
+
+    const handleToogleFollowUnfollow = async () => {
+        setFollowBtnLoading(true)
+
+
+
+    };
 
     return (
         <>
@@ -161,7 +174,7 @@ function Profile() {
                                 className="text-center cursor-pointer"
                             >
                                 <div className="font-semibold text-gray-900">
-                                    22
+                                    {currentProfileData?.following?.length ?? 0}
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Following
@@ -173,7 +186,7 @@ function Profile() {
                                 className="text-center cursor-pointer"
                             >
                                 <div className="font-semibold text-gray-900">
-                                    22
+                                    {currentProfileData?.followers?.length ?? 0}
                                 </div>
                                 <div className="text-sm text-gray-500">
                                     Followers
@@ -185,12 +198,16 @@ function Profile() {
                         {!isOwnProfile && (
                             <div className="w-full flex items-center justify-evenly ">
                                 <Button
-                                    variant={"filled"}
+                                    onClick={handleToogleFollowUnfollow}
+                                    disabled={followBtnLoading}
+                                    loading={followBtnLoading}
+                                    variant={isFollowing ? "outline" : "filled"}
                                     className=" text-sm flex items-center justify-center gap-2"
                                 >
                                     <FiUserPlus className="w-4 h-4" />
-                                    Unfollow
+                                    {isFollowing ? "Unfollow" : "Follow"}
                                 </Button>
+
                                 <Button
                                     className={
                                         "py-1 px-3 bg-blue-500 border-blue-500"
