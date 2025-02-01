@@ -42,10 +42,6 @@ function ApplicantsList({ currentJobData, userData }) {
                     {applicants.length === 0 ? (
                         <div className="text-center p-6 rounded-lg bg-gray-50">
                             <p className="text-gray-500">No applicants yet</p>
-                            <p className="text-sm text-gray-400 mt-1">
-                                Your job applicants will appear here once
-                                applicants apply
-                            </p>
                         </div>
                     ) : (
                         applicants.map((item) => (

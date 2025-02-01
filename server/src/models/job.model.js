@@ -41,9 +41,11 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
 
-        isPaid: {
-            type: Boolean,
-            default: false,
+        payment: {
+            done: {
+                type: Boolean,
+                default: false,
+            },
         },
 
         applications: [
@@ -56,6 +58,25 @@ const jobSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             default: null,
+        },
+
+        acceptedApplication: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "JobApplication",
+            default: null,
+        },
+
+        startTime: {
+            type: Date,
+            default: null,
+        },
+        endTime: {
+            type: Date,
+            default: null,
+        },
+        hasFinished: {
+            type: Boolean,
+            default: false,
         },
 
         hourlyRate: {
