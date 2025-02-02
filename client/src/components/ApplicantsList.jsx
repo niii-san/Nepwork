@@ -43,6 +43,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
             });
             await refetchJobFn();
             toast.success("Freelancer accepted");
+            setAcceptFreelancerModal(false);
         } catch (error) {
             setAcceptErr(error.response.data.message || "Failed to accept");
             console.error(error);
@@ -119,12 +120,11 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
 
         return (
             <div
-                className={`group p-4 rounded-lg transition-all duration-200 hover:bg-gray-50 border-2 ${
-                    currentJobData?.acceptedFreelancer?._id ===
-                    applicantData?.appliedBy._id
+                className={`group p-4 rounded-lg transition-all duration-200 hover:bg-gray-50 border-2 ${currentJobData?.acceptedFreelancer?._id ===
+                        applicantData?.appliedBy._id
                         ? "border-green-500 bg-green-50 hover:bg-green-50"
                         : "border-gray-100 hover:border-gray-300"
-                } shadow-sm hover:shadow-md`}
+                    } shadow-sm hover:shadow-md`}
             >
                 <div className="flex items-start gap-4">
                     {/* Image Section */}
@@ -179,17 +179,15 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                             : false
                                     }
                                     variant="filled"
-                                    className={`text-sm px-3 py-2 w-full justify-center gap-1 ${
-                                        currentJobData.acceptedFreelancer
+                                    className={`text-sm px-3 py-2 w-full justify-center gap-1 ${currentJobData.acceptedFreelancer
                                             ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed"
                                             : "bg-green-600 hover:bg-green-700"
-                                    } ${
-                                        currentJobData.acceptedFreelancer
+                                        } ${currentJobData.acceptedFreelancer
                                             ?._id ===
-                                        applicantData.appliedBy._id
+                                            applicantData.appliedBy._id
                                             ? "bg-primary border-primary text-white"
                                             : ""
-                                    }
+                                        }
 `}
                                     onClick={() => {
                                         setCurrentSelectedApplicant(
@@ -202,7 +200,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                     <span className="truncate">
                                         {currentJobData.acceptedFreelancer
                                             ?._id ===
-                                        applicantData.appliedBy._id
+                                            applicantData.appliedBy._id
                                             ? "Accepted"
                                             : "Accept"}
                                     </span>

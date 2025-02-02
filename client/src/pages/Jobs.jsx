@@ -35,6 +35,13 @@ function Jobs() {
         finished: "bg-gray-500 text-whitetext",
         in_progress: "bg-gray-500 text-whitetext",
     };
+
+    const MapJobStatus = {
+        open: "Apply",
+        closed: "Closed",
+        in_progress: "In Progress",
+        finished: "Finished",
+    };
     const fetchSetCurrentJob = async () => {
         try {
             const response = await api.get(`/jobs/${jobId}`);
@@ -284,7 +291,8 @@ function Jobs() {
                                 <Button
                                     disabled={
                                         hasApplied ||
-                                        currentJob.acceptedFreelancer
+                                        currentJob.acceptedFreelancer ||
+                                        currentJob?.status !== "open"
                                     }
                                     onClick={() => setApplyJobModal(true)}
                                     variant="filled"
@@ -294,7 +302,9 @@ function Jobs() {
                                         ? "Freelancer selected"
                                         : hasApplied
                                             ? "Job applied"
-                                            : "Apply"}
+                                            : MapJobStatus[
+                                            currentJob?.status || "closed"
+                                            ]}
                                 </Button>
                             )}
                         </div>
