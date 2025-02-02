@@ -41,12 +41,12 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
             <div className="bg-tertiary rounded-xl shadow-xl p-6 w-full max-w-2xl transform transition-all">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-primaryText">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-black">
                         Edit About
                     </h2>
                     <button
                         onClick={handleCloseModal}
-                        className="text-secondaryText hover:text-primaryText text-2xl transition-colors duration-200"
+                        className="text-secondaryText hover:text-black text-2xl transition-colors duration-200"
                     >
                         ✕
                     </button>
@@ -62,7 +62,7 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
                         className={`
                             w-full min-h-[200px] md:min-h-[250px] p-4 rounded-lg border
                             focus:ring-2 focus:ring-primary focus:border-primary
-                            border-secondary bg-tertiary text-primaryText
+                            border-secondary bg-tertiary text-black
                             placeholder-secondaryText resize-none
                             transition-all duration-200 overflow-y-auto
                             ${err ? "border-danger" : "border-secondary"}
@@ -88,7 +88,7 @@ function EditAboutModal({ setModalFn, profileData, refetchProfileFn }) {
                         onClick={handleCloseModal}
                         variant="filled"
                         disabled={isUpdating}
-                        className={"bg-red-400 border-red-400 text-white" }
+                        className={"bg-red-400 border-red-400 text-white"}
                     >
                         Cancel
                     </Button>
