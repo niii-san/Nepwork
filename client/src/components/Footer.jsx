@@ -1,11 +1,16 @@
 import React from "react";
+import { useAuth } from "../stores/Auth";
 
 function Footer() {
+    const isLoggedIn = useAuth((state) => state.isLoggedIn);
     return (
         <footer className="w-full bg-primary mt-auto border-t-2 border-secondary">
-            <div className="max-w-7xl mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-8 text-black">
-                    {/* Platform Identity */}
+            <div
+                className={`max-w-7xl mx-auto px-4 py-8 ${isLoggedIn ? "pt-0" : ""}`}
+            >
+                <div
+                    className={`grid grid-cols-1 md:grid-cols-5 gap-8 text-primaryText ${isLoggedIn ? "hidden" : ""}`}
+                >
                     <div className="space-y-4">
                         <h3 className="text-2xl font-bold">Nepwork</h3>
                         <p className="text-sm opacity-90">
@@ -18,7 +23,6 @@ function Footer() {
                         </div>
                     </div>
 
-                    {/* Categories */}
                     <div className="space-y-2">
                         <h4 className="text-lg font-semibold">Top Skills</h4>
                         <ul className="space-y-2 text-sm opacity-90">
@@ -32,7 +36,7 @@ function Footer() {
                                 <li key={item}>
                                     <a
                                         href="#"
-                                        className="hover:text-danger transition-colors"
+                                        className="hover:text-gray-300 transition-colors"
                                     >
                                         {item}
                                     </a>
@@ -57,7 +61,7 @@ function Footer() {
                                 <li key={item}>
                                     <a
                                         href="#"
-                                        className="hover:text-danger transition-colors"
+                                        className="hover:text-gray-300 transition-colors"
                                     >
                                         {item}
                                     </a>
@@ -80,7 +84,7 @@ function Footer() {
                                 <li key={item}>
                                     <a
                                         href="#"
-                                        className="hover:text-danger transition-colors"
+                                        className="hover:text-gray-300 transition-colors"
                                     >
                                         {item}
                                     </a>
@@ -105,15 +109,17 @@ function Footer() {
                 </div>
 
                 {/* Bottom Section */}
-                <div className="border-t border-secondary mt-8 pt-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center text-black">
+                <div
+                    className={`border-t border-t-black border-secondary mt-8 pt-4 ${isLoggedIn ? "border-t-0" : ""}`}
+                >
+                    <div className="flex flex-col md:flex-row justify-between items-center text-primaryText">
                         <div className="flex space-x-4 mb-4 md:mb-0 text-sm">
                             {["About Us", "Careers", "Press", "Partners"].map(
                                 (item) => (
                                     <a
                                         key={item}
                                         href="#"
-                                        className="hover:text-danger transition-colors"
+                                        className="hover:text-gray-300 transition-colors"
                                     >
                                         {item}
                                     </a>
@@ -132,7 +138,7 @@ function Footer() {
                         </div>
                     </div>
 
-                    <div className="mt-4 text-center text-sm opacity-90">
+                    <div className="mt-4 text-center text-primaryText text-sm opacity-90">
                         <p>
                             © {new Date().getFullYear()} Nepwork - Proudly
                             Nepali Platform
