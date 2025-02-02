@@ -255,7 +255,7 @@ function Jobs() {
                                 <h2 className="text-lg font-semibold text-gray-900 mb-3">
                                     Job Description
                                 </h2>
-                                <p className="text-gray-700 whitespace-pre-wrap">
+                                <p className="text-gray-700 break-all">
                                     {currentJob.description}
                                 </p>
                             </div>

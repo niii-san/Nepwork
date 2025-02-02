@@ -68,6 +68,13 @@ export const updateJob = asyncHandler(async (req, res) => {
             "Can only set job status to close if job is open",
         );
     }
+    if (status === "closed" && job.acceptedFreelancer) {
+        throw new ApiError(
+            400,
+            true,
+            "Cannot close job after selecting freelancer",
+        );
+    }
 
     if (
         status === "in_progress" &&
