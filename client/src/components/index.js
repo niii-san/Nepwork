@@ -29,6 +29,7 @@ import ApplyJobModal from "./ApplyJobModal";
 import ConnectionUserList from "./ConnectionUserList";
 import ClientPostedJobs from "./Profile/ClientPostedJobs";
 import JobOverview from "./JobOverview";
+import ViewMsgModal from "./ViewMsgModal";
 
 export {
     NavBar,
@@ -62,4 +63,5 @@ export {
     ConnectionUserList,
     ClientPostedJobs,
     JobOverview,
+    ViewMsgModal,
 };

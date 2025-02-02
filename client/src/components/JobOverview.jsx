@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 function JobOverview({ jobId, jobData, isSelectedFreelancer }) {
     const [data, setData] = useState(null);
-    console.log(data);
     const [loading, setLoading] = useState(true);
 
     const statusStyles = {

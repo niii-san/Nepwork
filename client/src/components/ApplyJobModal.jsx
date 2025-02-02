@@ -17,7 +17,7 @@ function ApplyJobModal({ jobData, setModalFn, refetchJobFn }) {
         setLoading(true);
         setResErr(null);
         try {
-            await api.post("/jobs/apply", { jobId: jobData._id });
+            await api.post("/jobs/apply", { jobId: jobData._id, message });
             await refetchJobFn();
             toast.success("Application submitted successfully!");
             setModalFn(false);
@@ -35,7 +35,7 @@ function ApplyJobModal({ jobData, setModalFn, refetchJobFn }) {
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900">
-                        Apply for {jobData?.position || "this position"}
+                        Apply for job
                     </h2>
                     <button
                         onClick={handleCloseModal}

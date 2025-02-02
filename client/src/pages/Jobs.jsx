@@ -22,7 +22,6 @@ function Jobs() {
     const { jobId } = useParams();
     const userData = useUser((state) => state.data);
     const [currentJob, setCurrentJob] = useState(null);
-    console.log(currentJob);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteResErr, setDeleteResErr] = useState(null);
