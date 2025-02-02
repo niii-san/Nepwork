@@ -54,3 +54,16 @@ export const getSingleJob = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, true, false, "Job fetched", job));
 });
+
+export const getOpenJobs = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    if (!mongoose.isValidObjectId(userId))
+        throw new ApiError(400, false, "Invalid userId");
+
+    const jobs = await Job.find({ postedBy: userId, status: "open" });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, true, false, "Jobs fetched", jobs));
+});
