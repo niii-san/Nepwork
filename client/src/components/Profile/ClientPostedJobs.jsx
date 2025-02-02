@@ -58,7 +58,7 @@ function ClientPostedJobs({ clientId }) {
                     {jobs.map((job) => (
                         <div
                             key={job?._id}
-                            className="border rounded-xl p-5 hover:shadow-md transition-shadow"
+                            className="h-[200px] overflow-y-scroll border rounded-xl p-5 hover:shadow-md transition-shadow"
                         >
                             <div className="flex justify-between items-start mb-3">
                                 <h3 className="text-base font-semibold text-gray-900">
