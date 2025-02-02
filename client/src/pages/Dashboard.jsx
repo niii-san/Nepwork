@@ -33,7 +33,7 @@ function Dashboard() {
                 {showPostJobModal && (
                     <PostJobModal setShowPostJobModal={setShowPostJobModal} />
                 )}
-                <div className="bg-red min-h-[800px]">
+                <div className="bg-red min-h-screen">
                     <div className="flex">
                         <AllPostedJobs />
                         <div className="flex flex-wrap items-center">

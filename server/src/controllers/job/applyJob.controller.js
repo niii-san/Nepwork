@@ -28,6 +28,9 @@ export const applyJob = asyncHandler(async (req, res) => {
         throw new ApiError(400, true, "You've already applied to this job");
     }
 
+    if (job.status !== "open")
+        throw new ApiError(400, true, "Can only apply to open jobs");
+
     const application = await JobApplication.create({
         appliedBy: user._id,
         appliedTo: job._id,

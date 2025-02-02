@@ -16,6 +16,7 @@ import { createJob } from "./job/createJob.controller.js";
 import {
     getAllJobs,
     getJobsPostedByCurrentUser,
+    getOpenJobs,
     getSingleJob,
 } from "./job/getJobs.controller.js";
 import { updateJob } from "./job/updateJob.controller.js";
@@ -38,6 +39,7 @@ import {
     getFollowers,
     unFollowUser,
 } from "./user/connection.controller.js";
+import { getJobOverview } from "./job/getJobOverview.controller.js";
 
 export {
     login,
@@ -76,4 +78,6 @@ export {
     unFollowUser,
     getFollowers,
     getFollowing,
+    getOpenJobs,
+    getJobOverview,
 };

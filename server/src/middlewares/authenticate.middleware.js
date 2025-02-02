@@ -11,7 +11,7 @@ const authenticate = asyncHandler(async (req, res, next) => {
     if (!accessToken) {
         return res
             .status(401)
-            .json(new ApiError(400, false, "Access Token not provided"));
+            .json(new ApiError(401, false, "Access Token not provided"));
     }
 
     try {
@@ -31,8 +31,8 @@ const authenticate = asyncHandler(async (req, res, next) => {
         // * If invalid token return response
         if (e.message == "jwt expired") {
             return res
-                .status(400)
-                .json(new ApiError(400, false, "Access Token Expired"));
+                .status(401)
+                .json(new ApiError(401, false, "Access Token Expired"));
         }
         return res
             .status(401)
