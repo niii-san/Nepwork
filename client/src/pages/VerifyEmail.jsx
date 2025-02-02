@@ -46,7 +46,7 @@ function VerifyEmail() {
     if (userData.emailVerified) {
         return (
             <>
-                <div className="bg-secondary min-h-[800px] flex gap-5 items-center justify-center">
+                <div className="bg-secondary min-h-screen flex gap-5 items-center justify-center">
                     <h1 className="block text-4xl font-bold">
                         Your Email is Verified!
                     </h1>

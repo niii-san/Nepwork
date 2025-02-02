@@ -8,7 +8,7 @@ function Settings() {
 
     if (!userData) return <Loader />;
     return (
-        <div className="min-h-[800px] bg-secondary">
+        <div className="min-h-screen bg-secondary">
             <h1>This is Settings</h1>
             <div className="h-72 w-[400px] flex flex-col justify-evenly">
                 <Link to={"/settings/verify-email"} className="">
