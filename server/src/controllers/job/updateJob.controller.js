@@ -72,6 +72,24 @@ export const updateJob = asyncHandler(async (req, res) => {
     const job = await Job.findOne({ _id: jobId, postedBy: userId });
     if (!job) throw new ApiError(400, true, "Job not found");
 
+    if (job.status === "finished") {
+        throw new ApiError(400, true, "Cannot update finished job");
+    }
+
+    if (
+        job.acceptedFreelancer &&
+        (jobTitle !== job.title ||
+            hourlyRate !== job.hourlyRate ||
+            jobDescription !== job.description ||
+            JSON.stringify(jobTags) !== JSON.stringify(job.tags))
+    ) {
+        throw new ApiError(
+            400,
+            true,
+            "Can only update job status once freelancer is selected",
+        );
+    }
+
     // job status validation
     if (status === "open" && job.status !== "closed") {
         throw new ApiError(

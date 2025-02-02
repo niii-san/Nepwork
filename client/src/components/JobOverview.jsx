@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 function JobOverview({ jobId, jobData }) {
     const [data, setData] = useState(null);
-    console.log(data);
     const [loading, setLoading] = useState(true);
 
     const statusStyles = {
@@ -35,7 +34,7 @@ function JobOverview({ jobId, jobData }) {
     if (loading) return <Loader />;
 
     return (
-        <div className=" max-w-7xl mx-auto px-4 pb-8">
+        <div className="mt-8 max-w-7xl mx-auto px-4 pb-8">
             <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-2">
                     Job Overview
@@ -89,19 +88,18 @@ function JobOverview({ jobId, jobData }) {
                             </div>
                             {!data?.payment?.done && (
                                 <Button
-                                    disabled={
-                                        data?.jobStatus !== "finished"
-                                            ? true
-                                            : false
-                                    }
+                                    disabled={data?.jobStatus !== "finished"}
                                     variant="filled"
-                                    className="w-full mt-4 bg-green-600 hover:bg-green-700 border-green-600"
+                                    className={"w-full font-bold"}
                                 >
-                                    Pay Now
+                                    {data?.jobStatus === "finished"
+                                        ? "Pay Now"
+                                        : "Job not finished"}
                                 </Button>
                             )}
                         </div>
                     </div>
+
                     {/* Work Timeline */}
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -159,7 +157,7 @@ function JobOverview({ jobId, jobData }) {
                                 </span>
                             </div>
                         </div>
-                    </div>{" "}
+                    </div>
                 </div>
 
                 {/* Additional Info Section */}
@@ -192,5 +190,4 @@ function JobOverview({ jobId, jobData }) {
         </div>
     );
 }
-
 export default JobOverview;
