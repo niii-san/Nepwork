@@ -28,6 +28,7 @@ import ConfirmModal from "./ConfirmModal";
 import ApplyJobModal from "./ApplyJobModal";
 import ConnectionUserList from "./ConnectionUserList";
 import ClientPostedJobs from "./Profile/ClientPostedJobs";
+import JobOverview from "./JobOverview";
 
 export {
     NavBar,
@@ -60,4 +61,5 @@ export {
     ApplyJobModal,
     ConnectionUserList,
     ClientPostedJobs,
+    JobOverview,
 };
