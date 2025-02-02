@@ -548,7 +548,7 @@ function KycForm() {
                             variant="filled"
                             disabled={uploading}
                             loading={uploading}
-                            className="w-full py-4 font-semibold text-lg bg-primary hover:bg-primary/90 text-primaryText rounded-xl transition-all"
+                            className="w-full py-4 font-semibold text-lg bg-primary hover:bg-primary/90 text-white rounded-xl transition-all"
                         >
                             {uploading ? "Submitting..." : "Submit"}
                         </Button>

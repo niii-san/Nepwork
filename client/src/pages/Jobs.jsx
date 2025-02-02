@@ -14,6 +14,7 @@ import Tag from "../components/Tag";
 import { FaRegTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 import ApplicantsList from "../components/ApplicantsList";
+import capitalize from "../utils/capitalize";
 
 function Jobs() {
     const navigate = useNavigate();
@@ -149,9 +150,9 @@ function Jobs() {
                                             {currentJob.status === "in_progress"
                                                 ? "In Progress"
                                                 : currentJob.status
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                currentJob.status.slice(1)}
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                  currentJob.status.slice(1)}
                                         </span>
                                         <span className="text-gray-500">•</span>
                                         <span className="text-gray-600">
@@ -167,14 +168,14 @@ function Jobs() {
                                                 to={`/profile/${currentJob.postedBy._id}`}
                                             >
                                                 <span className="ml-1 hover:text-black font-bold">
-                                                    {
+                                                    {capitalize(
                                                         currentJob.postedBy.name
-                                                            .firstName
-                                                    }{" "}
-                                                    {
+                                                            .firstName,
+                                                    )}{" "}
+                                                    {capitalize(
                                                         currentJob.postedBy.name
-                                                            .lastName
-                                                    }
+                                                            .lastName,
+                                                    )}
                                                 </span>
                                             </Link>
                                         </div>
@@ -206,10 +207,27 @@ function Jobs() {
                                     <h3 className="text-sm font-medium text-gray-500">
                                         Accepted Freelancer
                                     </h3>
-                                    <p className="text-lg text-gray-900">
-                                        {currentJob.acceptedFreelancer ??
-                                            "Not selected"}
-                                    </p>
+                                    <span className="text-lg text-gray-900">
+                                        {!currentJob.acceptedFreelancer ? (
+                                            "Not selected"
+                                        ) : (
+                                            <Link
+                                                to={`/profile/${currentJob?.acceptedFreelancer?._id}`}
+                                                className="cursor-pointer w-fit hover:underline hover:text-blue-600"
+                                            >
+                                                {capitalize(
+                                                    currentJob
+                                                        ?.acceptedFreelancer
+                                                        ?.name?.firstName,
+                                                )}{" "}
+                                                {capitalize(
+                                                    currentJob
+                                                        ?.acceptedFreelancer
+                                                        ?.name?.lastName,
+                                                )}
+                                            </Link>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
 
@@ -237,7 +255,7 @@ function Jobs() {
 
                             {/* Action Button */}
                             {userData &&
-                                currentJob.postedBy._id === userData._id ? (
+                            currentJob.postedBy._id === userData._id ? (
                                 <div className="flex justify-between">
                                     <Button
                                         variant="filled"
@@ -264,12 +282,19 @@ function Jobs() {
                                 </div>
                             ) : (
                                 <Button
-                                    disabled={hasApplied}
+                                    disabled={
+                                        hasApplied ||
+                                        currentJob.acceptedFreelancer
+                                    }
                                     onClick={() => setApplyJobModal(true)}
                                     variant="filled"
                                     className="w-full py-3 font-semibold"
                                 >
-                                    {hasApplied ? "Job applied" : "Apply"}
+                                    {currentJob.acceptedFreelancer
+                                        ? "Freelancer selected"
+                                        : hasApplied
+                                          ? "Job applied"
+                                          : "Apply"}
                                 </Button>
                             )}
                         </div>
@@ -281,6 +306,7 @@ function Jobs() {
                     <ApplicantsList
                         currentJobData={currentJob}
                         userData={userData}
+                        refetchJobFn={fetchSetCurrentJob}
                     />
                 )}
             </div>

@@ -18,6 +18,10 @@ import {
     updateProfileTags,
     updateAbout,
     updateHourlyRate,
+    followUser,
+    unFollowUser,
+    getFollowers,
+    getFollowing,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -52,6 +56,12 @@ userRoute.post(
 userRoute.post("/update-profile-tags", authenticate, updateProfileTags);
 userRoute.post("/update-about", authenticate, updateAbout);
 userRoute.post("/update-hourly-rate", authenticate, updateHourlyRate);
+
+userRoute.post("/:targetId/follow", authenticate, followUser);
+userRoute.post("/:targetId/unfollow", authenticate, unFollowUser);
+
+userRoute.get("/followers/:targetId", getFollowers);
+userRoute.get("/following/:targetId", getFollowing);
 
 userRoute.get("/profiles/:userId", getProfileData);
 

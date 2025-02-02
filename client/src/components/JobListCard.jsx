@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import capitalize from "../utils/capitalize";
 
 function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
     const statusStyles = {
@@ -26,7 +27,9 @@ function JobListCard({ jobId, jobtitle, amount, freelancer, status }) {
                 </div>
                 <div className="flex w-[24%]">
                     <h2 className="text-blacktext text-sm font-medium">
-                        {freelancer ?? "Not accepted"}
+                        {!freelancer
+                            ? "Not accepted"
+                            : capitalize(freelancer.name.firstName)}
                     </h2>
                 </div>
                 <div className="flex w-[24%] justify-center">

@@ -6,6 +6,7 @@ import {
     freelancerOnly,
 } from "../middlewares/index.js";
 import {
+    acceptFreelancer,
     applyJob,
     createJob,
     deleteJob,
@@ -33,5 +34,12 @@ jobRouter.get("/get-home-jobs", getHomePageJobs);
 
 jobRouter.post("/apply", authenticate, freelancerOnly, applyJob);
 jobRouter.get("/applicants/:jobId", getApplicants);
+
+jobRouter.post(
+    "/:jobId/accept-freelancer",
+    authenticate,
+    clientOnly,
+    acceptFreelancer,
+);
 
 jobRouter.get("/:id", getSingleJob);

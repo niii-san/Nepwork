@@ -7,7 +7,6 @@ import FreelancerCard from "../FreelancerCard";
 
 function ClientHomepage({ isLoggedIn, userData }) {
     const [freelancers, setFreelancers] = useState([]);
-    console.log(freelancers);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
