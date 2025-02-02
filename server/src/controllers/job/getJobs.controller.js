@@ -4,6 +4,7 @@ import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 export const getAllJobs = asyncHandler(async (_, res) => {
     const jobs = await Job.find()
+        .select("-startTime -endTime -workedTimeInSec -payment")
         .populate({
             path: "postedBy",
             select: "name avatar ",
@@ -16,10 +17,9 @@ export const getAllJobs = asyncHandler(async (_, res) => {
 });
 
 export const getJobsPostedByCurrentUser = asyncHandler(async (req, res) => {
-    const jobs = await Job.find({ postedBy: req.user._id }).populate(
-        "acceptedFreelancer",
-        "name avatar",
-    );
+    const jobs = await Job.find({ postedBy: req.user._id })
+        .select("-startTime -endTime -workedTimeInSec -payment")
+        .populate("acceptedFreelancer", "name avatar");
 
     return res
         .status(200)
@@ -41,6 +41,7 @@ export const getSingleJob = asyncHandler(async (req, res) => {
         throw new ApiError(400, false, "Invalid job id");
 
     const job = await Job.findById(jobId)
+        .select("-startTime -endTime -workedTimeInSec -payment")
         .populate({
             path: "postedBy",
             select: "name avatar _id",
@@ -61,8 +62,9 @@ export const getOpenJobs = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(userId))
         throw new ApiError(400, false, "Invalid userId");
 
-    const jobs = await Job.find({ postedBy: userId, status: "open" });
-
+    const jobs = await Job.find({ postedBy: userId, status: "open" }).select(
+        "-startTime -endTime -workedTimeInSec -payment",
+    );
     return res
         .status(200)
         .json(new ApiResponse(200, true, false, "Jobs fetched", jobs));

@@ -44,6 +44,6 @@ jobRouter.post(
     acceptFreelancer,
 );
 jobRouter.get("/:userId/open-jobs", getOpenJobs);
-jobRouter.get("/overview/:jobId", authenticate, clientOnly, getJobOverview);
+jobRouter.get("/overview/:jobId", authenticate, getJobOverview);
 
 jobRouter.get("/:id", getSingleJob);

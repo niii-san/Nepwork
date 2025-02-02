@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import Loader from "./Loader";
 import { useEffect, useState } from "react";
 
-function JobOverview({ jobId, jobData }) {
+function JobOverview({ jobId, jobData, isSelectedFreelancer }) {
     const [data, setData] = useState(null);
     console.log(data);
     const [loading, setLoading] = useState(true);
@@ -61,12 +61,18 @@ function JobOverview({ jobId, jobData }) {
                                     Worked time
                                 </span>
                                 <div className="flex gap-2 items-center font-medium">
-                                <span className="font-bold">
-                                    {(data?.workedTimeInSec / 3600).toFixed(1)}h
-                                </span>
-                                <span className="text-sm">
-                                    {(data?.workedTimeInSec / 60).toFixed(1)}m
-                                </span>
+                                    <span className="font-bold">
+                                        {(data?.workedTimeInSec / 3600).toFixed(
+                                            1,
+                                        )}
+                                        h
+                                    </span>
+                                    <span className="text-sm">
+                                        {(data?.workedTimeInSec / 60).toFixed(
+                                            1,
+                                        )}
+                                        m
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex justify-between border-t pt-2">
@@ -92,7 +98,7 @@ function JobOverview({ jobId, jobData }) {
                                     {data?.payment?.done ? "Paid" : "Pending"}
                                 </span>
                             </div>
-                            {!data?.payment?.done && (
+                            {!data?.payment?.done && !isSelectedFreelancer && (
                                 <Button
                                     disabled={data?.jobStatus !== "finished"}
                                     variant="filled"

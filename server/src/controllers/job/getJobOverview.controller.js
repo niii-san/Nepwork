@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 import { Job } from "../../models/index.js";
+import { acceptFreelancer } from "./acceptFreelancer.controller.js";
 
 const calculateWorkedTimeInSec = (start, end) => {
     if (!start || !end) return 0;
@@ -22,10 +23,20 @@ export const getJobOverview = asyncHandler(async (req, res) => {
         throw new ApiError(400, false, "Invalid jobId");
     }
 
-    const job = await Job.findOne({ _id: jobId, postedBy: userId });
+    const job = await Job.findOne({
+        _id: jobId,
+        $or: [{ postedBy: userId }, { acceptedFreelancer: userId }],
+    });
 
     if (!job) {
         throw new ApiError(404, false, "Job not found");
+    }
+
+    if (
+        userId !== job.postedBy.toString() &&
+        userId !== job.acceptedFreelancer.toString()
+    ) {
+        throw new ApiError(401, false, "You do not have access");
     }
 
     const overview = {

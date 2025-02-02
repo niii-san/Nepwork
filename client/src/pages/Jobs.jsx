@@ -22,6 +22,7 @@ function Jobs() {
     const { jobId } = useParams();
     const userData = useUser((state) => state.data);
     const [currentJob, setCurrentJob] = useState(null);
+    console.log(currentJob);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteResErr, setDeleteResErr] = useState(null);
@@ -327,9 +328,19 @@ function Jobs() {
                         />
                     )}
                 </div>
-                {userData && currentJob.postedBy._id === userData._id && (
-                    <JobOverview jobId={currentJob._id} jobData={currentJob} />
-                )}
+                {userData &&
+                    (currentJob?.postedBy?._id === userData?._id ||
+                        currentJob?.acceptedFreelancer?._id ===
+                            userData?._id) && (
+                        <JobOverview
+                            jobId={currentJob._id}
+                            jobData={currentJob}
+                            isSelectedFreelancer={
+                                currentJob?.acceptedFreelancer?._id ===
+                                userData?._id
+                            }
+                        />
+                    )}
             </div>
         </>
     );
