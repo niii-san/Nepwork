@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 function JobOverview({ jobId, jobData }) {
     const [data, setData] = useState(null);
+    console.log(data);
     const [loading, setLoading] = useState(true);
 
     const statusStyles = {
@@ -57,11 +58,16 @@ function JobOverview({ jobId, jobData }) {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600">
-                                    Hours Worked
+                                    Worked time
                                 </span>
-                                <span className="font-medium">
+                                <div className="flex gap-2 items-center font-medium">
+                                <span className="font-bold">
                                     {(data?.workedTimeInSec / 3600).toFixed(1)}h
                                 </span>
+                                <span className="text-sm">
+                                    {(data?.workedTimeInSec / 60).toFixed(1)}m
+                                </span>
+                                </div>
                             </div>
                             <div className="flex justify-between border-t pt-2">
                                 <span className="text-gray-900 font-semibold">

@@ -2,6 +2,18 @@ import mongoose from "mongoose";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 import { Job } from "../../models/index.js";
 
+const calculateWorkedTimeInSec = (start, end) => {
+    if (!start || !end) return 0;
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const diff = (endDate.getTime() - startDate.getTime()) / 1000;
+    const seconds = Math.floor(diff);
+
+    return seconds;
+};
+
 export const getJobOverview = asyncHandler(async (req, res) => {
     const { jobId } = req.params;
     const userId = req.user.id;
@@ -21,8 +33,12 @@ export const getJobOverview = asyncHandler(async (req, res) => {
         workEndedAt: job.endTime,
         finished: job.hasFinished,
         rate: job.hourlyRate,
-        workedTimeInSec: job.workedTimeInSec,
-        payment:job.payment,
+        workedTimeInSec: job.endTime
+            ? job.workedTimeInSec
+            : job.startTime
+              ? calculateWorkedTimeInSec(job.startTime, Date.now())
+              : 0,
+        payment: job.payment,
         jobStatus: job.status,
     };
 
