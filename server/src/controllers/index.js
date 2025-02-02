@@ -39,6 +39,7 @@ import {
     getFollowers,
     unFollowUser,
 } from "./user/connection.controller.js";
+import { getJobOverview } from "./job/getJobOverview.controller.js";
 
 export {
     login,
@@ -78,4 +79,5 @@ export {
     getFollowers,
     getFollowing,
     getOpenJobs,
+    getJobOverview,
 };

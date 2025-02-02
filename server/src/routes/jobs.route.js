@@ -13,6 +13,7 @@ import {
     getApplicants,
     // getAllJobs,
     getHomePageJobs,
+    getJobOverview,
     getJobsPostedByCurrentUser,
     getOpenJobs,
     getSingleJob,
@@ -43,5 +44,6 @@ jobRouter.post(
     acceptFreelancer,
 );
 jobRouter.get("/:userId/open-jobs", getOpenJobs);
+jobRouter.get("/overview/:jobId", authenticate, clientOnly, getJobOverview);
 
 jobRouter.get("/:id", getSingleJob);
