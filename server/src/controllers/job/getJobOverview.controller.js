@@ -16,14 +16,13 @@ export const getJobOverview = asyncHandler(async (req, res) => {
         throw new ApiError(404, false, "Job not found");
     }
 
-
-
     const overview = {
-        jobStartDate: job.startTime,
-        jobEndDate: job.endTime,
-        finished:job.hasFinished,
-        rate:job.hourlyRate,
-        payment: job.payment,
+        workStartedAt: job.startTime,
+        workEndedAt: job.endTime,
+        finished: job.hasFinished,
+        rate: job.hourlyRate,
+        workedTimeInSec: job.workedTimeInSec,
+        payment:job.payment,
         jobStatus: job.status,
     };
 
@@ -35,7 +34,7 @@ export const getJobOverview = asyncHandler(async (req, res) => {
                 true,
                 false,
                 `Fetched job overview of ${jobId}`,
-                null,
+                overview,
             ),
         );
 });

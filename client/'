@@ -320,40 +320,42 @@ function Jobs() {
                     />
                 )}
             </div>
-            {userData && currentJob.postedBy._id === userData._id && (
-                <JobOverview jobId={currentJob._id} jobData={currentJob} />
-            )}
+
+
+            <div>Job overview</div>
         </>
     );
 }
 export default Jobs;
 
-function JobOverview({ jobId,jobData }) {
-    const [data, setData] = useState(null);
-    console.log(data);
-    const [loading, setLoading] = useState(true);
+function JobOverview({jobId}){
 
-    const fetchSetOverviewData = async () => {
+    const [data,setData] = useState(null)
+
+    const fetchSetOverviewData = async ()=>{
         try {
-            const response = await api.get(`/jobs/overview/${jobId}`);
-            setData(response.data.data);
+            const response = await api.get(`/jobs/overview/${jobId}`)
+            setData(response.data.data)
+
+            
         } catch (error) {
-            toast.error("Failed to load overview");
-            console.error(error);
-        } finally {
-            setLoading(false);
+            toast.error("Failed to load overview")
+            console.error(error)
+
+            
         }
-    };
 
-    useEffect(() => {
-        fetchSetOverviewData();
-    }, [jobData]);
+    }
 
-    if (loading) return <Loader />;
+    useEffect(()=>{
+        fetchSetOverviewData()
+    },[])
+
     return (
-        <div>
-            <h1>Job Overview</h1>
-            <div></div>
+    <div>
+            <h1>Overview</h1>
+
         </div>
-    );
+    )
+
 }

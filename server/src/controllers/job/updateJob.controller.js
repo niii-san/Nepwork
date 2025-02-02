@@ -3,6 +3,26 @@ import { tags } from "../../constants.js";
 import { Job } from "../../models/index.js";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
+const calculateWorkedTimeInSec = (start, end) => {
+    if (!start || !end) return 0;
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const diff = (endDate.getTime() - startDate.getTime()) / 1000;
+    const seconds = Math.floor(diff);
+
+    return seconds;
+};
+const calculateAmountToPay = (hourlyRate, workedTimeInSec) => {
+    if (!hourlyRate || !workedTimeInSec) return null;
+
+    const rateInSec = hourlyRate / 3600;
+    const amount = Math.ceil(rateInSec * workedTimeInSec);
+
+    return amount;
+};
+
 const validateTags = (sentTags) => {
     for (let i = 0; i < sentTags.length; i++) {
         if (!tags.includes(sentTags[i])) {
@@ -95,8 +115,21 @@ export const updateJob = asyncHandler(async (req, res) => {
         );
     }
 
-    //TODO: when setting to in progress start the timer of startTime
-    //and set end time when the job is finished
+    if (status === "in_progress") {
+        job.startTime = Date.now();
+    }
+
+    if (status === "finished") {
+        const date = Date.now();
+        job.endTime = date;
+        job.hasFinished = true;
+        job.workedTimeInSec = calculateWorkedTimeInSec(job.startTime, date);
+        job.payment.amount = calculateAmountToPay(
+            job.hourlyRate,
+            job.workedTimeInSec,
+        );
+    }
+
     job.description = jobDescription;
     job.hourlyRate = hourlyRate;
     job.tags = jobTags;
