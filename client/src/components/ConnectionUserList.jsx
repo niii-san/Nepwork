@@ -93,7 +93,7 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
                         isCurrentLoggedUserFollowing ? "outline" : "filled"
                     }
                     onClick={() => handleToogleFollowUnfollow(listData?._id)}
-                    className="px-6 py-2 rounded-full text-sm transition-all duration-200"
+                    className={`px-6 py-2 rounded-full text-sm transition-all duration-200 ${loggedInUserData?._id === listData?._id && "hidden"}`}
                 >
                     {isCurrentLoggedUserFollowing ? "Unfollow" : "Follow"}
                 </Button>
