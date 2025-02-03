@@ -13,7 +13,9 @@ import {
     getApplicants,
     // getAllJobs,
     getHomePageJobs,
+    getJobOverview,
     getJobsPostedByCurrentUser,
+    getOpenJobs,
     getSingleJob,
     updateJob,
 } from "../controllers/index.js";
@@ -32,7 +34,7 @@ jobRouter.get(
 jobRouter.delete("/delete-job/:jobId", authenticate, clientOnly, deleteJob);
 jobRouter.get("/get-home-jobs", getHomePageJobs);
 
-jobRouter.post("/apply", authenticate, freelancerOnly, applyJob);
+jobRouter.post("/apply", authenticate, verified, freelancerOnly, applyJob);
 jobRouter.get("/applicants/:jobId", getApplicants);
 
 jobRouter.post(
@@ -41,5 +43,7 @@ jobRouter.post(
     clientOnly,
     acceptFreelancer,
 );
+jobRouter.get("/:userId/open-jobs", getOpenJobs);
+jobRouter.get("/overview/:jobId", authenticate, getJobOverview);
 
 jobRouter.get("/:id", getSingleJob);

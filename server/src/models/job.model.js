@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { tags } from "../constants.js";
 
+
 const jobApplicationSchema = new mongoose.Schema(
     {
         appliedTo: {
@@ -46,6 +47,10 @@ const jobSchema = new mongoose.Schema(
                 type: Boolean,
                 default: false,
             },
+            amount: {
+                type: Number,
+                default: 0,
+            },
         },
 
         applications: [
@@ -77,6 +82,11 @@ const jobSchema = new mongoose.Schema(
         hasFinished: {
             type: Boolean,
             default: false,
+        },
+
+        workedTimeInSec: {
+            type: Number,
+            default: 0,
         },
 
         hourlyRate: {

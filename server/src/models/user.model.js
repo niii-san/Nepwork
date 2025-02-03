@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
             middleName: String,
             lastName: String,
         },
+        balance: {
+            type: Number,
+            default: 0,
+        },
         about: {
             type: String,
         },

@@ -8,6 +8,7 @@ import { HiOutlineClock } from "react-icons/hi";
 import { Link } from "react-router";
 import ConfirmModal from "./ConfirmModal";
 import capitalize from "../utils/capitalize";
+import ViewMsgModal from "./ViewMsgModal";
 
 function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
     const [applicants, setApplicants] = useState([]);
@@ -33,6 +34,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
     const [acceptLoading, setAcceptLoading] = useState(false);
     const [currentSelectedApplicant, setCurrentSelectedApplicant] =
         useState(null);
+    const [viewMsgModal, setViewMsgModal] = useState(false);
 
     const handleAcceptOnConfirm = async () => {
         setAcceptLoading(true);
@@ -43,6 +45,7 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
             });
             await refetchJobFn();
             toast.success("Freelancer accepted");
+            setAcceptFreelancerModal(false);
         } catch (error) {
             setAcceptErr(error.response.data.message || "Failed to accept");
             console.error(error);
@@ -53,6 +56,12 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
 
     return (
         <>
+            {viewMsgModal && (
+                <ViewMsgModal
+                    message={currentSelectedApplicant.message}
+                    setModalFn={setViewMsgModal}
+                />
+            )}
             {acceptFreelancerModal && (
                 <ConfirmModal
                     title={`Are you sure to accept ${currentSelectedApplicant.appliedBy.name.firstName} ${currentSelectedApplicant.appliedBy.name.lastName}?`}
@@ -165,9 +174,12 @@ function ApplicantsList({ currentJobData, userData, refetchJobFn }) {
                                 <Button
                                     variant="outline"
                                     className="text-sm px-3 py-2 w-full justify-center gap-2 hover:bg-gray-100"
-                                    onClick={() =>
-                                        handleViewMessage(applicantData._id)
-                                    }
+                                    onClick={() => {
+                                        setCurrentSelectedApplicant(
+                                            applicantData,
+                                        );
+                                        setViewMsgModal(true);
+                                    }}
                                 >
                                     <FiMessageSquare className="w-4 h-4 flex-shrink-0" />
                                     <span className="truncate">View Msg</span>

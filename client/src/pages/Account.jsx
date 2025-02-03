@@ -1,10 +1,6 @@
-
-import React from 'react'
-
+import React from "react";
 function Account() {
-  return (
-    <div>Accounts setting</div>
-  )
+    return <div className="min-h-screen">Accounts setting</div>;
 }
 
-export default Account
+export default Account;
