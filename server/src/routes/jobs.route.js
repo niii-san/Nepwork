@@ -18,6 +18,7 @@ import {
     getOpenJobs,
     getSingleJob,
     updateJob,
+    getTransaction,
 } from "../controllers/index.js";
 
 export const jobRouter = Router();
@@ -45,5 +46,8 @@ jobRouter.post(
 );
 jobRouter.get("/:userId/open-jobs", getOpenJobs);
 jobRouter.get("/overview/:jobId", authenticate, getJobOverview);
+
+// Transaction
+jobRouter.get("/transaction/:jobId", authenticate, getTransaction);
 
 jobRouter.get("/:id", getSingleJob);
