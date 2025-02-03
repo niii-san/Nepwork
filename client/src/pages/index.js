@@ -14,6 +14,7 @@ import Inbox from "./Inbox";
 import Account from "./Account";
 import Followers from "./Followers";
 import Following from "./Following";
+import Pay from "./Pay";
 
 export {
     Home,
@@ -32,4 +33,5 @@ export {
     Account,
     Followers,
     Following,
+    Pay,
 };

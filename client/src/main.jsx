@@ -20,6 +20,7 @@ import {
     Following,
     Followers,
     Account,
+    Pay,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -93,6 +94,14 @@ createRoot(document.getElementById("root")).render(
                         element={
                             <Protected>
                                 <Jobs />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="jobs/:jobId/pay"
+                        element={
+                            <Protected>
+                                <Pay />
                             </Protected>
                         }
                     />
