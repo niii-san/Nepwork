@@ -119,14 +119,14 @@ function Jobs() {
                 />
             )}
 
-            {showEditJobModal && (
-                <EditJobModal
-                    jobData={currentJob}
-                    setModalStatus={setShowEditJobModal}
-                    refetchJobFn={fetchSetCurrentJob}
-                />
-            )}
             <div className="min-h-screen">
+                {showEditJobModal && (
+                    <EditJobModal
+                        jobData={currentJob}
+                        setModalStatus={setShowEditJobModal}
+                        refetchJobFn={fetchSetCurrentJob}
+                    />
+                )}
                 <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
                     <div className="flex-1">
                         {!currentJob ? (
