@@ -40,6 +40,8 @@ import {
     unFollowUser,
 } from "./user/connection.controller.js";
 import { getJobOverview } from "./job/getJobOverview.controller.js";
+import { getTransaction } from "./transaction/getTransaction.controller.js";
+import { payTransaction } from "./transaction/paytransaction.controller.js";
 
 export {
     login,
@@ -80,4 +82,6 @@ export {
     getFollowing,
     getOpenJobs,
     getJobOverview,
+    getTransaction,
+    payTransaction,
 };

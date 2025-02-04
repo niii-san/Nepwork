@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { tags } from "../constants.js";
 
-
 const jobApplicationSchema = new mongoose.Schema(
     {
         appliedTo: {
@@ -51,6 +50,12 @@ const jobSchema = new mongoose.Schema(
                 type: Number,
                 default: 0,
             },
+        },
+
+        transaction: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Transaction",
+            default: null,
         },
 
         applications: [
