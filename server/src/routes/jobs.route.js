@@ -19,6 +19,7 @@ import {
     getSingleJob,
     updateJob,
     getTransaction,
+    payTransaction,
 } from "../controllers/index.js";
 
 export const jobRouter = Router();
@@ -49,5 +50,6 @@ jobRouter.get("/overview/:jobId", authenticate, getJobOverview);
 
 // Transaction
 jobRouter.get("/transaction/:jobId", authenticate, getTransaction);
+jobRouter.post("/transaction/:tId/pay", authenticate, payTransaction);
 
 jobRouter.get("/:id", getSingleJob);
