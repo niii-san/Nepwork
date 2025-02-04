@@ -76,7 +76,7 @@ function Login() {
     };
 
     return (
-        <div className="bg-secondary min-h-[800px] flex items-start pc:mt-10 mt-20 justify-center">
+        <div className="bg-secondary min-h-screen flex items-start pc:mt-10 mt-20 justify-center">
             <div className="hidden w-[330px] shadow-md rounded-l-xl h-[500px] pc:flex justify-center items-center flex-col">
                 <div className="bg-signUpPattern rounded-l-xl h-full min-h-full min-w-full bg-center bg-contain bg-no-repeat pc:flex justify-center items-center flex-col">
                     <img

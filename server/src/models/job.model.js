@@ -46,6 +46,16 @@ const jobSchema = new mongoose.Schema(
                 type: Boolean,
                 default: false,
             },
+            amount: {
+                type: Number,
+                default: 0,
+            },
+        },
+
+        transaction: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Transaction",
+            default: null,
         },
 
         applications: [
@@ -77,6 +87,11 @@ const jobSchema = new mongoose.Schema(
         hasFinished: {
             type: Boolean,
             default: false,
+        },
+
+        workedTimeInSec: {
+            type: Number,
+            default: 0,
         },
 
         hourlyRate: {

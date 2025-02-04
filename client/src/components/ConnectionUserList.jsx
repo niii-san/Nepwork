@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "./Button";
 import default_avatar from "../assets/default_avatar.svg";
 import { useEffect, useState } from "react";
@@ -73,9 +73,11 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
                     className="w-12 h-12 rounded-full object-cover border-2 border-gray-100 hover:border-blue-200 transition-colors duration-200"
                 />
                 <div>
-                    <h3 className="font-semibold text-gray-800">
+                    <h3 className="font-semibold text-gray-800 hover:underline hover:text-blue-800">
+                        <Link to={`/profile/${listData?._id}`}>
                         {capitalize(listData?.name?.firstName)}{" "}
                         {capitalize(listData?.name?.lastName)}
+                        </Link>
                     </h3>
                     {listData?.bio && (
                         <p className="text-sm text-gray-500 line-clamp-1 mt-1">
@@ -93,7 +95,7 @@ function ConnectionUserList({ listData, isLoggedIn, loggedInUserData }) {
                         isCurrentLoggedUserFollowing ? "outline" : "filled"
                     }
                     onClick={() => handleToogleFollowUnfollow(listData?._id)}
-                    className="px-6 py-2 rounded-full text-sm transition-all duration-200"
+                    className={`px-6 py-2 rounded-full text-sm transition-all duration-200 ${loggedInUserData?._id === listData?._id && "hidden"}`}
                 >
                     {isCurrentLoggedUserFollowing ? "Unfollow" : "Follow"}
                 </Button>

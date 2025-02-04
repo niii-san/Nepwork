@@ -25,6 +25,14 @@ export const acceptFreelancer = asyncHandler(async (req, res) => {
     if (job.acceptedFreelancer)
         throw new ApiError(400, true, "Job has already a freelancer");
 
+    if (job.status !== "open") {
+        throw new ApiError(
+            400,
+            true,
+            "Job must be open to select a freelancer",
+        );
+    }
+
     const application = await JobApplication.findOne({
         appliedBy: acceptedFreelancerId,
         appliedTo: job._id,

@@ -25,7 +25,7 @@ function FreelancerHomePage({ isLoggedIn, userData }) {
     }, []);
 
     return (
-        <div className="min-h-[800px]">
+        <div className="min-h-screen">
             <SearchBox type="freelancer" />
             <div className="mt-4 flex max-w-full justify-center items-center flex-col">
                 {loading ? (

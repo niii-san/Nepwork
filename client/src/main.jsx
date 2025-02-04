@@ -20,6 +20,9 @@ import {
     Following,
     Followers,
     Account,
+    Pay,
+    PaySuccess,
+    PayFailure,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -96,7 +99,31 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
+                    <Route
+                        path="jobs/:jobId/pay"
+                        element={
+                            <Protected>
+                                <Pay />
+                            </Protected>
+                        }
+                    />
 
+                    <Route
+                        path="jobs/transaction/:tId/pay/success"
+                        element={
+                            <Protected>
+                                <PaySuccess />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="jobs/transaction/:tId/pay/failure"
+                        element={
+                            <Protected>
+                                <PayFailure />
+                            </Protected>
+                        }
+                    />
                     <Route
                         path="inbox"
                         element={

@@ -59,7 +59,7 @@ function Signup() {
     };
 
     return (
-        <div className="bg-secondary mt-4 min-h-[800px] flex items-start pc:mt-16 justify-center">
+        <div className="bg-secondary mt-4 min-h-screen flex items-start pc:mt-16 justify-center">
             <div className="hidden w-[360px] shadow-md rounded-l-xl h-[600px] pc:flex justify-center items-center flex-col">
                 <div className="bg-signUpPattern rounded-l-xl h-full min-h-full min-w-full bg-center bg-cover bg-no-repeat pc:flex justify-center items-center flex-col">
                     <img

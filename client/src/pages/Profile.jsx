@@ -5,6 +5,7 @@ import { useAuth, useUser } from "../stores";
 import {
     Button,
     ChangeAvatarModal,
+    ClientPostedJobs,
     EditAboutModal,
     EditHourlyRateModal,
     EditTagsModal,
@@ -284,9 +285,9 @@ function Profile() {
                                     {currentProfileData?.kyc?.address?.temporary
                                         .state
                                         ? MapState[
-                                              currentProfileData.kyc.address
-                                                  .temporary.state
-                                          ]
+                                        currentProfileData.kyc.address
+                                            .temporary.state
+                                        ]
                                         : "N/A"}
                                 </span>
                             </div>
@@ -341,11 +342,10 @@ function Profile() {
                                         </>
                                     </div>
                                     <div
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-full ${
-                                            currentProfileData.available
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-full ${currentProfileData.available
                                                 ? "bg-green-50 text-green-700"
                                                 : "bg-red-50 text-red-700"
-                                        }`}
+                                            }`}
                                     >
                                         <span className="text-sm font-medium">
                                             {currentProfileData.available
@@ -423,42 +423,7 @@ function Profile() {
 
                 {/* Client Jobs Section */}
                 {isClient && (
-                    <section className="bg-white rounded-xl p-6 shadow-sm mb-8">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                            Posted Jobs
-                        </h2>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            {clientJobs.map((job) => (
-                                <div
-                                    key={job.id}
-                                    className="border rounded-xl p-5 hover:shadow-md transition-shadow"
-                                >
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h3 className="text-base font-semibold text-gray-900">
-                                            {job.title}
-                                        </h3>
-                                        <span className="text-xs text-gray-500">
-                                            {job.date}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 text-sm mb-4">
-                                        {job.description}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="font-medium text-blue-600 text-sm">
-                                            {job.hourlyRate}
-                                        </span>
-                                        <Button
-                                            variant="outline"
-                                            className="px-3 py-1.5 text-sm"
-                                        >
-                                            View Details
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                    <ClientPostedJobs clientId={currentProfileData?._id} />
                 )}
 
                 {/* Reviews Section */}
