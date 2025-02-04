@@ -15,6 +15,8 @@ import Account from "./Account";
 import Followers from "./Followers";
 import Following from "./Following";
 import Pay from "./Pay";
+import PayFailure from "./PayFailure";
+import PaySuccess from "./PaySuccess";
 
 export {
     Home,
@@ -34,4 +36,6 @@ export {
     Followers,
     Following,
     Pay,
+    PayFailure,
+    PaySuccess,
 };

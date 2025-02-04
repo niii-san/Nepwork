@@ -58,10 +58,16 @@ export const getTransaction = asyncHandler(async (req, res) => {
         }
     } else {
         const transaction = await Transaction.findById(job.transaction);
-        return res.status(200).json(
-            new ApiResponse(200, true, true, "Transaction fetched", {
-                transaction,
-            }),
-        );
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    true,
+                    true,
+                    "Transaction fetched",
+                    transaction,
+                ),
+            );
     }
 });
