@@ -4,6 +4,7 @@ import NullLoader from "../NullLoader";
 import Loader from "../Loader";
 import { Link } from "react-router";
 import Button from "../Button";
+import capitalize from "../../utils/capitalize";
 
 function PostedJobs({ showPostJobModalFn }) {
     const jobs = usePostedJobs((state) => state.jobs);
@@ -48,6 +49,14 @@ function PostedJobs({ showPostJobModalFn }) {
                 </div>
             </div>
             <div className="bg-white rounded-xl shadow-sm p-6">
+                <h1 className="text-2xl font-bold mb-6">
+                    {capitalize(
+                        selectedFilter === "in_progress"
+                            ? selectedFilter.replace("_", " ")
+                            : selectedFilter,
+                    )}{" "}
+                    Jobs
+                </h1>
                 <div className="flex flex-wrap gap-4 mb-6">
                     {["all", "open", "in_progress", "finished", "closed"].map(
                         (filter) => (

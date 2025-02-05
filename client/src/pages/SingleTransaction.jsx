@@ -73,7 +73,7 @@ function SingleTransaction() {
                                 />
                                 <DetailItem
                                     icon={<FiCalendar />}
-                                    label="Date & Time"
+                                    label="Payment Date & Time"
                                     value={new Date(
                                         txnData.paidTime,
                                     ).toLocaleDateString("en-US", {
@@ -95,7 +95,7 @@ function SingleTransaction() {
                                         <p className="text-sm text-gray-500">
                                             Job Title
                                         </p>
-                                        <p className="font-medium text-gray-900 hover:text-gray-500">
+                                        <p className="font-medium text-gray-900 hover:text-gray-500 break-all">
                                             {txnData.jobId.title}
                                         </p>
                                     </div>
