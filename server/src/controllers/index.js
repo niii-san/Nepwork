@@ -45,6 +45,7 @@ import { payTransaction } from "./transaction/paytransaction.controller.js";
 import {
     getAllTransaction,
     getRecentTransaction,
+    getSingleTransaction,
 } from "./transaction/getTransactions.controller.js";
 
 export {
@@ -90,4 +91,5 @@ export {
     payTransaction,
     getAllTransaction,
     getRecentTransaction,
+    getSingleTransaction,
 };
