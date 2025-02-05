@@ -10,7 +10,7 @@ import JobCard from "./JobCard";
 import Note from "./Note";
 import JobListCard from "./JobListCard";
 import { PostJobModal } from "./ClientDashboard/PostJobModal";
-import AllPostedJobs from "./ClientDashboard/AllPostedJobs";
+import PostedJobs from "./ClientDashboard/PostedJobs";
 import NullLoader from "./NullLoader";
 import ClientHomepage from "./Home/ClientHomepage";
 import FreelancerHomePage from "./Home/FreelancerHomePage";
@@ -44,7 +44,7 @@ export {
     JobListCard,
     Note,
     PostJobModal,
-    AllPostedJobs,
+    PostedJobs,
     NullLoader,
     ClientHomepage,
     FreelancerHomePage,

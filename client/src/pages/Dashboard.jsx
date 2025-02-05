@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "../stores";
-import { Loader, Button, PostJobModal, AllPostedJobs } from "../components";
+import { Loader, Button, PostJobModal, PostedJobs } from "../components";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useNavigate } from "react-router";
 
 function Dashboard() {
-    const navigate = useNavigate()
     const userData = useUser((state) => state.data);
-
     if (!userData) return <Loader />;
 
     return (
         <div className="min-h-[800px] bg-secondary">
             {userData.role === "client" ? (
-                <ClientDashBoard />
+                <ClientDashboard />
             ) : userData.role === "freelancer" ? (
                 <FreelancerDashboard />
             ) : (
@@ -24,50 +22,101 @@ function Dashboard() {
         </div>
     );
 
-    // Client Dashboard
-    function ClientDashBoard() {
+    function ClientDashboard() {
         const [showPostJobModal, setShowPostJobModal] = useState(false);
+        const [totalSpent] = useState(254600);
+        const [transactions] = useState([
+            {
+                date: "2023-07-15",
+                desc: "Web Development Project",
+                amount: 120000,
+            },
+            { date: "2023-07-10", desc: "Mobile App Design", amount: 84600 },
+            { date: "2023-07-05", desc: "SEO Services", amount: 50000 },
+        ]);
 
         return (
             <>
                 {showPostJobModal && (
                     <PostJobModal setShowPostJobModal={setShowPostJobModal} />
                 )}
-                <div className="bg-red min-h-screen">
-                    <div className="flex">
-                        <AllPostedJobs />
-                        <div className="flex flex-wrap items-center">
-                            <div
-                                id="btns"
-                                className="w-[200px] h-[200px] flex flex-col justify-evenly bg-gray-300"
-                            >
-                                <Button
-                                    className={` w-full`}
-                                    onClick={() => setShowPostJobModal(true)}
-                                >
-                                    Post Job
-                                </Button>
+                <div className="min-h-screen bg-gray-50 p-6">
+                    {/* Header */}
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-gray-900">
+                            Client Dashboard
+                        </h1>
+                    </div>
 
-                                <Button className="w-full relative" onClick={()=>navigate("/notifications")}>
-                                    <IoMdNotificationsOutline className="text-2xl" />
-                                    <p className="absolute top-1 translate-x-3.5 text-[12px] font-bold text-white bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
-                                        1
-                                    </p>
-                                </Button>
-                            </div>
-                            <div className="">
-                                <div
-                                    id="totalspendings"
-                                    className="h-[300px] w-[500px] bg-green-500"
-                                >
-                                    Total Spendings
-                                </div>
-                                <div className="mt-4">
-                                    <Button className="w-full">
-                                        View all transactions
-                                    </Button>{" "}
-                                </div>
-                            </div>
+                    {/* Quick Stats Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                            <h3 className="text-gray-500 text-sm">
+                                Total Jobs Posted
+                            </h3>
+                            <p className="text-2xl font-bold mt-2">24</p>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                            <h3 className="text-gray-500 text-sm">
+                                Active Contracts
+                            </h3>
+                            <p className="text-2xl font-bold mt-2">5</p>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                            <h3 className="text-gray-500 text-sm">
+                                Avg. Rate/Hour
+                            </h3>
+                            <p className="text-2xl font-bold mt-2">Rs 1,450</p>
+                        </div>
+                    </div>
+
+                    {/* Total Spendings Section */}
+                    <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 rounded-xl mb-8 animate-fade-in">
+                        <h2 className="text-2xl font-bold mb-4">
+                            Total Spendings
+                        </h2>
+                        <div className="flex items-baseline gap-4">
+                            <span className="text-4xl font-bold">
+                                Rs {totalSpent.toLocaleString()}
+                            </span>
+                            <button className="ml-auto bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
+                                View All Transactions
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Jobs Section */}
+                    <PostedJobs showPostJobModalFn={setShowPostJobModal} />
+
+                    {/* Recent Transactions */}
+                    <div className="mt-8 bg-white rounded-xl shadow-sm p-6">
+                        <h2 className="text-xl font-bold mb-4">
+                            Recent Transactions
+                        </h2>
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-gray-500 border-b">
+                                        <th className="pb-3">Date</th>
+                                        <th className="pb-3">Description</th>
+                                        <th className="pb-3">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {transactions.map((txn, index) => (
+                                        <tr
+                                            key={index}
+                                            className="hover:bg-gray-50 transition-colors"
+                                        >
+                                            <td className="py-3">{txn.date}</td>
+                                            <td className="py-3">{txn.desc}</td>
+                                            <td className="py-3 font-medium">
+                                                Rs {txn.amount.toLocaleString()}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
