@@ -54,6 +54,7 @@ export const getTransaction = asyncHandler(async (req, res) => {
         } catch (error) {
             await session.abortTransaction();
             session.endSession();
+            console.error(error)
             throw new ApiError(500, true, "Failed to get/create transaction");
         }
     } else {

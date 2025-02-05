@@ -7,6 +7,12 @@ const transactionSchema = new mongoose.Schema(
             ref: "Job",
             required: true,
         },
+        transactionCode: {
+            type: String,
+        },
+        transactionUUID: {
+            type: String,
+        },
         status: {
             type: String,
             enum: ["not_created", "pending", "done"],
