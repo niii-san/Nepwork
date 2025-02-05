@@ -9,11 +9,9 @@ const transactionSchema = new mongoose.Schema(
         },
         transactionCode: {
             type: String,
-            required: true,
         },
         transactionUUID: {
             type: String,
-            required: true,
         },
         status: {
             type: String,

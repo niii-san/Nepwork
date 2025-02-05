@@ -5,9 +5,13 @@ import { Job, Transaction, User } from "../../models/index.js";
 export const payTransaction = asyncHandler(async (req, res) => {
     const { tId } = req.params;
     const userId = req.user.id;
-    const amount = Number(req.body.amount);
+    const reqAmount = req.body.amount;
+    const amount = Number(reqAmount.replace(/,/g, ""));
+
     const transactionCode = (req.body.transactionCode ?? "").trim();
     const transactionUUID = (req.body.transactionUUID ?? "").trim();
+
+    console.log(amount);
 
     if (!mongoose.isValidObjectId(tId)) {
         throw new ApiError(400, true, "Invalid transaction id");

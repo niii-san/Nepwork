@@ -34,7 +34,7 @@ function Pay() {
         success_url: "",
     });
 
-    console.log(formData)
+    console.log(formData);
 
     const fetchSetTransactionDetail = async () => {
         try {
@@ -214,14 +214,18 @@ function Pay() {
                         type="submit"
                         variant="filled"
                         className="w-full"
-                        disabled={isProcessing}
+                        disabled={
+                            isProcessing || transactionDetail?.status === "done"
+                        }
                     >
                         {isProcessing ? (
                             <FaSpinner className="animate-spin" />
                         ) : (
                             <>
                                 <FaEthereum className="text-xl" />
-                                Proceed to Payment
+                                {transactionDetail?.status === "done"
+                                    ? "Already done"
+                                    : "Proceed to pay"}
                             </>
                         )}
                     </Button>
