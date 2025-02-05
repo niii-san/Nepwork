@@ -16,6 +16,7 @@ const PaySuccess = () => {
     const dataQuery = search.get("data");
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
+    console.log(data)
 
     useEffect(() => {
         const resData = atob(dataQuery);
