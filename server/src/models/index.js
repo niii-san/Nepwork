@@ -3,5 +3,6 @@ import { Kyc } from "./kyc.model.js";
 import { Otp } from "./otp.model.js";
 import { Job, JobApplication } from "./job.model.js";
 import { Ticket } from "./ticket.model.js";
+import { Transaction } from "./transaction.model.js";
 
-export { User, Kyc, Otp, Job, JobApplication, Ticket };
+export { User, Kyc, Otp, Job, JobApplication, Ticket, Transaction };

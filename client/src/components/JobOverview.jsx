@@ -3,8 +3,10 @@ import api from "../utils/api";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 function JobOverview({ jobId, jobData, isSelectedFreelancer }) {
+    const navigate = useNavigate();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -99,6 +101,9 @@ function JobOverview({ jobId, jobData, isSelectedFreelancer }) {
                             </div>
                             {!data?.payment?.done && !isSelectedFreelancer && (
                                 <Button
+                                    onClick={() =>
+                                        navigate(`/jobs/${jobId}/pay`)
+                                    }
                                     disabled={data?.jobStatus !== "finished"}
                                     variant="filled"
                                     className={"w-full font-bold"}
