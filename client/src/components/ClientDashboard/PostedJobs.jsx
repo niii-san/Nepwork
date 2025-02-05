@@ -64,7 +64,7 @@ function PostedJobs({ showPostJobModalFn }) {
                             <Link
                                 to={`/jobs/${job._id}`}
                                 key={job?._id}
-                                className="p-4 border rounded-lg hover:shadow-md transition-all duration-300"
+                                className="p-4 border h-fit rounded-lg hover:shadow-md transition-all duration-300"
                             >
                                 <div className="flex items-center gap-6 flex-wrap">
                                     <div className="flex-1">
@@ -127,7 +127,7 @@ function getAvgSpending(jobs) {
     jobs.forEach((element) => {
         total += element.hourlyRate;
     });
-    total = total / (jobs.length + 1);
+    total = total / jobs.length;
     return total.toFixed(2);
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../stores";
-import { Loader, Button, PostJobModal, PostedJobs } from "../components";
+import { Loader, PostJobModal, PostedJobs, TotalSpending } from "../components";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useNavigate } from "react-router";
 
@@ -24,7 +24,6 @@ function Dashboard() {
 
     function ClientDashboard() {
         const [showPostJobModal, setShowPostJobModal] = useState(false);
-        const [totalSpent] = useState(254600);
         const [transactions] = useState([
             {
                 date: "2023-07-15",
@@ -41,20 +40,8 @@ function Dashboard() {
                     <PostJobModal setShowPostJobModal={setShowPostJobModal} />
                 )}
                 <div className="min-h-screen bg-gray-50 p-6">
-                    {/* Total Spendings Section */}
-                    <div className="bg-gradient-to-r from-primary/60 to-primary/90 text-white p-6 rounded-xl mb-8 animate-fade-in">
-                        <h2 className="text-2xl font-bold mb-4">
-                            Total Spendings
-                        </h2>
-                        <div className="flex items-baseline gap-4">
-                            <span className="text-4xl font-bold">
-                                Rs {totalSpent.toLocaleString()}
-                            </span>
-                            <button className="ml-auto bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
-                                View All Transactions
-                            </button>
-                        </div>
-                    </div>
+                    {/*Total spending section*/}
+                    <TotalSpending />
 
                     {/* Jobs Section */}
                     <PostedJobs showPostJobModalFn={setShowPostJobModal} />
