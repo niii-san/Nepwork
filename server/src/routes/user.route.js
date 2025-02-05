@@ -22,6 +22,7 @@ import {
     unFollowUser,
     getFollowers,
     getFollowing,
+    getAllTransaction,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -59,6 +60,8 @@ userRoute.post("/update-hourly-rate", authenticate, updateHourlyRate);
 
 userRoute.post("/:targetId/follow", authenticate, followUser);
 userRoute.post("/:targetId/unfollow", authenticate, unFollowUser);
+
+userRoute.get("/transactions/all", authenticate, getAllTransaction);
 
 userRoute.get("/followers/:targetId", getFollowers);
 userRoute.get("/following/:targetId", getFollowing);

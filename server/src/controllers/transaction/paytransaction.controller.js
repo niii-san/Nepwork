@@ -11,8 +11,6 @@ export const payTransaction = asyncHandler(async (req, res) => {
     const transactionCode = (req.body.transactionCode ?? "").trim();
     const transactionUUID = (req.body.transactionUUID ?? "").trim();
 
-    console.log(amount);
-
     if (!mongoose.isValidObjectId(tId)) {
         throw new ApiError(400, true, "Invalid transaction id");
     }
