@@ -80,7 +80,7 @@ function SingleKyc() {
     if (!data) return <Loader />;
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center -inset-1 bg-emerald-200/30">
             <Button
                 style="filled"
                 onClick={() => navigate("/kycs")}
@@ -89,7 +89,7 @@ function SingleKyc() {
                 Go Back
             </Button>
 
-            <div className="border border-hover_button rounded shadow-lg w-[500px] mx-auto bg-white p-6 mb-6">
+            <div className="border border-hover_button rounded-xl w-[500px] mx-auto bg-white p-6 mb-6">
                 <div className="">
                     <div id="names" className="mb-4">
                         <h3 className="text-lg font-semibold text-primary">
