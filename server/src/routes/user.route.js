@@ -23,6 +23,7 @@ import {
     getFollowers,
     getFollowing,
     getAllTransaction,
+    getRecentTransaction,
 } from "../controllers/index.js";
 
 const userRoute = Router();
@@ -62,6 +63,7 @@ userRoute.post("/:targetId/follow", authenticate, followUser);
 userRoute.post("/:targetId/unfollow", authenticate, unFollowUser);
 
 userRoute.get("/transactions/all", authenticate, getAllTransaction);
+userRoute.get("/transactions/recent", authenticate, getRecentTransaction);
 
 userRoute.get("/followers/:targetId", getFollowers);
 userRoute.get("/following/:targetId", getFollowing);

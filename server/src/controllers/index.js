@@ -42,7 +42,10 @@ import {
 import { getJobOverview } from "./job/getJobOverview.controller.js";
 import { getTransaction } from "./transaction/getTransaction.controller.js";
 import { payTransaction } from "./transaction/paytransaction.controller.js";
-import { getAllTransaction } from "./transaction/getTransactions.controller.js";
+import {
+    getAllTransaction,
+    getRecentTransaction,
+} from "./transaction/getTransactions.controller.js";
 
 export {
     login,
@@ -86,4 +89,5 @@ export {
     getTransaction,
     payTransaction,
     getAllTransaction,
+    getRecentTransaction,
 };
