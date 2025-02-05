@@ -31,6 +31,7 @@ import ClientPostedJobs from "./Profile/ClientPostedJobs";
 import JobOverview from "./JobOverview";
 import ViewMsgModal from "./ViewMsgModal";
 import TotalSpending from "./ClientDashboard/TotalSpending";
+import RecentTransactions from "./ClientDashboard/RecentTransactions";
 
 export {
     NavBar,
@@ -66,4 +67,5 @@ export {
     JobOverview,
     ViewMsgModal,
     TotalSpending,
+    RecentTransactions,
 };

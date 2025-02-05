@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../stores";
-import { Loader, PostJobModal, PostedJobs, TotalSpending } from "../components";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import {
+    Loader,
+    PostJobModal,
+    PostedJobs,
+    RecentTransactions,
+    TotalSpending,
+} from "../components";
 import { useNavigate } from "react-router";
 
 function Dashboard() {
@@ -24,15 +29,6 @@ function Dashboard() {
 
     function ClientDashboard() {
         const [showPostJobModal, setShowPostJobModal] = useState(false);
-        const [transactions] = useState([
-            {
-                date: "2023-07-15",
-                desc: "Web Development Project",
-                amount: 120000,
-            },
-            { date: "2023-07-10", desc: "Mobile App Design", amount: 84600 },
-            { date: "2023-07-05", desc: "SEO Services", amount: 50000 },
-        ]);
 
         return (
             <>
@@ -46,37 +42,8 @@ function Dashboard() {
                     {/* Jobs Section */}
                     <PostedJobs showPostJobModalFn={setShowPostJobModal} />
 
-                    {/* Recent Transactions */}
-                    <div className="mt-8 bg-white rounded-xl shadow-sm p-6">
-                        <h2 className="text-xl font-bold mb-4">
-                            Recent Transactions
-                        </h2>
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="text-left text-gray-500 border-b">
-                                        <th className="pb-3">Date</th>
-                                        <th className="pb-3">Description</th>
-                                        <th className="pb-3">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {transactions.map((txn, index) => (
-                                        <tr
-                                            key={index}
-                                            className="hover:bg-gray-50 transition-colors"
-                                        >
-                                            <td className="py-3">{txn.date}</td>
-                                            <td className="py-3">{txn.desc}</td>
-                                            <td className="py-3 font-medium">
-                                                Rs {txn.amount.toLocaleString()}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    {/*Recent Transactions*/}
+                    <RecentTransactions />
                 </div>
             </>
         );
