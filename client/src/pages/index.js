@@ -17,6 +17,8 @@ import Following from "./Following";
 import Pay from "./Pay";
 import PayFailure from "./PayFailure";
 import PaySuccess from "./PaySuccess";
+import SingleTransaction from "./SingleTransaction";
+import Transactions from "./Transactions";
 
 export {
     Home,
@@ -38,4 +40,6 @@ export {
     Pay,
     PayFailure,
     PaySuccess,
+    SingleTransaction,
+    Transactions,
 };

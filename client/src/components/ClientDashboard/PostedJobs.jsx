@@ -34,6 +34,19 @@ function PostedJobs({ showPostJobModalFn }) {
 
     return (
         <>
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                    <h3 className="text-gray-500 text-sm">Total Jobs Posted</h3>
+                    <p className="text-2xl font-bold mt-2">{jobs.length}</p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                    <h3 className="text-gray-500 text-sm">Avg. Spending /hr</h3>
+                    <p className="text-2xl font-bold mt-2">
+                        Rs. {getAvgSpending(filteredJobs)}
+                    </p>
+                </div>
+            </div>
             <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex flex-wrap gap-4 mb-6">
                     {["all", "open", "in_progress", "finished", "closed"].map(
@@ -105,19 +118,6 @@ function PostedJobs({ showPostJobModalFn }) {
                 >
                     Post a Job
                 </Button>
-            </div>
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
-                    <h3 className="text-gray-500 text-sm">Total Jobs Posted</h3>
-                    <p className="text-2xl font-bold mt-2">{jobs.length}</p>
-                </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
-                    <h3 className="text-gray-500 text-sm">Avg. Spending /hr</h3>
-                    <p className="text-2xl font-bold mt-2">
-                        Rs. {getAvgSpending(filteredJobs)}
-                    </p>
-                </div>
             </div>
         </>
     );

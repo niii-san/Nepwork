@@ -11,6 +11,7 @@ import {
     Legend,
     Filler,
 } from "chart.js";
+import { useNavigate } from "react-router";
 
 ChartJS.register(
     CategoryScale,
@@ -24,6 +25,7 @@ ChartJS.register(
 );
 
 function TotalSpending() {
+    const navigate = useNavigate();
     // Mock data
     const data = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
@@ -92,7 +94,10 @@ function TotalSpending() {
                     <h2 className="text-2xl font-bold mb-2">Total Spendings</h2>
                     <p className="text-4xl font-bold">Rs. 606,940</p>
                 </div>
-                <button className="bg-white text-emerald-600 px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all font-semibold shadow-lg">
+                <button
+                    onClick={() => navigate("/all-transactions")}
+                    className="bg-white text-emerald-600 px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all font-semibold shadow-lg"
+                >
                     View All Transactions
                 </button>
             </div>
