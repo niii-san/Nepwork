@@ -41,37 +41,8 @@ function Dashboard() {
                     <PostJobModal setShowPostJobModal={setShowPostJobModal} />
                 )}
                 <div className="min-h-screen bg-gray-50 p-6">
-                    {/* Header */}
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            Client Dashboard
-                        </h1>
-                    </div>
-
-                    {/* Quick Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
-                            <h3 className="text-gray-500 text-sm">
-                                Total Jobs Posted
-                            </h3>
-                            <p className="text-2xl font-bold mt-2">24</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
-                            <h3 className="text-gray-500 text-sm">
-                                Active Contracts
-                            </h3>
-                            <p className="text-2xl font-bold mt-2">5</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
-                            <h3 className="text-gray-500 text-sm">
-                                Avg. Rate/Hour
-                            </h3>
-                            <p className="text-2xl font-bold mt-2">Rs 1,450</p>
-                        </div>
-                    </div>
-
                     {/* Total Spendings Section */}
-                    <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 rounded-xl mb-8 animate-fade-in">
+                    <div className="bg-gradient-to-r from-primary/60 to-primary/90 text-white p-6 rounded-xl mb-8 animate-fade-in">
                         <h2 className="text-2xl font-bold mb-4">
                             Total Spendings
                         </h2>

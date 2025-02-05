@@ -3,6 +3,7 @@ import { usePostedJobs } from "../../stores";
 import NullLoader from "../NullLoader";
 import Loader from "../Loader";
 import { Link } from "react-router";
+import Button from "../Button";
 
 function PostedJobs({ showPostJobModalFn }) {
     const jobs = usePostedJobs((state) => state.jobs);
@@ -32,76 +33,102 @@ function PostedJobs({ showPostJobModalFn }) {
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="flex flex-wrap gap-4 mb-6">
-                {["all", "open", "in_progress", "finished", "closed"].map(
-                    (filter) => (
-                        <button
-                            key={filter}
-                            onClick={() =>
-                                setSelectedFilter(
-                                    filter === "all" ? "all" : filter,
-                                )
-                            }
-                            className={`px-4 py-2 rounded-full capitalize ${selectedFilter === filter
-                                    ? "bg-indigo-500 text-white"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                } transition-colors`}
-                        >
-                            {filter.replace("_", " ")}
-                        </button>
-                    ),
-                )}
-            </div>
+        <>
+            <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="flex flex-wrap gap-4 mb-6">
+                    {["all", "open", "in_progress", "finished", "closed"].map(
+                        (filter) => (
+                            <button
+                                key={filter}
+                                onClick={() =>
+                                    setSelectedFilter(
+                                        filter === "all" ? "all" : filter,
+                                    )
+                                }
+                                className={`px-4 py-2 rounded-full capitalize ${selectedFilter === filter
+                                        ? "bg-primary text-white"
+                                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                    } transition-colors`}
+                            >
+                                {filter.replace("_", " ")}
+                            </button>
+                        ),
+                    )}
+                </div>
 
-            <div className="grid gap-4 min-h-[200px] max-h-[600px] overflow-y-scroll">
-                {filteredJobs.length === 0 ? (
-                    <NullLoader message={"No jobs "} />
-                ) : (
-                    filteredJobs.map((job) => (
-                        <Link
-                            to={`/jobs/${job._id}`}
-                            key={job?._id}
-                            className="p-4 border rounded-lg hover:shadow-md transition-all duration-300"
-                        >
-                            <div className="flex items-center gap-6 flex-wrap">
-                                <div className="flex-1">
-                                    <h3 className="font-semibold text-lg">
-                                        {job.title}
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        {job?.acceptedFreelancer
-                                            ? `${job?.acceptedFreelancer?.name?.firstName} ${job?.acceptedFreelancer?.name?.lastName}`
-                                            : "Not selected"}
-                                    </p>
+                <div className="grid gap-4 min-h-[200px] max-h-[600px] lg:w-[90%] lg:mx-auto overflow-y-scroll">
+                    {filteredJobs.length === 0 ? (
+                        <NullLoader message={"No jobs "} />
+                    ) : (
+                        filteredJobs.map((job) => (
+                            <Link
+                                to={`/jobs/${job._id}`}
+                                key={job?._id}
+                                className="p-4 border rounded-lg hover:shadow-md transition-all duration-300"
+                            >
+                                <div className="flex items-center gap-6 flex-wrap">
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-lg">
+                                            {job.title}
+                                        </h3>
+                                        <p className="text-gray-600">
+                                            {job?.acceptedFreelancer
+                                                ? `${job?.acceptedFreelancer?.name?.firstName} ${job?.acceptedFreelancer?.name?.lastName}`
+                                                : "Not selected"}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-4 flex-wrap">
+                                        <span className="font-medium">
+                                            Rs {job.hourlyRate}/hr
+                                        </span>
+                                        <span
+                                            className={`px-3 py-1 rounded-full text-sm ${statusStyles[job.status]}`}
+                                        >
+                                            {job.status.replace("_", " ")}
+                                        </span>
+                                        <span className="text-gray-500 text-sm capitalize w-[60px] ">
+                                            {job.payment.done
+                                                ? "Paid"
+                                                : "Not Paid"}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-4 flex-wrap">
-                                    <span className="font-medium">
-                                        Rs {job.hourlyRate}/hr
-                                    </span>
-                                    <span
-                                        className={`px-3 py-1 rounded-full text-sm ${statusStyles[job.status]}`}
-                                    >
-                                        {job.status.replace("_", " ")}
-                                    </span>
-                                    <span className="text-gray-500 text-sm capitalize w-[60px] ">
-                                        {job.payment.done ? "Paid" : "Not Paid"}
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
-                    ))
-                )}
-            </div>
+                            </Link>
+                        ))
+                    )}
+                </div>
 
-            <button
-                onClick={() => showPostJobModalFn(true)}
-                className="mt-6 w-full py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
-            >
-                Post a Job
-            </button>
-        </div>
+                <Button
+                    variant="filled"
+                    onClick={() => showPostJobModalFn(true)}
+                    className="mt-6 w-full"
+                >
+                    Post a Job
+                </Button>
+            </div>
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                    <h3 className="text-gray-500 text-sm">Total Jobs Posted</h3>
+                    <p className="text-2xl font-bold mt-2">{jobs.length}</p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                    <h3 className="text-gray-500 text-sm">Avg. Spending /hr</h3>
+                    <p className="text-2xl font-bold mt-2">
+                        Rs. {getAvgSpending(filteredJobs)}
+                    </p>
+                </div>
+            </div>
+        </>
     );
+}
+function getAvgSpending(jobs) {
+    let total = 0;
+    jobs.forEach((element) => {
+        total += element.hourlyRate;
+    });
+    total = total / (jobs.length + 1);
+    return total.toFixed(2);
 }
 
 // job object
