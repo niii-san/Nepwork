@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 function Layout() {
     const location = useLocation();
-    const { login, isLoggedIn,connectSocket,setUserData } = useAuth();
+    const { login, isLoggedIn, setUserData } = useAuth();
     const settingVisible = useSetting((state) => state.visible);
 
     const [loading, setLoading] = useState(true);
@@ -16,8 +16,9 @@ function Layout() {
         api.get("/user/verify-token")
             .then((res) => {
                 if (res.data.success && res.data.isAuthenticated) {
-                    console.log("user data invalidated");
-                    setUserData();
+                    if (!isLoggedIn) {
+                        setUserData();
+                    }
                     login();
                     setLoading(false);
                 }
@@ -27,11 +28,6 @@ function Layout() {
             })
             .finally(() => setLoading(false));
     }, [location]);
-    useEffect(() => {
-        if (isLoggedIn) {
-            connectSocket();
-        }
-    }, [isLoggedIn]);
 
     if (loading) return <Loader />;
     else {

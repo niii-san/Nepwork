@@ -4,6 +4,7 @@ import api from "../utils/api";
 
 export const useAuth = create((set, get) => ({
     userData: null,
+    isLogginIn: false,
     isLoggedIn: false,
     socket: null,
 
@@ -16,38 +17,38 @@ export const useAuth = create((set, get) => ({
     },
 
     setUserData: async () => {
-        api.get("/user/current-user-info")
-            .then((res) => {
-                set({ userData: res.data.data });
-            })
-            .catch((err) => {
-                console.error(
-                    "Something went wrong while setting user data at store,  ",
-                    err,
-                );
-            });
+        set({ isLogginIn: true });
+        try {
+            const res = await api.get("/user/current-user-info");
+            set({ userData: res.data.data, isLogginIn: false });
+            get().connectSocket()
+        } catch (err) {
+            set({ isLogginIn: false });
+            console.error(
+                "Something went wrong while setting user data at store, ",
+                err,
+            );
+        }
     },
     clearUserData: () => {
         set({ userData: null });
     },
 
     connectSocket: () => {
-        const { userData } = get();
-        if (!get().socket) {
+        const { userData, socket } = get();
+        if (!socket && userData?._id) {
             const newSocket = io("ws://localhost:8000", {
                 transports: ["websocket"],
                 reconnectionAttempts: 5,
-                query: {
-                    userId: userData?._id,
-                },
+                query: { userId: userData._id },
             });
             set({ socket: newSocket });
-            newSocket.on("connect", () => {
-                console.log("Socket connected:", newSocket.id);
-            });
-            newSocket.on("disconnect", () => {
-                console.log("Socket disconnected");
-            });
+            newSocket.on("connect", () =>
+                console.log("Socket connected:", newSocket.id),
+            );
+            newSocket.on("disconnect", () =>
+                console.log("Socket disconnected"),
+            );
         }
     },
     disconnectSocket: () => {
