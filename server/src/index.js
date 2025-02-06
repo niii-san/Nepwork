@@ -32,15 +32,15 @@ connectDB()
 
 io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
-
+    const sockedId = socket.id
     if (userId) {
-        setUserOnline(userId);
-        console.log(`${userId} connected, socketId: ${socket.id}`);
+        setUserOnline(userId, socket.id);
+        console.log(`${userId} connected, socketId: ${sockedId}`);
     }
 
     socket.on("disconnect", () => {
         setUserOffline(userId);
-        console.log("User disconnected: ", socket.id);
+        console.log(`${userId} disconnected, socketId: ${sockedId}`);
     });
 });
 

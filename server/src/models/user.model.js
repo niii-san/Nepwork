@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
             middleName: String,
             lastName: String,
         },
+        socketId: {
+            type: String,
+            default: null,
+        },
         online: {
             type: Boolean,
             default: false,
@@ -19,12 +23,6 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        chats: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Chat",
-            },
-        ],
 
         balance: {
             type: Number,

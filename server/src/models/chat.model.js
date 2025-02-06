@@ -7,7 +7,13 @@ const messageSchema = new mongoose.Schema(
             required: true,
         },
         sender: {
-            type: Number, // 0 means me, 1 means other
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        receiver: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
     },
@@ -18,7 +24,12 @@ export const Message = mongoose.model("Message", messageSchema);
 
 const chatSchema = new mongoose.Schema(
     {
-        user: {
+        userOne: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        userTwo: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
@@ -29,7 +40,13 @@ const chatSchema = new mongoose.Schema(
             ref: "Message",
             default: null,
         },
-        unread: {
+        unreadOne: {
+            // Unread by user one
+            type: Number,
+            default: 0,
+        },
+        unreadTwo: {
+            // unread message by user two
             type: Number,
             default: 0,
         },

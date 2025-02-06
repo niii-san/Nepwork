@@ -16,7 +16,7 @@ const allowlist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
 //     origin: process.env.CLIENT_URL,
 // };
 
-const corsOptionsDelegate = function (req, callback) {
+const corsOptionsDelegate = function(req, callback) {
     let corsOptions;
     if (allowlist.indexOf(req.header("Origin")) !== -1) {
         corsOptions = { origin: true };
@@ -55,6 +55,9 @@ app.use("/api/v1/kyc", kycRouter);
 import { jobRouter } from "./routes/jobs.route.js";
 app.use("/api/v1/jobs", jobRouter);
 
+import { chatRouter } from "./routes/chat.route.js";
+app.use("/api/v1/chats", chatRouter);
+
 import { tags } from "./constants.js";
 app.get("/api/v1/tags", (_, res) => {
     return res.status(200).json({ tags });
@@ -63,5 +66,4 @@ app.get("/api/v1/tags", (_, res) => {
 //* Error handling
 app.use(errorHandler);
 
-
-export {app}
+export { app };
