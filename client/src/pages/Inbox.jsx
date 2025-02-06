@@ -1,291 +1,358 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { format, isToday, parseISO } from "date-fns";
+import { useAuth, useChat } from "../stores";
+import default_avatar from "../assets/default_avatar.svg";
 
-// Mock data
 const mockUsers = [
-  {
-    _id: '1',
-    name: { firstName: 'John', lastName: 'Doe' },
-    online: true,
-    lastSeen: new Date(),
-    avatar: null,
-    isTyping: false
-  },
-  {
-    _id: '2',
-    name: { firstName: 'Jane', lastName: 'Smith' },
-    online: false,
-    lastSeen: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    avatar: null,
-    isTyping: true
-  }
+    {
+        _id: "1",
+        name: { firstName: "John", lastName: "Doe" },
+        online: true,
+        lastSeen: new Date(),
+        avatar: "https://i.pravatar.cc/150?img=1",
+    },
+    {
+        _id: "2",
+        name: { firstName: "Alice", lastName: "Smith" },
+        online: false,
+        lastSeen: new Date(Date.now() - 86400000 * 2),
+        avatar: "https://i.pravatar.cc/150?img=2",
+    },
+    // Add more users...
 ];
 
-const mockMessages = [
-  {
-    _id: '1',
-    text: 'Hey, how are you?',
-    sender: '1',
-    receiver: '2',
-    timestamp: new Date(Date.now() - 60 * 60 * 1000)
-  },
-  {
-    _id: '2',
-    text: 'I\'m good, thanks! How about you?',
-    sender: '2',
-    receiver: '1',
-    timestamp: new Date(Date.now() - 30 * 60 * 1000)
-  }
-];
+// const mockChats = [
+//     {
+//         _id: "c1",
+//         userOne: "1",
+//         userTwo: "currentUser",
+//         messages: [
+//             {
+//                 _id: "m1",
+//                 text: "Hello!",
+//                 sender: "1",
+//                 receiver: "currentUser",
+//                 timestamp: new Date(),
+//             },
+//             {
+//                 _id: "m2",
+//                 text: "Hi there!",
+//                 sender: "currentUser",
+//                 receiver: "1",
+//                 timestamp: new Date(),
+//             },
+//         ],
+//         lastMessage: "m2",
+//     },
+//     // Add more chats...
+// ];
+//
 
-const Inbox= () => {
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [messages, setMessages] = useState(mockMessages);
-  const [showMessageOptions, setShowMessageOptions] = useState(null);
-  const [currentUser] = useState('1'); // Mock current user ID
-  const [isMobileView, setIsMobileView] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(mockUsers);
+export default function Inbox() {
+    const { userData: currentUser } = useAuth();
+    const { chats, setChats, selectedChat, setSelectedChat } = useChat();
+    console.log(chats);
+    const [users, setUsers] = useState(mockUsers);
+    const [showNewChatModal, setShowNewChatModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [newMessage, setNewMessage] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth < 768);
+    const formatLastSeen = (date) => {
+        if (isToday(date)) return format(date, "hh:mm a");
+        return format(date, "MM/dd/yyyy");
     };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
-  useEffect(() => {
-    setFilteredUsers(
-      mockUsers.filter(user => 
-        `${user.name.firstName} ${user.name.lastName}`
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      )
-    );
-  }, [searchQuery]);
+    const handleNewChat = (user) => {
+        const newChat = {
+            _id: `c${chats.length + 1}`,
+            userOne: currentUser._id,
+            userTwo: user._id,
+            messages: [],
+            lastMessage: null,
+        };
+        setChats([newChat, ...chats]);
+        setSelectedChat(newChat);
+        setShowNewChatModal(false);
+    };
 
-  const formatLastSeen = (date) => {
-    const now = new Date();
-    const diff = now - date;
-    const hours = diff / (1000 * 60 * 60);
+    const sendMessage = () => {
+        if (!newMessage.trim()) return;
+        const message = {
+            _id: `m${Date.now()}`,
+            text: newMessage,
+            sender: currentUser._id,
+            receiver:
+                selectedChat.userOne === currentUser._id
+                    ? selectedChat.userTwo
+                    : selectedChat.userOne,
+            timestamp: new Date(),
+        };
+        setChats(
+            chats.map((chat) =>
+                chat._id === selectedChat._id
+                    ? {
+                        ...chat,
+                        messages: [...chat.messages, message],
+                        lastMessage: message,
+                    }
+                    : chat,
+            ),
+        );
+        setNewMessage("");
+    };
 
-    if (hours < 24) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-    }
-    return `Last seen ${date.toLocaleDateString()}`;
-  };
-
-  const Modal = ({ children, onClose }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">New Conversation</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            ✕
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-
-  const UserAvatar = ({ user }) => (
-    <div className="relative">
-      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-        {user.avatar ? (
-          <img src={user.avatar} alt={`${user.name.firstName}'s avatar`} className="w-full h-full rounded-full" />
-        ) : (
-          <span className="text-lg">{user.name.firstName[0]}</span>
-        )}
-      </div>
-      <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-        user.online ? 'bg-green-500' : 'bg-gray-400'
-      } border-2 border-white`} />
-    </div>
-  );
-
-  const TypingIndicator = () => (
-    <div className="flex space-x-1 items-center p-2">
-      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:200ms]" />
-      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:400ms]" />
-    </div>
-  );
-
-  return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Left sidebar */}
-      <div className={`bg-white w-full md:w-80 border-r ${
-        isMobileView && selectedChat ? 'hidden' : 'block'
-      }`}>
-        <div className="p-4 border-b">
-          <button
-            onClick={() => setShowModal(true)}
-            className="w-full flex items-center justify-center space-x-2 bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-          >
-            <span className="text-xl">+</span>
-            <span>Add Conversation</span>
-          </button>
-        </div>
-        
-        <div className="overflow-y-auto h-[calc(100vh-5rem)]">
-          {mockUsers.map(user => (
+    useEffect(() => {
+        setChats();
+    }, []);
+    return (
+        <div className="flex h-screen bg-gray-100">
+            {/* Left sidebar */}
             <div
-              key={user._id}
-              onClick={() => setSelectedChat(user)}
-              className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${
-                selectedChat?._id === user._id ? 'bg-blue-50' : ''
-              }`}
+                className={`md:w-1/3 w-full bg-white ${selectedChat ? "hidden md:block" : "block"}`}
             >
-              <div className="flex items-center space-x-3">
-                <UserAvatar user={user} />
-                <div className="flex-1">
-                  <h3 className="font-medium">
-                    {user.name.firstName} {user.name.lastName}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    {formatLastSeen(user.lastSeen)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Chat area */}
-      <div className={`flex-1 flex flex-col ${
-        isMobileView && !selectedChat ? 'hidden' : 'block'
-      }`}>
-        {selectedChat ? (
-          <>
-            <div className="bg-white p-4 border-b flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                {isMobileView && (
-                  <button
-                    onClick={() => setSelectedChat(null)}
-                    className="mr-2 text-gray-500 hover:text-gray-700"
-                  >
-                    ←
-                  </button>
-                )}
-                <UserAvatar user={selectedChat} />
-                <div>
-                  <h2 className="font-medium">
-                    {selectedChat.name.firstName} {selectedChat.name.lastName}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    {selectedChat.online ? 'Online' : formatLastSeen(selectedChat.lastSeen)}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedChat(null)}
-                className="text-gray-500 hover:text-red-500"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map(message => (
-                <div
-                  key={message._id}
-                  className={`flex ${
-                    message.sender === currentUser ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  <div className="relative max-w-[70%] group">
-                    <div className={`p-3 rounded-lg ${
-                      message.sender === currentUser
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200'
-                    }`}>
-                      {message.text}
-                    </div>
-                    <button
-                      onClick={() => setShowMessageOptions(
-                        showMessageOptions === message._id ? null : message._id
-                      )}
-                      className={`absolute top-0 ${
-                        message.sender === currentUser ? '-left-6' : '-right-6'
-                      } opacity-0 group-hover:opacity-100 text-gray-500`}
-                    >
-                      •••
-                    </button>
-                    {showMessageOptions === message._id && (
-                      <div className="absolute top-0 bg-white shadow-lg rounded-lg p-2 z-10">
-                        <button 
-                          onClick={() => {
-                            setMessages(messages.filter(m => m._id !== message._id));
-                            setShowMessageOptions(null);
-                          }}
-                          className="text-red-500 hover:text-red-700"
+                <div className="p-4 border-b">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-xl font-bold">Chats</h1>
+                        <button
+                            onClick={() => setShowNewChatModal(true)}
+                            className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
                         >
-                          Delete
+                            +
                         </button>
-                      </div>
-                    )}
-                  </div>
+                    </div>
                 </div>
-              ))}
-              {selectedChat.isTyping && (
-                <div className="flex justify-start">
-                  <TypingIndicator />
+
+                <div className="overflow-y-auto h-[calc(100vh-4rem)]">
+                    {chats.map((chat) => {
+                        const otherUser =
+                            chat.userOne._id === currentUser._id
+                                ? chat.userTwo
+                                : chat.userOne;
+                        console.log(otherUser);
+                        return (
+                            <div
+                                key={chat._id}
+                                onClick={() => setSelectedChat(chat)}
+                                className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${selectedChat?._id === chat._id ? "bg-blue-50 hover:bg-blue-50" : ""}`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="relative">
+                                        <img
+                                            src={
+                                                otherUser?.avatar ??
+                                                default_avatar
+                                            }
+                                            className="w-12 h-12 rounded-full"
+                                            alt={otherUser?.name.firstName}
+                                        />
+                                        <div
+                                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${otherUser?.online ? "bg-green-500" : "bg-gray-400"}`}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold">
+                                            {otherUser?.name.firstName}{" "}
+                                            {otherUser?.name.lastName}
+                                        </h3>
+                                        <p className="text-sm text-gray-500">
+                                            {otherUser?.online
+                                                ? "Online"
+                                                : `Last seen ${formatLastSeen(otherUser?.lastSeen)}`}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-              )}
             </div>
 
-            <div className="bg-white p-4 border-t">
-              <input
-                type="text"
-                placeholder="Type a message..."
-                className="w-full p-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              />
+            {/* Chat area */}
+            <div
+                className={`md:w-2/3 w-full ${!selectedChat ? "hidden md:flex items-center justify-center" : "block"}`}
+            >
+                {selectedChat ? (
+                    <div className="h-screen flex flex-col">
+                        <div className="p-4 border-b flex justify-between items-center">
+                            <button
+                                onClick={() => setSelectedChat(null)}
+                                className="md:hidden p-2 hover:bg-gray-100 rounded-full"
+                            >
+                                ←
+                            </button>
+                            <div className="flex items-center gap-3">
+                                <div className="relative">
+                                    <img
+                                        src={
+                                            (selectedChat.userOne._id ===
+                                                currentUser._id
+                                                ? selectedChat.userTwo
+                                                : selectedChat.userOne
+                                            )?.avatar ?? default_avatar
+                                        }
+                                        className="w-10 h-10 rounded-full"
+                                        alt=""
+                                    />
+                                    <div
+                                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${(selectedChat.userOne._id === currentUser._id ? selectedChat.userTwo : selectedChat.userOne)?.online ? "bg-green-500" : "bg-gray-400"}`}
+                                    />
+                                </div>
+                                <div>
+                                    <h2 className="font-semibold">
+                                        {
+                                            (selectedChat.userOne._id ===
+                                                currentUser._id
+                                                ? selectedChat.userTwo
+                                                : selectedChat.userOne
+                                            )?.name.firstName
+                                        }{" "}
+                                        {
+                                            (selectedChat.userOne._id ===
+                                                currentUser._id
+                                                ? selectedChat.userTwo
+                                                : selectedChat.userOne
+                                            )?.name.lastName
+                                        }
+                                    </h2>
+                                    {isTyping && (
+                                        <p className="text-sm text-gray-500">
+                                            typing...
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <button className="text-red-500 hover:text-red-600">
+                                Delete Chat
+                            </button>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+                            {selectedChat.messages.map((message) => (
+                                <MessageBubble
+                                    key={message._id}
+                                    message={message}
+                                    isCurrentUser={
+                                        message.sender === currentUser._id
+                                    }
+                                />
+                            ))}
+                        </div>
+
+                        <div className="p-4 border-t bg-white">
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={newMessage}
+                                    onChange={(e) =>
+                                        setNewMessage(e.target.value)
+                                    }
+                                    onKeyPress={(e) =>
+                                        e.key === "Enter" && sendMessage()
+                                    }
+                                    placeholder="Type a message"
+                                    className="flex-1 p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                />
+                                <button
+                                    onClick={sendMessage}
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                >
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-gray-500 text-center">
+                        Select a chat to start messaging
+                    </div>
+                )}
             </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center text-gray-500">
-            Select a chat to start messaging
-          </div>
-        )}
-      </div>
 
-      {/* Search Users Modal */}
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 border rounded-lg mb-4 focus:outline-none focus:border-blue-500"
-          />
-          <div className="max-h-64 overflow-y-auto">
-            {filteredUsers.map(user => (
-              <div
-                key={user._id}
-                onClick={() => {
-                  setSelectedChat(user);
-                  setShowModal(false);
-                }}
-                className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center space-x-3"
-              >
-                <UserAvatar user={user} />
-                <span>{user.name.firstName} {user.name.lastName}</span>
-              </div>
-            ))}
-          </div>
-        </Modal>
-      )}
-    </div>
-  );
-};
+            {/* New Chat Modal */}
+            {showNewChatModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-lg w-96">
+                        <h2 className="text-xl font-bold mb-4">
+                            New Conversation
+                        </h2>
+                        <input
+                            type="text"
+                            placeholder="Search users..."
+                            className="w-full p-2 border rounded mb-4"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <div className="space-y-2">
+                            {users
+                                .filter(
+                                    (user) =>
+                                        user.name.firstName
+                                            .toLowerCase()
+                                            .includes(
+                                                searchQuery.toLowerCase(),
+                                            ) && user._id !== currentUser._id,
+                                )
+                                .map((user) => (
+                                    <div
+                                        key={user._id}
+                                        onClick={() => handleNewChat(user)}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer rounded flex items-center gap-3"
+                                    >
+                                        <img
+                                            src={user.avatar}
+                                            className="w-8 h-8 rounded-full"
+                                            alt=""
+                                        />
+                                        <span>{user.name.firstName}</span>
+                                    </div>
+                                ))}
+                        </div>
+                        <button
+                            onClick={() => setShowNewChatModal(false)}
+                            className="mt-4 w-full p-2 bg-gray-200 hover:bg-gray-300 rounded"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
 
-export default Inbox;
+function MessageBubble({ message, isCurrentUser }) {
+    const [showOptions, setShowOptions] = useState(false);
+
+    return (
+        <div
+            className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4`}
+        >
+            <div className="relative">
+                <div
+                    className={`p-3 rounded-lg ${isCurrentUser ? "bg-blue-500 text-white" : "bg-white border"}`}
+                >
+                    <p>{message.text}</p>
+                    <p
+                        className={`text-xs mt-1 ${isCurrentUser ? "text-blue-100" : "text-gray-500"}`}
+                    >
+                        {format(message.timestamp, "hh:mm a")}
+                    </p>
+                </div>
+                <button
+                    onClick={() => setShowOptions(!showOptions)}
+                    className="absolute top-0 right-0 -mt-2 -mr-2 p-1 hover:bg-gray-100 rounded-full"
+                >
+                    •••
+                </button>
+                {showOptions && (
+                    <div className="absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg">
+                        <button className="w-full p-2 text-left hover:bg-gray-100 text-red-500">
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}

@@ -21,7 +21,7 @@ export const useAuth = create((set, get) => ({
         try {
             const res = await api.get("/user/current-user-info");
             set({ userData: res.data.data, isLogginIn: false });
-            get().connectSocket()
+            get().connectSocket();
         } catch (err) {
             set({ isLogginIn: false });
             console.error(
@@ -43,9 +43,7 @@ export const useAuth = create((set, get) => ({
                 query: { userId: userData._id },
             });
             set({ socket: newSocket });
-            newSocket.on("connect", () =>
-                console.log("Socket connected:", newSocket.id),
-            );
+            newSocket.on("connect", () => console.log("Socket connected:"));
             newSocket.on("disconnect", () =>
                 console.log("Socket disconnected"),
             );
