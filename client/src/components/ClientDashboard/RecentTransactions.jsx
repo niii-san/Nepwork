@@ -7,7 +7,6 @@ TransactionListItem;
 
 function RecentTransactions() {
     const [data, setData] = useState([]);
-    console.log(data);
     const [fetching, setFetching] = useState(true);
 
     const fetchSetRecentTxns = async () => {

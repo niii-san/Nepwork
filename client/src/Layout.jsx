@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 function Layout() {
     const location = useLocation();
-    const login = useAuth((state) => state.login);
+    const { connectSocket, login, isLoggedIn } = useAuth();
     const setUserData = useUser((state) => state.setUserData);
     const settingVisible = useSetting((state) => state.visible);
 
@@ -28,6 +28,11 @@ function Layout() {
             })
             .finally(() => setLoading(false));
     }, [location]);
+    useEffect(() => {
+        if (isLoggedIn) {
+            connectSocket();
+        }
+    }, [isLoggedIn]);
 
     if (loading) return <Loader />;
     else {

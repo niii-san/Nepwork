@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { errorHandler } from "./utils/ApiError.js";
 
-export const app = express();
+const app = express();
 
 /**
  * Basic middlewares
@@ -11,10 +11,10 @@ export const app = express();
 
 const allowlist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
 
-const corsOption = {
-    credentials: true,
-    origin: process.env.CLIENT_URL,
-};
+// const corsOption = {
+//     credentials: true,
+//     origin: process.env.CLIENT_URL,
+// };
 
 const corsOptionsDelegate = function (req, callback) {
     let corsOptions;
@@ -62,3 +62,6 @@ app.get("/api/v1/tags", (_, res) => {
 
 //* Error handling
 app.use(errorHandler);
+
+
+export {app}
