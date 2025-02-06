@@ -3,13 +3,13 @@ import { app } from "./app.js";
 import { connectDB } from "./db/connect.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { setUserOnline, setUserOffline } from "./controllers/index.js";
 
 const PORT = process.env.PORT || 8000;
 
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        // origin:"*",
         origin: process.env.CLIENT_URL,
         methods: ["GET", "POST"],
         credentials: true,
@@ -31,8 +31,15 @@ connectDB()
     });
 
 io.on("connection", (socket) => {
-    console.log("User connected: ", socket.id);
+    const userId = socket.handshake.query.userId;
+
+    if (userId) {
+        setUserOnline(userId);
+        console.log(`${userId} connected, socketId: ${socket.id}`);
+    }
+
     socket.on("disconnect", () => {
+        setUserOffline(userId);
         console.log("User disconnected: ", socket.id);
     });
 });

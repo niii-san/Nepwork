@@ -47,6 +47,7 @@ import {
     getRecentTransaction,
     getSingleTransaction,
 } from "./transaction/getTransactions.controller.js";
+import { setUserOffline, setUserOnline } from "./chat/userStatus.controller.js";
 
 export {
     login,
@@ -92,4 +93,6 @@ export {
     getAllTransaction,
     getRecentTransaction,
     getSingleTransaction,
+    setUserOffline,
+    setUserOnline,
 };
