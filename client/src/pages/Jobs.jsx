@@ -10,7 +10,7 @@ import {
     Loader,
 } from "../components";
 import default_avatar from "../assets/default_avatar.svg";
-import { useUser } from "../stores";
+import { useAuth } from "../stores";
 import Tag from "../components/Tag";
 import { FaRegTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ import capitalize from "../utils/capitalize";
 function Jobs() {
     const navigate = useNavigate();
     const { jobId } = useParams();
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
     const [currentJob, setCurrentJob] = useState(null);
     const [showEditJobModal, setShowEditJobModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -156,14 +156,14 @@ function Jobs() {
                                                 className={`px-3 py-1 rounded-full text-sm font-medium ${statusStyles[currentJob.status] || "bg-gray-100"}`}
                                             >
                                                 {currentJob.status ===
-                                                "in_progress"
+                                                    "in_progress"
                                                     ? "In Progress"
                                                     : currentJob.status
-                                                          .charAt(0)
-                                                          .toUpperCase() +
-                                                      currentJob.status.slice(
-                                                          1,
-                                                      )}
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    currentJob.status.slice(
+                                                        1,
+                                                    )}
                                             </span>
                                             <span className="text-gray-500">
                                                 •
@@ -268,7 +268,7 @@ function Jobs() {
 
                                 {/* Action Button */}
                                 {userData &&
-                                currentJob.postedBy._id === userData._id ? (
+                                    currentJob.postedBy._id === userData._id ? (
                                     <div className="flex justify-between">
                                         <Button
                                             variant="filled"
@@ -307,10 +307,10 @@ function Jobs() {
                                         {currentJob.acceptedFreelancer
                                             ? "Freelancer selected"
                                             : hasApplied
-                                              ? "Job applied"
-                                              : MapJobStatus[
-                                                    currentJob?.status ||
-                                                        "closed"
+                                                ? "Job applied"
+                                                : MapJobStatus[
+                                                currentJob?.status ||
+                                                "closed"
                                                 ]}
                                     </Button>
                                 )}
@@ -330,7 +330,7 @@ function Jobs() {
                 {userData &&
                     (currentJob?.postedBy?._id === userData?._id ||
                         currentJob?.acceptedFreelancer?._id ===
-                            userData?._id) && (
+                        userData?._id) && (
                         <JobOverview
                             jobId={currentJob._id}
                             jobData={currentJob}

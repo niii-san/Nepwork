@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import { Button, Loader } from "../components";
 import { TbLogout } from "react-icons/tb";
-import { useUser } from "../stores";
+import { useAuth } from "../stores";
 
 function Settings() {
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
 
     if (!userData) return <Loader />;
     return (

@@ -8,6 +8,24 @@ const userSchema = new mongoose.Schema(
             middleName: String,
             lastName: String,
         },
+        online: {
+            type: Boolean,
+            default: false,
+        },
+        lastSeen: {
+            type: Date,
+        },
+        isTyping: {
+            type: Boolean,
+            default: false,
+        },
+        chats: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Chat",
+            },
+        ],
+
         balance: {
             type: Number,
             default: 0,

@@ -8,14 +8,13 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import nepwork_logo from "../assets/nepwork_logo.svg";
-import { useAuth, useSetting, useUser } from "../stores";
+import { useAuth, useSetting } from "../stores";
 
 function NavBar() {
     const [rotation, setRotation] = useState(0);
     const openSetting = useSetting((state) => state.open);
     const navigate = useNavigate();
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
-    const userData = useUser((state) => state.data);
+    const { isLoggedIn, userData } = useAuth();
 
     const activeNavItemStyle = "text-primary font-semibold";
     const inactiveNavItemStyle = "text-secondaryText hover:text-primary";
@@ -177,10 +176,9 @@ function NavBar() {
                         <NavLink
                             to="/"
                             className={({ isActive }) =>
-                                `px-3 py-1.5 rounded-full text-sm sm:text-base ${
-                                    isActive
-                                        ? "text-primary font-semibold bg-secondary"
-                                        : "text-secondaryText hover:text-primary hover:bg-secondary"
+                                `px-3 py-1.5 rounded-full text-sm sm:text-base ${isActive
+                                    ? "text-primary font-semibold bg-secondary"
+                                    : "text-secondaryText hover:text-primary hover:bg-secondary"
                                 } transition-colors duration-200`
                             }
                         >

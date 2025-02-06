@@ -95,6 +95,8 @@ let mockConversations = [
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
         online: true,
         lastSeen: new Date().toISOString(),
+        isTyping: true,
+        unread: 2,
         messages: [
             {
                 id: 1,
@@ -109,8 +111,6 @@ let mockConversations = [
                 sender: "me",
             },
         ],
-        isTyping: true,
-        unread: 2,
     },
     {
         id: 2,
@@ -118,6 +118,8 @@ let mockConversations = [
         avatar: "https://randomuser.me/api/portraits/women/1.jpg",
         online: false,
         lastSeen: "2025-02-04T09:12:07.954Z",
+        isTyping: false,
+        unread: 0,
         messages: [
             {
                 id: 3,
@@ -126,8 +128,6 @@ let mockConversations = [
                 sender: 2,
             },
         ],
-        isTyping: false,
-        unread: 0,
     },
 ];
 

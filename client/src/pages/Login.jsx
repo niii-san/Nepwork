@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth, useUser } from "../stores";
+import { useAuth } from "../stores";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -9,12 +9,8 @@ import { Button } from "../components";
 
 function Login() {
     const navigate = useNavigate();
-    const login = useAuth((state) => state.login);
-
-    const setUserData = useUser((state) => state.setUserData); // Response message after clicking submiting, Like Invalid credentials
-
+    const { login, setUserData } = useAuth();
     const [resMsg, setResMsg] = useState(null);
-
     const [showPassword, setShowPassword] = useState(false);
     const handleShowPassword = () => {
         setShowPassword((prev) => !prev);

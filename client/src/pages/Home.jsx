@@ -1,10 +1,9 @@
 import React from "react";
-import { useAuth, useUser } from "../stores";
+import { useAuth } from "../stores";
 import { ClientHomepage, FreelancerHomePage, Loader } from "../components";
 
 function Home() {
-    const userData = useUser((state) => state.data);
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
+    const { userData, isLoggedIn } = useAuth();
 
     if (isLoggedIn && !userData) {
         return <Loader />;

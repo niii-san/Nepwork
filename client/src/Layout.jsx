@@ -2,13 +2,12 @@ import { Outlet, useLocation } from "react-router";
 import { NavBar, Footer, Loader, SettingSlide } from "./components";
 import { Toaster } from "react-hot-toast";
 import api from "./utils/api";
-import { useAuth, useSetting, useUser } from "./stores";
+import { useAuth, useSetting } from "./stores";
 import { useEffect, useState } from "react";
 
 function Layout() {
     const location = useLocation();
-    const { connectSocket, login, isLoggedIn } = useAuth();
-    const setUserData = useUser((state) => state.setUserData);
+    const { login, isLoggedIn,connectSocket,setUserData } = useAuth();
     const settingVisible = useSetting((state) => state.visible);
 
     const [loading, setLoading] = useState(true);

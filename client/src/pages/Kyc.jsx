@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, KycForm, Loader, UserCard } from "../components";
-import { useUser } from "../stores";
+import { useAuth } from "../stores";
 import { Link } from "react-router";
 
 function Kyc() {
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
 
     if (!userData) {
         return <Loader />;
