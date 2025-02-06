@@ -48,7 +48,7 @@ import {
     getSingleTransaction,
 } from "./transaction/getTransactions.controller.js";
 import { setUserOffline, setUserOnline } from "./chat/userStatus.controller.js";
-import { createChat } from "./chat/chat.controller.js";
+import { createChat, getChats } from "./chat/chat.controller.js";
 
 export {
     login,
@@ -97,4 +97,5 @@ export {
     setUserOffline,
     setUserOnline,
     createChat,
+    getChats,
 };

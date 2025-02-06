@@ -40,3 +40,26 @@ export const createChat = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, true, true, "Chat created", chat));
 });
+
+export const getChats = asyncHandler(async (req, res) => {
+    const selectOptions = "name _id avatar online lastSeen isTyping";
+    const userId = req.user.id;
+
+    const chats = await Chat.find({
+        $or: [
+            { userOne: userId },
+            {
+                userTwo: userId,
+                message: { $exists: true, $ne: [] },
+            },
+        ],
+    })
+        .sort({ updatedAt: -1 })
+        .populate("userOne", selectOptions)
+        .populate("userTwo", selectOptions)
+        .populate("messages");
+
+    res.status(200).json(
+        new ApiResponse(200, true, true, "chats fetched", chats),
+    );
+});
