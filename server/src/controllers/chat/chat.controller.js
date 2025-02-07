@@ -56,7 +56,6 @@ export const getChats = asyncHandler(async (req, res) => {
             { userOne: userId },
             {
                 userTwo: userId,
-                message: { $exists: true, $ne: [] },
             },
         ],
     })

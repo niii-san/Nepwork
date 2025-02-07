@@ -6,6 +6,17 @@ import capitalize from "../utils/capitalize.js";
 import { Button } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api.js";
+import {
+    FiPlus,
+    FiMessageSquare,
+    FiArrowLeft,
+    FiSearch,
+    FiX,
+    FiSend,
+    FiPaperclip,
+    FiTrash2,
+    FiChevronDown,
+} from "react-icons/fi";
 
 export default function Inbox() {
     const { userData: currentUser } = useAuth();
@@ -19,6 +30,7 @@ export default function Inbox() {
         setConnections,
         connectionsLoading,
     } = useChat();
+    const [currentChatIndex, setCurrentChatIndex] = useState(-1);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [newMessage, setNewMessage] = useState("");
@@ -62,10 +74,10 @@ export default function Inbox() {
 
         if (chatExistsIndex >= 0) {
             setSelectedChat(chats[chatExistsIndex]);
+            setCurrentChatIndex(chatExistsIndex);
             setShowNewChatModal(false);
             return;
         } else {
-            console.log(user);
             setSelectedChat({
                 createdAt: null,
                 updatedAt: null,
@@ -77,7 +89,6 @@ export default function Inbox() {
             });
 
             setShowNewChatModal(false);
-
             return;
         }
     };
@@ -91,6 +102,7 @@ export default function Inbox() {
             const newChat = response.data.data;
             chats.unshift(newChat);
             setSelectedChat(chats[0]);
+            setCurrentChatIndex(0);
         } catch (error) {
             toast.error("Failed to start chat");
             console.error(error);
@@ -109,17 +121,8 @@ export default function Inbox() {
                     : selectedChat.userOne,
             timestamp: new Date(),
         };
-        setChats(
-            chats.map((chat) =>
-                chat._id === selectedChat._id
-                    ? {
-                        ...chat,
-                        messages: [...chat.messages, message],
-                        lastMessage: message,
-                    }
-                    : chat,
-            ),
-        );
+        console.log();
+        chats[currentChatIndex].messages.push(message);
         setNewMessage("");
     };
 
@@ -128,19 +131,23 @@ export default function Inbox() {
         setConnections();
     }, []);
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50">
             {/* Left sidebar */}
             <div
-                className={`md:w-1/3 w-full h-[90%] bg-white ${selectedChat ? "hidden md:block" : "block"}`}
+                className={`md:w-96 w-full h-full bg-white shadow-xl ${selectedChat ? "hidden md:block" : "block"
+                    }`}
             >
-                <div className="p-4 border-b">
+                <div className="p-6 border-b border-gray-200">
                     <div className="flex justify-between items-center">
-                        <h1 className="text-xl font-bold">Chats</h1>
+                        <h1 className="text-2xl font-bold text-gray-800">
+                            Messages
+                        </h1>
                         <button
                             onClick={() => setShowNewChatModal(true)}
-                            className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+                            className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center gap-2"
                         >
-                            +
+                            <FiPlus className="text-lg" />
+                            <span className="hidden md:block">New Chat</span>
                         </button>
                     </div>
                 </div>
@@ -155,24 +162,30 @@ export default function Inbox() {
                             <div
                                 key={chat._id}
                                 onClick={() => setSelectedChat(chat)}
-                                className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${selectedChat?._id === chat._id ? "bg-blue-50 hover:bg-blue-50" : ""}`}
+                                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${selectedChat?._id === chat._id
+                                        ? "bg-blue-50 hover:bg-blue-50"
+                                        : ""
+                                    }`}
                             >
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-4">
                                     <div className="relative">
+                                        <div
+                                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${otherUser?.online
+                                                    ? "bg-green-500"
+                                                    : "bg-gray-400"
+                                                } ring-2 ring-white`}
+                                        />
                                         <img
                                             src={
                                                 otherUser?.avatar ??
                                                 default_avatar
                                             }
-                                            className="w-12 h-12 rounded-full"
+                                            className="w-12 h-12 rounded-xl object-cover"
                                             alt={otherUser?.name.firstName}
                                         />
-                                        <div
-                                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${otherUser?.online ? "bg-green-500" : "bg-gray-400"}`}
-                                        />
                                     </div>
-                                    <div>
-                                        <h3 className="font-semibold">
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-gray-800">
                                             {otherUser?.name?.firstName}{" "}
                                             {otherUser?.name?.lastName}
                                         </h3>
@@ -181,6 +194,11 @@ export default function Inbox() {
                                                 ? "Online"
                                                 : `Last seen ${formatLastSeen(otherUser?.lastSeen)}`}
                                         </p>
+                                        {chat.lastMessage && (
+                                            <p className="text-sm text-gray-500 truncate mt-1">
+                                                {chat.lastMessage.text}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -191,18 +209,21 @@ export default function Inbox() {
 
             {/* Chat area */}
             <div
-                className={`md:w-2/3 w-full  ${!selectedChat ? "hidden md:flex items-center justify-center" : "block"}`}
+                className={`flex-1 h-full ${!selectedChat
+                        ? "hidden md:flex items-center justify-center"
+                        : "block"
+                    }`}
             >
                 {selectedChat ? (
-                    <div className="h-[90%] flex flex-col">
-                        <div className="p-4 border-b flex justify-between items-center">
-                            <button
-                                onClick={() => setSelectedChat(null)}
-                                className="md:hidden p-2 hover:bg-gray-100 rounded-full"
-                            >
-                                ←
-                            </button>
-                            <div className="flex items-center gap-3">
+                    <div className="h-full flex flex-col">
+                        <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center">
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => setSelectedChat(null)}
+                                    className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    <FiArrowLeft className="text-xl text-gray-600" />
+                                </button>
                                 <div className="relative">
                                     <img
                                         src={
@@ -212,15 +233,22 @@ export default function Inbox() {
                                                 : selectedChat.userOne
                                             )?.avatar ?? default_avatar
                                         }
-                                        className="w-10 h-10 rounded-full"
+                                        className="w-12 h-12 rounded-xl object-cover"
                                         alt=""
                                     />
                                     <div
-                                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${(selectedChat.userOne._id === currentUser._id ? selectedChat.userTwo : selectedChat.userOne)?.online ? "bg-green-500" : "bg-gray-400"}`}
+                                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${(selectedChat.userOne._id ===
+                                                currentUser._id
+                                                ? selectedChat.userTwo
+                                                : selectedChat.userOne
+                                            )?.online
+                                                ? "bg-green-500"
+                                                : "bg-gray-400"
+                                            } ring-2 ring-white`}
                                     />
                                 </div>
                                 <div>
-                                    <h2 className="font-semibold">
+                                    <h2 className="font-semibold text-gray-800">
                                         {
                                             (selectedChat.userOne._id ===
                                                 currentUser._id
@@ -236,42 +264,44 @@ export default function Inbox() {
                                             )?.name.lastName
                                         }
                                     </h2>
-                                    {(selectedChat.userOne._id ===
-                                        currentUser._id
-                                        ? selectedChat.userTwo
-                                        : selectedChat.userOne
-                                    )?.isTyping ? (
-                                        <p className="text-sm text-gray-500">
-                                            typing...
-                                        </p>
-                                    ) : (selectedChat.userOne._id ===
-                                        currentUser._id
-                                        ? selectedChat.userTwo
-                                        : selectedChat.userOne
-                                    )?.online ? (
-                                        <p className="text-sm text-gray-500">
-                                            Active
-                                        </p>
-                                    ) : (
-                                        <p className="text-sm text-gray-500">
-                                            Offline
-                                        </p>
-                                    )}
+                                    <p className="text-sm text-gray-500">
+                                        {(selectedChat.userOne._id ===
+                                            currentUser._id
+                                            ? selectedChat.userTwo
+                                            : selectedChat.userOne
+                                        )?.isTyping
+                                            ? "typing..."
+                                            : (selectedChat.userOne._id ===
+                                                currentUser._id
+                                                ? selectedChat.userTwo
+                                                : selectedChat.userOne
+                                            )?.online
+                                                ? "Active now"
+                                                : "Offline"}
+                                    </p>
                                 </div>
                             </div>
                             {selectedChat?.createdAt ? (
-                                <Button>Delete Chat</Button>
+                                <Button
+                                    variant="ghost"
+                                    className="text-red-600 hover:bg-red-50"
+                                >
+                                    <FiTrash2 className="mr-2" />
+                                    Delete Chat
+                                </Button>
                             ) : (
                                 <Button
-                                    className="text-red-500 hover:text-red-600"
+                                    variant="ghost"
+                                    className="text-gray-600 hover:bg-gray-100"
                                     onClick={() => setSelectedChat(null)}
                                 >
-                                    Close Chat
+                                    <FiX className="mr-2" />
+                                    Close
                                 </Button>
                             )}
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+                        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white">
                             {selectedChat?.messages?.map((message) => (
                                 <MessageBubble
                                     key={message._id}
@@ -284,8 +314,11 @@ export default function Inbox() {
                         </div>
 
                         {selectedChat && selectedChat?.createdAt ? (
-                            <div className="p-4 border-t bg-white">
+                            <div className="p-4 border-t border-gray-200 bg-white">
                                 <div className="flex gap-2">
+                                    <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                                        <FiPaperclip className="text-xl" />
+                                    </button>
                                     <input
                                         type="text"
                                         value={newMessage}
@@ -295,49 +328,83 @@ export default function Inbox() {
                                         onKeyPress={(e) =>
                                             e.key === "Enter" && sendMessage()
                                         }
-                                        placeholder="Type a message"
-                                        className="flex-1 p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                        placeholder="Type your message..."
+                                        className="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                                     />
                                     <button
                                         onClick={sendMessage}
-                                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
                                     >
-                                        Send
+                                        <FiSend className="text-lg" />
+                                        <span className="hidden md:block">
+                                            Send
+                                        </span>
                                     </button>
                                 </div>
                             </div>
                         ) : (
-                            <Button
-                                variant="filled"
-                                className="w-[98%] mx-auto"
-                                onClick={() => handleStartChat(selectedChat)}
-                            >
-                                Start chat
-                            </Button>
+                            <div className="p-4 bg-white">
+                                <Button
+                                    variant="filled"
+                                    className="w-full py-4 text-lg flex items-center justify-center gap-2"
+                                    onClick={() =>
+                                        handleStartChat(selectedChat)
+                                    }
+                                >
+                                    <FiMessageSquare />
+                                    Start Conversation
+                                </Button>
+                            </div>
                         )}
                     </div>
                 ) : (
-                    <div className="text-gray-500 text-center">
-                        Select a chat to start messaging
+                    <div className="text-center p-8">
+                        <div className="max-w-md mx-auto">
+                            <div className="mb-4 text-gray-400">
+                                <FiMessageSquare className="text-6xl mx-auto" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                                No chat selected
+                            </h3>
+                            <p className="text-gray-500">
+                                Choose an existing conversation or start a new
+                                one
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>
 
-            {/* New Chat Modal */}
+            {/* Enhanced New Chat Modal */}
             {showNewChatModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg w-96">
-                        <h2 className="text-xl font-bold mb-4">
-                            New Conversation
-                        </h2>
-                        <input
-                            type="text"
-                            placeholder="Search users..."
-                            className="w-full p-2 border rounded mb-4"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <div className="space-y-2">
+                <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-2xl font-bold text-gray-800">
+                                    New Conversation
+                                </h2>
+                                <button
+                                    onClick={() => setShowNewChatModal(false)}
+                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    <FiX className="text-xl text-gray-600" />
+                                </button>
+                            </div>
+                            <div className="relative">
+                                <FiSearch className="absolute left-3 top-3.5 text-gray-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Search connections..."
+                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <div className="overflow-y-auto max-h-[60vh]">
                             {users
                                 .filter(
                                     (user) =>
@@ -358,33 +425,41 @@ export default function Inbox() {
                                     <div
                                         key={user._id}
                                         onClick={() => handleNewChat(user)}
-                                        className="p-2 hover:bg-gray-100 cursor-pointer rounded flex items-center gap-3"
+                                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center gap-4"
                                     >
-                                        <img
-                                            src={
-                                                user.userId.avatar ??
-                                                default_avatar
-                                            }
-                                            className="w-8 h-8 rounded-full"
-                                            alt=""
-                                        />
-                                        <span>
-                                            {capitalize(
-                                                user.userId.name.firstName,
-                                            )}{" "}
-                                            {capitalize(
-                                                user.userId.name.lastName,
-                                            )}
-                                        </span>
+                                        <div className="relative">
+                                            <div
+                                                className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ${user.userId.online
+                                                        ? "bg-green-500"
+                                                        : "bg-gray-400"
+                                                    } ring-2 ring-white`}
+                                            />
+                                            <img
+                                                src={
+                                                    user.userId.avatar ??
+                                                    default_avatar
+                                                }
+                                                className="w-10 h-10 rounded-lg object-cover"
+                                                alt=""
+                                            />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-medium text-gray-800">
+                                                {capitalize(
+                                                    user.userId.name.firstName,
+                                                )}{" "}
+                                                {capitalize(
+                                                    user.userId.name.lastName,
+                                                )}
+                                            </h4>
+                                            <p className="text-sm text-gray-500">
+                                                {user.userId.jobTitle ||
+                                                    "No job title provided"}
+                                            </p>
+                                        </div>
                                     </div>
                                 ))}
                         </div>
-                        <button
-                            onClick={() => setShowNewChatModal(false)}
-                            className="mt-4 w-full p-2 bg-gray-200 hover:bg-gray-300 rounded"
-                        >
-                            Cancel
-                        </button>
                     </div>
                 </div>
             )}
@@ -399,26 +474,43 @@ function MessageBubble({ message, isCurrentUser }) {
         <div
             className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4`}
         >
-            <div className="relative">
+            <button
+                onClick={() => setShowOptions(!showOptions)}
+                className={`
+                    } p-1 hover:opacity-80 transition-opacity`}
+            >
+                <FiChevronDown
+                    className={`text-lg text-gray-600
+                        }`}
+                />
+            </button>
+            <div className="relative max-w-[70%]">
                 <div
-                    className={`p-3 rounded-lg ${isCurrentUser ? "bg-blue-500 text-white" : "bg-white border"}`}
+                    className={`p-4 rounded-2xl ${isCurrentUser
+                            ? "bg-blue-600 text-white rounded-br-none"
+                            : "bg-white border border-gray-200 rounded-bl-none"
+                        } shadow-sm`}
                 >
-                    <p>{message.text}</p>
-                    <p
-                        className={`text-xs mt-1 ${isCurrentUser ? "text-blue-100" : "text-gray-500"}`}
-                    >
-                        {format(message.timestamp, "hh:mm a")}
-                    </p>
+                    <p className="leading-relaxed">{message.text}</p>
+                    <div className="flex items-center justify-end mt-2">
+                        <span
+                            className={`text-xs ${isCurrentUser
+                                    ? "text-blue-100"
+                                    : "text-gray-500"
+                                }`}
+                        >
+                            {format(message.timestamp, "hh:mm a")}
+                        </span>
+                    </div>
                 </div>
-                <button
-                    onClick={() => setShowOptions(!showOptions)}
-                    className="absolute top-0 right-0 -mt-2 -mr-2 p-1 hover:bg-gray-100 rounded-full"
-                >
-                    •••
-                </button>
+
                 {showOptions && (
-                    <div className="absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg">
-                        <button className="w-full p-2 text-left hover:bg-gray-100 text-red-500">
+                    <div
+                        className={`absolute ${isCurrentUser ? "right-0" : "left-0"
+                            } mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden`}
+                    >
+                        <button className="w-full p-3 text-left hover:bg-gray-100 text-red-600 flex items-center gap-2">
+                            <FiTrash2 className="text-base" />
                             Delete
                         </button>
                     </div>
