@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
@@ -8,14 +8,14 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Button } from "../components";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 import nepwork_logo from "../assets/nepwork_logo.svg";
-import { useAuth, useSetting, useUser } from "../stores";
+import { useAuth, useSetting } from "../stores";
 
 function NavBar() {
+    const location = useLocation();
     const [rotation, setRotation] = useState(0);
     const openSetting = useSetting((state) => state.open);
     const navigate = useNavigate();
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
-    const userData = useUser((state) => state.data);
+    const { isLoggedIn, userData } = useAuth();
 
     const activeNavItemStyle = "text-primary font-semibold";
     const inactiveNavItemStyle = "text-secondaryText hover:text-primary";
@@ -23,7 +23,9 @@ function NavBar() {
 
     if (isLoggedIn) {
         return (
-            <nav className="bg-tertiary shadow-sm sticky w-full top-0 z-50 border-b border-secondary">
+            <nav
+                className={`bg-tertiary shadow-sm w-full top-0 z-50 border-b border-secondary ${location.pathname === "/inbox" ? "static" : "sticky"}`}
+            >
                 <div className=" mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center flex-shrink-0">
@@ -177,10 +179,9 @@ function NavBar() {
                         <NavLink
                             to="/"
                             className={({ isActive }) =>
-                                `px-3 py-1.5 rounded-full text-sm sm:text-base ${
-                                    isActive
-                                        ? "text-primary font-semibold bg-secondary"
-                                        : "text-secondaryText hover:text-primary hover:bg-secondary"
+                                `px-3 py-1.5 rounded-full text-sm sm:text-base ${isActive
+                                    ? "text-primary font-semibold bg-secondary"
+                                    : "text-secondaryText hover:text-primary hover:bg-secondary"
                                 } transition-colors duration-200`
                             }
                         >

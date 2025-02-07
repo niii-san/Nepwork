@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router";
 import api from "../utils/api";
-import { useAuth, useUser } from "../stores";
+import { useAuth } from "../stores";
 import { ConnectionUserList, Loader } from "../components";
 
 function Followers() {
     const { userId } = useParams();
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
-    const currentUserData = useUser((state) => state.data);
+    const { isLoggedIn, userData: currentUserData } = useAuth();
     const [followersList, setFollowersList] = useState([]);
     const [loading, setLoading] = useState(true);
 

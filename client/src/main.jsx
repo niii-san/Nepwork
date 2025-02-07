@@ -23,6 +23,8 @@ import {
     Pay,
     PaySuccess,
     PayFailure,
+    SingleTransaction,
+    Transactions,
 } from "./pages/index.js";
 import { Protected } from "./components";
 import { TagsProvider } from "./contexts/tagContext";
@@ -124,6 +126,23 @@ createRoot(document.getElementById("root")).render(
                             </Protected>
                         }
                     />
+                    <Route
+                        path="all-transactions"
+                        element={
+                            <Protected>
+                                <Transactions />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="transactions/:tId"
+                        element={
+                            <Protected>
+                                <SingleTransaction />
+                            </Protected>
+                        }
+                    />
+
                     <Route
                         path="inbox"
                         element={

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUser } from "../stores";
+import { useAuth } from "../stores";
 import { Loader, Button } from "../components";
 import api from "../utils/api";
 import toast from "react-hot-toast";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 function SwitchRole() {
     const navigate = useNavigate();
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
     const [openModal, setOpenModal] = useState(false);
     const [errMsg, setErrMsg] = useState(null);
     const [loading, setLoading] = useState(false);

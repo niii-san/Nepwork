@@ -10,39 +10,37 @@ function KycList({ data }) {
     const formatedDate = new Date(createdAt);
 
     return (
-        <div className=" min-w-[650px] h-[60px] flex ">
-            <div className="bg-[#F0F3FF] flex w-[85%] border-2 border-primary rounded-l-xl">
-                <div id="name" className="w-[40%] flex items-center px-3">
-                    <strong>
-                        {name.firstName} {name.middleName ?? " "} {"  "}
-                        {name.lastName}
+        <div className="min-w-[800px] bg-tertiary rounded-xl shadow-card_shadow hover:shadow-lg transition-shadow duration-200 border border-primary bg-white">
+            <div className="flex items-center justify-between p-4">
+                <div className="flex-1">
+                    <strong className="text-lg text-blacktext">
+                        {name.firstName} {name.middleName ?? " "} {name.lastName}
                     </strong>
                 </div>
-                <div
-                    id="submitedAt"
-                    className="w-[35%] flex items-center justify-center border-x-2 border-primary"
-                >
-                    Submitted at: {formatedDate.getFullYear()}-
-                    {formatedDate.getMonth() + 1}-{formatedDate.getDay()}
+                <div className="flex-1 text-center text-grey_text border-x border-primary px-4">
+                    Submitted at: {formatedDate.toLocaleDateString()}
                 </div>
-                <div
-                    id="status"
-                    className="flex w-[25%] justify-center items-center"
-                >
-                    <p
-                        className={`rounded-lg px-5 py-2 ${status === "pending" ? "bg-[#FFD65A]" : status === "verified" ? "bg-green-500" : "bg-red-500"}`}
+                <div className="flex-1 text-center">
+                    <span
+                        className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
+                            status === "pending"
+                                ? "bg-yellow-500"
+                                : status === "verified"
+                                ? "bg-green-600 text-white"
+                                : "bg-red-600 text-white"
+                        }`}
                     >
                         {status}
-                    </p>
+                    </span>
                 </div>
-            </div>
-            <div className="w-[15%]">
-                <Button
-                    onClick={() => navigate(`/kycs/${_id}`)}
-                    className="h-full border-r-2 border-y-2 border-l-none rounded-l-none rounded-r-xl bg-[#F0F3FF]"
-                >
-                    <FaArrowRightLong className="text-3xl" />
-                </Button>
+                <div className="flex-1 text-right">
+                    <Button
+                        onClick={() => navigate(`/kycs/${_id}`)}
+                        className="bg-primary text-white px-5 py-1 pb-2 rounded-lg hover:bg-hover_button hover:text-gray-600 transition-all duration-200 shadow-button_shadow"
+                    >
+                        <FaArrowRightLong className="inline-block" />
+                    </Button>
+                </div>
             </div>
         </div>
     );

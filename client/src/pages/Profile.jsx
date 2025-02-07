@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TbMessageDots } from "react-icons/tb";
 import { Link, useNavigate, useParams } from "react-router";
-import { useAuth, useUser } from "../stores";
+import { useAuth } from "../stores";
 import {
     Button,
     ChangeAvatarModal,
@@ -26,22 +26,6 @@ import {
 } from "react-icons/fi";
 import capitalize from "../utils/capitalize";
 
-const clientJobs = [
-    {
-        id: 1,
-        title: "Website Development",
-        description: "Need a responsive website for my bakery business",
-        hourlyRate: "$1500",
-        date: "2024-03-15",
-    },
-    {
-        id: 2,
-        title: "Mobile App Design",
-        description: "UI/UX design for a fitness tracking application",
-        hourlyRate: "$2500",
-        date: "2024-03-20",
-    },
-];
 const MapState = {
     1: "Koshi",
     2: "Madesh",
@@ -55,8 +39,7 @@ const MapState = {
 function Profile() {
     const navigate = useNavigate();
     const { userId } = useParams();
-    const isLoggedIn = useAuth((state) => state.isLoggedIn);
-    const currentUserData = useUser((state) => state.data);
+    const { isLoggedIn, userData: currentUserData } = useAuth();
     const [currentProfileData, setCurrentProfileData] = useState(null);
     const [changeAvatarModal, setChangeAvatarModal] = useState(false);
     const [editHourlyRateModal, setEditHourlyRateModal] = useState(false);

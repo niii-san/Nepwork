@@ -42,6 +42,18 @@ import {
 import { getJobOverview } from "./job/getJobOverview.controller.js";
 import { getTransaction } from "./transaction/getTransaction.controller.js";
 import { payTransaction } from "./transaction/paytransaction.controller.js";
+import {
+    getAllTransaction,
+    getRecentTransaction,
+    getSingleTransaction,
+} from "./transaction/getTransactions.controller.js";
+import { setUserOffline, setUserOnline } from "./chat/userStatus.controller.js";
+import {
+    createChat,
+    getChats,
+    getConnections,
+    newMessage,
+} from "./chat/chat.controller.js";
 
 export {
     login,
@@ -84,4 +96,13 @@ export {
     getJobOverview,
     getTransaction,
     payTransaction,
+    getAllTransaction,
+    getRecentTransaction,
+    getSingleTransaction,
+    setUserOffline,
+    setUserOnline,
+    createChat,
+    getChats,
+    getConnections,
+    newMessage,
 };

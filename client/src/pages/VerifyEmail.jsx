@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Loader, EnterEmailOtp } from "../components";
-import { useUser } from "../stores";
+import { useAuth } from "../stores";
 import { useForm } from "react-hook-form";
 import api from "../utils/api";
 import toast from "react-hot-toast";
@@ -30,7 +30,7 @@ function VerifyEmail() {
             .finally(() => setSending(false));
     };
 
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [sending, setSending] = useState(false);
     const [resErrMsg, setResErrMsg] = useState(null);

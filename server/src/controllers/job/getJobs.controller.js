@@ -18,7 +18,7 @@ export const getAllJobs = asyncHandler(async (_, res) => {
 
 export const getJobsPostedByCurrentUser = asyncHandler(async (req, res) => {
     const jobs = await Job.find({ postedBy: req.user._id })
-        .select("-startTime -endTime -workedTimeInSec -payment")
+        .select("-startTime -endTime -workedTimeInSec")
         .populate("acceptedFreelancer", "name avatar");
 
     return res
