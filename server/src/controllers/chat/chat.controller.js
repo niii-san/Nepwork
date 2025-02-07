@@ -69,10 +69,19 @@ export const getConnections = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const selectOptions = "name avatar online lastSeen";
 
-    const users = await User.findById(userId)
+    const user = await User.findById(userId)
         .populate("following.userId", selectOptions)
         .populate("followers.userId", selectOptions);
-    const connectionList = [...users.following, ...users.followers];
+
+    const seenIds = new Set();
+
+    const connectionList = [...user.following, ...user.followers].filter(
+        ({ userId }) => {
+            if (seenIds.has(userId._id.toString())) return false;
+            seenIds.add(userId._id.toString());
+            return true;
+        },
+    );
 
     return res
         .status(200)
