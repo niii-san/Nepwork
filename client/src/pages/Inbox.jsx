@@ -160,13 +160,6 @@ export default function Inbox() {
                         <h1 className="text-2xl font-bold text-gray-800">
                             Messages
                         </h1>
-                        <button
-                            onClick={() => setShowNewChatModal(true)}
-                            className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center gap-2"
-                        >
-                            <FiPlus className="text-lg" />
-                            <span className="hidden md:block">New Chat</span>
-                        </button>
                     </div>
                 </div>
 
@@ -225,6 +218,12 @@ export default function Inbox() {
                             </div>
                         );
                     })}
+                    <button
+                        onClick={() => setShowNewChatModal(true)}
+                        className="px-6 absolute bottom-10 left-60 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 flex items-center "
+                    >
+                        <FiPlus className="text-lg" />
+                    </button>
                 </div>
             </div>
 
@@ -303,17 +302,13 @@ export default function Inbox() {
                                 </div>
                             </div>
                             {selectedChat?.createdAt ? (
-                                <Button
-                                    variant="filled"
-                                    className="text-red-600 hover:bg-red-50"
-                                >
+                                <Button className="text-red-600 hover:bg-red-300 bg-none border-none">
                                     <FiTrash2 className="mr-2" />
-                                    Delete Chat
+                                    Chat
                                 </Button>
                             ) : (
                                 <Button
-                                    variant="ghost"
-                                    className="text-gray-600 hover:bg-gray-100"
+                                    className="text-gray-600 hover:bg-gray-300 bg-none border-none "
                                     onClick={() => setSelectedChat(null)}
                                 >
                                     <FiX className="mr-2" />
@@ -339,12 +334,9 @@ export default function Inbox() {
                             ))}
                         </div>
 
-                        {selectedChat && selectedChat?.createdAt ? (
+                        {selectedChat && (
                             <div className="p-4 border-t border-gray-200 bg-white">
                                 <div className="flex gap-2">
-                                    <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
-                                        <FiPaperclip className="text-xl" />
-                                    </button>
                                     <input
                                         type="text"
                                         value={text}
@@ -357,29 +349,30 @@ export default function Inbox() {
                                         placeholder="Type your message..."
                                         className="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                                     />
-                                    <button
-                                        onClick={sendMessage}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                                    >
-                                        <FiSend className="text-lg" />
-                                        <span className="hidden md:block">
-                                            Send
-                                        </span>
-                                    </button>
+                                    {selectedChat?.createdAt ? (
+                                        <button
+                                            onClick={sendMessage}
+                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                        >
+                                            <FiSend className="text-lg" />
+                                            <span className="hidden md:block">
+                                                Send
+                                            </span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() =>
+                                                handleStartChat(selectedChat)
+                                            }
+                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                        >
+                                            <FiSend className="text-lg" />
+                                            <span className="hidden md:block">
+                                                Start
+                                            </span>
+                                        </button>
+                                    )}
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="p-4 bg-white">
-                                <Button
-                                    variant="filled"
-                                    className="w-full py-4 text-lg flex items-center justify-center gap-2"
-                                    onClick={() =>
-                                        handleStartChat(selectedChat)
-                                    }
-                                >
-                                    <FiMessageSquare />
-                                    Start Conversation
-                                </Button>
                             </div>
                         )}
                     </div>
@@ -514,7 +507,7 @@ function MessageBubble({ message, isCurrentUser }) {
             )}
             <div className="relative max-w-[70%]">
                 <div
-                    className={`px-4 py-2 rounded-2xl ${isCurrentUser
+                    className={`px-3 py-1 rounded-2xl ${isCurrentUser
                             ? "bg-blue-600 text-white rounded-br-none"
                             : "bg-white border border-gray-200 rounded-bl-none"
                         } shadow-sm`}
