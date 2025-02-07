@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
@@ -19,6 +19,7 @@ import {
 } from "react-icons/fi";
 
 export default function Inbox() {
+    const bottomRef = useRef(null);
     const { socket, userData: currentUser } = useAuth();
     const {
         chats,
@@ -34,6 +35,7 @@ export default function Inbox() {
     const [currentChatIndex, setCurrentChatIndex] = useState(-1);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [n, setN] = useState(0);
     const [text, setText] = useState("");
 
     const formatLastSeen = (date) => {
@@ -118,6 +120,7 @@ export default function Inbox() {
             const newMessage = response.data.data;
             selectedChat.messages.push(newMessage);
             setText("");
+            setN((p) => p + 1);
         } catch (error) {
             toast.error("Failed to send message!");
             console.error(error);
@@ -138,6 +141,12 @@ export default function Inbox() {
             socket.on("newMessage", handleNewMessage);
         }
     }, [socket]);
+
+    useEffect(() => {
+        if (selectedChat?.messages) {
+            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [selectedChat?.messages, chats, n]);
 
     return (
         <div className="flex h-[94vh] bg-gradient-to-br from-gray-50 to-blue-50">
@@ -314,14 +323,19 @@ export default function Inbox() {
                         </div>
 
                         <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white">
-                            {selectedChat?.messages?.map((message) => (
-                                <MessageBubble
-                                    key={message._id}
-                                    message={message}
-                                    isCurrentUser={
-                                        message.sender === currentUser._id
-                                    }
-                                />
+                            {selectedChat?.messages?.map((message, index) => (
+                                <div key={message._id}>
+                                    <MessageBubble
+                                        message={message}
+                                        isCurrentUser={
+                                            message.sender === currentUser._id
+                                        }
+                                    />
+                                    {index ===
+                                        selectedChat.messages.length - 1 && (
+                                            <div ref={bottomRef} />
+                                        )}
+                                </div>
                             ))}
                         </div>
 
@@ -486,25 +500,27 @@ function MessageBubble({ message, isCurrentUser }) {
         <div
             className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4`}
         >
-            <button
-                onClick={() => setShowOptions(!showOptions)}
-                className={`
+            {isCurrentUser && (
+                <button
+                    onClick={() => setShowOptions(!showOptions)}
+                    className={`
                     } p-1 hover:opacity-80 transition-opacity`}
-            >
-                <FiChevronDown
-                    className={`text-lg text-gray-600
+                >
+                    <FiChevronDown
+                        className={`text-lg text-gray-600
                         }`}
-                />
-            </button>
+                    />
+                </button>
+            )}
             <div className="relative max-w-[70%]">
                 <div
-                    className={`p-4 rounded-2xl ${isCurrentUser
+                    className={`px-4 py-2 rounded-2xl ${isCurrentUser
                             ? "bg-blue-600 text-white rounded-br-none"
                             : "bg-white border border-gray-200 rounded-bl-none"
                         } shadow-sm`}
                 >
                     <p className="leading-relaxed">{message.text}</p>
-                    <div className="flex items-center justify-end mt-2">
+                    <div className="flex items-center justify-end mt-1">
                         <span
                             className={`text-xs ${isCurrentUser
                                     ? "text-blue-100"
@@ -518,13 +534,18 @@ function MessageBubble({ message, isCurrentUser }) {
 
                 {showOptions && (
                     <div
-                        className={`absolute ${isCurrentUser ? "right-0" : "left-0"
-                            } mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden`}
+                        className="w-full h-full"
+                        onClick={() => setShowOptions(false)}
                     >
-                        <button className="w-full p-3 text-left hover:bg-gray-100 text-red-600 flex items-center gap-2">
-                            <FiTrash2 className="text-base" />
-                            Delete
-                        </button>
+                        <div
+                            className={`absolute right-0 z-50
+                             mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden`}
+                        >
+                            <button className="w-full p-3 text-left hover:bg-gray-100 text-red-600 flex items-center gap-2">
+                                <FiTrash2 className="text-base" />
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
