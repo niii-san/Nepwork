@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useUser } from "../stores";
+import React, { useState } from "react";
+import { useAuth } from "../stores";
 import {
     Loader,
     PostJobModal,
@@ -7,10 +7,9 @@ import {
     RecentTransactions,
     TotalSpending,
 } from "../components";
-import { useNavigate } from "react-router";
 
 function Dashboard() {
-    const userData = useUser((state) => state.data);
+    const { userData } = useAuth();
     if (!userData) return <Loader />;
 
     return (

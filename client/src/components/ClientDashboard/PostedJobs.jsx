@@ -8,7 +8,6 @@ import capitalize from "../../utils/capitalize";
 
 function PostedJobs({ showPostJobModalFn }) {
     const jobs = usePostedJobs((state) => state.jobs);
-    console.log(jobs);
     const [selectedFilter, setSelectedFilter] = useState("all");
 
     const fetchPostedJobs = usePostedJobs((state) => state.fetchPostedJobs);

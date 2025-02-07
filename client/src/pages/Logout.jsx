@@ -2,11 +2,10 @@ import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import { useAuth, useUser } from "../stores";
+import { useAuth } from "../stores";
 
 function Logout() {
-    const logout = useAuth((state) => state.logout);
-    const clearUserData = useUser((state) => state.clearUserData);
+    const { logout, clearUserData } = useAuth();
     const navigate = useNavigate();
     useEffect(() => {
         // clear cookies from local storage

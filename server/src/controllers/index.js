@@ -47,6 +47,13 @@ import {
     getRecentTransaction,
     getSingleTransaction,
 } from "./transaction/getTransactions.controller.js";
+import { setUserOffline, setUserOnline } from "./chat/userStatus.controller.js";
+import {
+    createChat,
+    getChats,
+    getConnections,
+    newMessage,
+} from "./chat/chat.controller.js";
 
 export {
     login,
@@ -92,4 +99,10 @@ export {
     getAllTransaction,
     getRecentTransaction,
     getSingleTransaction,
+    setUserOffline,
+    setUserOnline,
+    createChat,
+    getChats,
+    getConnections,
+    newMessage,
 };
