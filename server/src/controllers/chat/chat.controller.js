@@ -12,6 +12,11 @@ const getSocketId = async (userId) => {
 export const createChat = asyncHandler(async (req, res) => {
     const senderId = req.user.id;
     const receiverId = (req.body.receiverId ?? "").trim();
+    const text = req.body.text ?? "";
+
+    if (!text) {
+        throw new ApiError(400, true, "Initial text required");
+    }
 
     if (!receiverId) {
         throw new ApiError(400, true, "Receiver id is required");
@@ -47,6 +52,19 @@ export const createChat = asyncHandler(async (req, res) => {
         .populate("userOne", selectOptions)
         .populate("userTwo", selectOptions)
         .populate("messages");
+
+    const iniMsg = await Message.create({
+        sender: senderId,
+        receiver: receiver._id,
+        text: text,
+    });
+    populatedChat.messages.push(iniMsg);
+    await populatedChat.save();
+
+    const receiverSocketId = await getSocketId(receiverId);
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newChat", populatedChat);
+    }
 
     return res
         .status(200)

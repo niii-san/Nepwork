@@ -28,6 +28,7 @@ export default function Inbox() {
         connections: users,
         setConnections,
         addMessage,
+        addNewChat,
     } = useChat();
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -49,7 +50,7 @@ export default function Inbox() {
         }
     };
 
-    const handleNewChat = (user) => {
+    const handleAddNewChat = (user) => {
         const chatExistsIndex = chats.findIndex((chat) =>
             [chat.userOne._id, chat.userTwo._id].includes(user.userId._id),
         );
@@ -77,8 +78,9 @@ export default function Inbox() {
                 text,
             });
             const newChat = response.data.data;
-            setChats([newChat, ...chats]);
-            setSelectedChat(newChat);
+            setText("");
+            addNewChat(newChat);
+            setSelectedChat(chats[0]);
         } catch (error) {
             toast.error("Failed to start chat");
             console.error(error);
@@ -110,6 +112,11 @@ export default function Inbox() {
         addMessage(data.chatId, data.newMessage);
     };
 
+    const handleNewChat = (newChat) => {
+        addNewChat(newChat);
+        console.log(newChat);
+    };
+
     useEffect(() => {
         setChats();
         setConnections();
@@ -118,16 +125,19 @@ export default function Inbox() {
     useEffect(() => {
         if (socket) {
             socket.on("newMessage", handleNewMessage);
-            return () => socket.off("newMessage", handleNewMessage);
+            socket.on("newChat", handleNewChat);
+            return () => {
+                socket.off("newMessage", handleNewMessage);
+            };
         }
     }, [socket]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [selectedChat?.messages.length]);
+    }, [selectedChat?.messages?.length]);
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-[94vh] bg-gray-50">
             {/* Chat List Sidebar */}
             <div
                 className={`md:w-96 w-full h-full bg-white shadow-lg transition-transform ${selectedChat ? "hidden md:block" : "block"}`}
@@ -146,7 +156,7 @@ export default function Inbox() {
                     </div>
                 </div>
 
-                <div className="overflow-y-auto h-[calc(100vh-140px)] custom-scrollbar">
+                <div className="overflow-y-auto  custom-scrollbar">
                     {chats.map((chat) => {
                         const otherUser =
                             chat.userOne._id === currentUser._id
@@ -399,7 +409,7 @@ export default function Inbox() {
                                 .map((user) => (
                                     <div
                                         key={user._id}
-                                        onClick={() => handleNewChat(user)}
+                                        onClick={() => handleAddNewChat(user)}
                                         className="p-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center gap-4"
                                     >
                                         <div className="relative">

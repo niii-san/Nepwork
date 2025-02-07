@@ -29,6 +29,10 @@ export const useChat = create((set, get) => ({
             console.error(error);
         }
     },
+    addNewChat: (chat) => {
+        const { chats } = get();
+        set({ chats: [chat, ...chats] });
+    },
     addMessage: (chatId, message) => {
         const { chats } = get();
         const newChats = chats.map((item) => {
