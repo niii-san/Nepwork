@@ -3,7 +3,7 @@ import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
 import capitalize from "../utils/capitalize.js";
-import { Button } from "../components";
+import { Button, ConnectionUserList } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api.js";
 import {
@@ -29,6 +29,7 @@ export default function Inbox() {
         setConnections,
         addMessage,
         addNewChat,
+        setUserOffline,
     } = useChat();
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -117,6 +118,11 @@ export default function Inbox() {
         console.log(newChat);
     };
 
+    const handleUserOffline = ({ userId, lastSeen }) => {
+        setUserOffline(userId, lastSeen);
+        console.log(lastSeen)
+    };
+
     useEffect(() => {
         setChats();
         setConnections();
@@ -126,8 +132,11 @@ export default function Inbox() {
         if (socket) {
             socket.on("newMessage", handleNewMessage);
             socket.on("newChat", handleNewChat);
+            socket.on("userOffline", handleUserOffline);
             return () => {
                 socket.off("newMessage", handleNewMessage);
+                socket.off("newChat", handleNewChat);
+                socket.off("userOffline", handleUserOffline);
             };
         }
     }, [socket]);
