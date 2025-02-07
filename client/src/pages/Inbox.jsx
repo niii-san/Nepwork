@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { format, isToday, parseISO } from "date-fns";
+import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
 
@@ -59,8 +59,23 @@ export default function Inbox() {
     const [isTyping, setIsTyping] = useState(false);
 
     const formatLastSeen = (date) => {
-        if (isToday(date)) return format(date, "hh:mm a");
-        return format(date, "MM/dd/yyyy");
+        if (!date) return "Never seen"; // Handle null/undefined case
+
+        try {
+            const parsedDate = date instanceof Date ? date : parseISO(date);
+            if (isNaN(parsedDate)) return "Invalid date";
+
+            const now = new Date();
+            const hoursDifference = differenceInHours(now, parsedDate);
+
+            if (hoursDifference < 24) {
+                return format(parsedDate, "hh:mm a");
+            }
+            return format(parsedDate, "MM/dd/yyyy");
+        } catch (error) {
+            console.error("Error formatting last seen:", error);
+            return "--";
+        }
     };
 
     const handleNewChat = (user) => {
