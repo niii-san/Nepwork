@@ -30,6 +30,7 @@ export default function Inbox() {
         setConnections,
         connectionsLoading,
     } = useChat();
+    console.log(selectedChat)
     const [currentChatIndex, setCurrentChatIndex] = useState(-1);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");

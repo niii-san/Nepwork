@@ -131,6 +131,8 @@ export const newMessage = asyncHandler(async (req, res) => {
         sender,
         receiver,
     });
+    chat.messages.push(newMessage)
+    await chat.save()
 
     return res
         .status(200)
