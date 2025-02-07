@@ -29,6 +29,17 @@ export const useChat = create((set, get) => ({
             console.error(error);
         }
     },
+    addMessage: (chatId, message) => {
+        const { chats } = get();
+        const newChats = chats.map((item) => {
+            if (item._id === chatId) {
+                item.messages.push(message);
+            }
+
+            return item;
+        });
+        set({ chats: newChats });
+    },
     setSelectedChat: (chat) => {
         set({ selectedChat: chat });
     },

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { GoHome } from "react-icons/go";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
@@ -11,6 +11,7 @@ import nepwork_logo from "../assets/nepwork_logo.svg";
 import { useAuth, useSetting } from "../stores";
 
 function NavBar() {
+    const location = useLocation();
     const [rotation, setRotation] = useState(0);
     const openSetting = useSetting((state) => state.open);
     const navigate = useNavigate();
@@ -22,7 +23,9 @@ function NavBar() {
 
     if (isLoggedIn) {
         return (
-            <nav className="bg-tertiary shadow-sm sticky w-full top-0 z-50 border-b border-secondary">
+            <nav
+                className={`bg-tertiary shadow-sm w-full top-0 z-50 border-b border-secondary ${location.pathname === "/inbox" ? "static" : "sticky"}`}
+            >
                 <div className=" mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center flex-shrink-0">

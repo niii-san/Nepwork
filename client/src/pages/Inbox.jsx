@@ -19,7 +19,7 @@ import {
 } from "react-icons/fi";
 
 export default function Inbox() {
-    const { userData: currentUser } = useAuth();
+    const { socket, userData: currentUser } = useAuth();
     const {
         chats,
         setChats,
@@ -29,12 +29,12 @@ export default function Inbox() {
         connections: users,
         setConnections,
         connectionsLoading,
+        addMessage,
     } = useChat();
-    console.log(selectedChat)
     const [currentChatIndex, setCurrentChatIndex] = useState(-1);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [newMessage, setNewMessage] = useState("");
+    const [text, setText] = useState("");
 
     const formatLastSeen = (date) => {
         if (!date) return "Never seen";
@@ -95,7 +95,6 @@ export default function Inbox() {
     };
 
     const handleStartChat = async (chat) => {
-        console.log(chat);
         try {
             const response = await api.post("/chats/create-chat", {
                 receiverId: chat?.userTwo?._id,
@@ -110,29 +109,38 @@ export default function Inbox() {
         }
     };
 
-    const sendMessage = () => {
-        if (!newMessage.trim()) return;
-        const message = {
-            _id: `m${Date.now()}`,
-            text: newMessage,
-            sender: currentUser._id,
-            receiver:
-                selectedChat.userOne === currentUser._id
-                    ? selectedChat.userTwo
-                    : selectedChat.userOne,
-            timestamp: new Date(),
-        };
-        console.log();
-        chats[currentChatIndex].messages.push(message);
-        setNewMessage("");
+    const sendMessage = async () => {
+        try {
+            const response = await api.post(
+                `/chats/${selectedChat._id}/new-message`,
+                { message: text },
+            );
+            const newMessage = response.data.data;
+            selectedChat.messages.push(newMessage);
+            setText("");
+        } catch (error) {
+            toast.error("Failed to send message!");
+            console.error(error);
+        }
+    };
+
+    const handleNewMessage = (data) => {
+        addMessage(data.chatId, data.newMessage);
     };
 
     useEffect(() => {
         setChats();
         setConnections();
     }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("newMessage", handleNewMessage);
+        }
+    }, [socket]);
+
     return (
-        <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="flex h-[90vh] bg-gradient-to-br from-gray-50 to-blue-50">
             {/* Left sidebar */}
             <div
                 className={`md:w-96 w-full h-full bg-white shadow-xl ${selectedChat ? "hidden md:block" : "block"
@@ -154,7 +162,7 @@ export default function Inbox() {
                 </div>
 
                 <div className="overflow-y-auto h-[calc(100vh-4rem)]">
-                    {chats.map((chat) => {
+                    {chats.map((chat, index) => {
                         const otherUser =
                             chat.userOne._id === currentUser._id
                                 ? chat.userTwo
@@ -162,7 +170,10 @@ export default function Inbox() {
                         return (
                             <div
                                 key={chat._id}
-                                onClick={() => setSelectedChat(chat)}
+                                onClick={() => {
+                                    setSelectedChat(chat);
+                                    setCurrentChatIndex(index);
+                                }}
                                 className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${selectedChat?._id === chat._id
                                         ? "bg-blue-50 hover:bg-blue-50"
                                         : ""
@@ -216,7 +227,7 @@ export default function Inbox() {
                     }`}
             >
                 {selectedChat ? (
-                    <div className="h-full flex flex-col">
+                    <div className="h-full  overflow-y-scroll flex flex-col">
                         <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center">
                             <div className="flex items-center gap-4">
                                 <button
@@ -284,7 +295,7 @@ export default function Inbox() {
                             </div>
                             {selectedChat?.createdAt ? (
                                 <Button
-                                    variant="ghost"
+                                    variant="filled"
                                     className="text-red-600 hover:bg-red-50"
                                 >
                                     <FiTrash2 className="mr-2" />
@@ -322,11 +333,11 @@ export default function Inbox() {
                                     </button>
                                     <input
                                         type="text"
-                                        value={newMessage}
+                                        value={text}
                                         onChange={(e) =>
-                                            setNewMessage(e.target.value)
+                                            setText(e.target.value)
                                         }
-                                        onKeyPress={(e) =>
+                                        onKeyDown={(e) =>
                                             e.key === "Enter" && sendMessage()
                                         }
                                         placeholder="Type your message..."

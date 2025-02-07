@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 import { asyncHandler, ApiResponse, ApiError } from "../../utils/index.js";
 import { Chat, Message } from "../../models/chat.model.js";
 import { User } from "../../models/user.model.js";
+import { io } from "../../index.js";
+
+const getSocketId = async (userId) => {
+    const user = await User.findById(userId);
+    return user?.socketId;
+};
 
 export const createChat = asyncHandler(async (req, res) => {
     const senderId = req.user.id;
@@ -131,8 +137,17 @@ export const newMessage = asyncHandler(async (req, res) => {
         sender,
         receiver,
     });
-    chat.messages.push(newMessage)
-    await chat.save()
+    chat.messages.push(newMessage);
+    await chat.save();
+
+    const receiverSocketId = await getSocketId(receiver._id);
+
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newMessage", {
+            chatId: chat._id,
+            newMessage,
+        });
+    }
 
     return res
         .status(200)
