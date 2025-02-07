@@ -30,6 +30,7 @@ export default function Inbox() {
         addMessage,
         addNewChat,
         setUserOffline,
+        setUserOnline,
     } = useChat();
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -118,9 +119,12 @@ export default function Inbox() {
         console.log(newChat);
     };
 
+    const handleUserOnline = ({ userId }) => {
+        setUserOnline(userId);
+    };
+
     const handleUserOffline = ({ userId, lastSeen }) => {
         setUserOffline(userId, lastSeen);
-        console.log(lastSeen)
     };
 
     useEffect(() => {
@@ -133,10 +137,12 @@ export default function Inbox() {
             socket.on("newMessage", handleNewMessage);
             socket.on("newChat", handleNewChat);
             socket.on("userOffline", handleUserOffline);
+            socket.on("userOnline", handleUserOnline);
             return () => {
                 socket.off("newMessage", handleNewMessage);
                 socket.off("newChat", handleNewChat);
                 socket.off("userOffline", handleUserOffline);
+                socket.off("userOnline", handleUserOnline);
             };
         }
     }, [socket]);

@@ -2,10 +2,30 @@ import { io } from "../../index.js";
 import { User } from "../../models/index.js";
 
 export const setUserOnline = async (userId, socketId) => {
-    await User.findOneAndUpdate(
-        { _id: userId },
-        { online: true, socketId: socketId, lastSeen: null },
+    const selectOptions = "name avatar online lastSeen socketId";
+
+    const user = await User.findById(userId)
+        .populate("following.userId", selectOptions)
+        .populate("followers.userId", selectOptions);
+    user.online = true;
+    user.socketId = socketId;
+    user.lastSeen = null;
+    await user.save();
+
+    const seenIds = new Set();
+    const connectionList = [...user.following, ...user.followers].filter(
+        ({ userId }) => {
+            if (!userId || seenIds.has(userId._id.toString())) return false;
+            seenIds.add(userId._id.toString());
+            return userId.socketId;
+        },
     );
+
+    connectionList.forEach((item) => {
+        io.to(item.userId.socketId).emit("userOnline", {
+            userId: user._id,
+        });
+    });
 };
 
 export const setUserOffline = async (userId) => {
@@ -19,7 +39,6 @@ export const setUserOffline = async (userId) => {
     user.lastSeen = Date.now();
 
     await user.save();
-    if (!user) return;
 
     const seenIds = new Set();
     const connectionList = [...user.following, ...user.followers].filter(

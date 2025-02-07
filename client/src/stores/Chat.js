@@ -47,6 +47,44 @@ export const useChat = create((set, get) => ({
     setSelectedChat: (chat) => {
         set({ selectedChat: chat });
     },
+    setUserOnline: (userId) => {
+        const { connections, chats } = get();
+        const updatedConnections = connections.map((connection) =>
+            connection.userId._id === userId
+                ? {
+                      ...connection,
+                      userId: {
+                          ...connection.userId,
+                          online: true,
+                          lastSeen: null,
+                      },
+                  }
+                : connection,
+        );
+
+        const updatedChats = chats.map((chat) =>
+            chat.userOne._id === userId
+                ? {
+                      ...chat,
+                      userOne: {
+                          ...chat.userOne,
+                          online: true,
+                          lastSeen: null,
+                      },
+                  }
+                : chat.userTwo._id === userId
+                  ? {
+                        ...chat,
+                        userTwo: {
+                            ...chat.userTwo,
+                            online: true,
+                            lastSeen: null,
+                        },
+                    }
+                  : chat,
+        );
+        set({ connections: updatedConnections, chats: updatedChats });
+    },
     setUserOffline: (userId, lastSeen) => {
         const { connections, chats } = get();
         const updatedConnections = connections.map((connection) =>
