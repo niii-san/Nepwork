@@ -3,6 +3,7 @@ import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
 import capitalize from "../utils/capitalize.js";
+import { Button } from "../components";
 
 export default function Inbox() {
     const { userData: currentUser } = useAuth();
@@ -73,19 +74,10 @@ export default function Inbox() {
                 userTwo: user.userId,
             });
 
+            setShowNewChatModal(false);
+
             return;
         }
-
-        // const newChat = {
-        //     _id: `c${chats.length + 1}`,
-        //     userOne: currentUser._id,
-        //     userTwo: user._id,
-        //     messages: [],
-        //     lastMessage: null,
-        // };
-        // setChats([newChat, ...chats]);
-        // setSelectedChat(newChat);
-        // setShowNewChatModal(false);
     };
 
     const sendMessage = () => {
@@ -164,8 +156,8 @@ export default function Inbox() {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold">
-                                            {otherUser?.name.firstName}{" "}
-                                            {otherUser?.name.lastName}
+                                            {otherUser?.name?.firstName}{" "}
+                                            {otherUser?.name?.lastName}
                                         </h3>
                                         <p className="text-sm text-gray-500">
                                             {otherUser?.online
@@ -250,9 +242,16 @@ export default function Inbox() {
                                     )}
                                 </div>
                             </div>
-                            <button className="text-red-500 hover:text-red-600">
-                                Delete Chat
-                            </button>
+                            {selectedChat?.createdAt ? (
+                                <Button>Delete Chat</Button>
+                            ) : (
+                                <Button
+                                    className="text-red-500 hover:text-red-600"
+                                    onClick={() => setSelectedChat(null)}
+                                >
+                                    Close Chat
+                                </Button>
+                            )}
                         </div>
 
                         <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
@@ -267,28 +266,37 @@ export default function Inbox() {
                             ))}
                         </div>
 
-                        <div className="p-4 border-t bg-white">
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={newMessage}
-                                    onChange={(e) =>
-                                        setNewMessage(e.target.value)
-                                    }
-                                    onKeyPress={(e) =>
-                                        e.key === "Enter" && sendMessage()
-                                    }
-                                    placeholder="Type a message"
-                                    className="flex-1 p-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                                />
-                                <button
-                                    onClick={sendMessage}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                                >
-                                    Send
-                                </button>
+                        {selectedChat && selectedChat?.createdAt ? (
+                            <div className="p-4 border-t bg-white">
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={newMessage}
+                                        onChange={(e) =>
+                                            setNewMessage(e.target.value)
+                                        }
+                                        onKeyPress={(e) =>
+                                            e.key === "Enter" && sendMessage()
+                                        }
+                                        placeholder="Type a message"
+                                        className="flex-1 p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                    />
+                                    <button
+                                        onClick={sendMessage}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                    >
+                                        Send
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <Button
+                                variant="filled"
+                                className="w-[98%] mx-auto"
+                            >
+                                Start chat
+                            </Button>
+                        )}
                     </div>
                 ) : (
                     <div className="text-gray-500 text-center">
