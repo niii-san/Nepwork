@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { asyncHandler, ApiResponse, ApiError } from "../../utils/index.js";
-import { Chat } from "../../models/chat.model.js";
+import { Chat, Message } from "../../models/chat.model.js";
 import { User } from "../../models/user.model.js";
 
 export const createChat = asyncHandler(async (req, res) => {
@@ -98,4 +98,41 @@ export const getConnections = asyncHandler(async (req, res) => {
                 connectionList,
             ),
         );
+});
+
+export const newMessage = asyncHandler(async (req, res) => {
+    const { chatId } = req.params;
+    const userId = req.user.id;
+    const message = req.body.message ?? "";
+
+    if (!mongoose.isValidObjectId(chatId)) {
+        throw new ApiError(400, true, "Invalid chatId");
+    }
+
+    if (!message) {
+        throw new ApiError(400, true, "Message is required");
+    }
+
+    const chat = await Chat.findOne({
+        _id: chatId,
+        $or: [{ userOne: userId }, { userTwo: userId }],
+    });
+
+    if (!chat) {
+        throw new ApiError(404, true, "Chat id not found");
+    }
+
+    const sender = userId;
+    const receiver =
+        chat.userOne.toString() === userId ? chat.userTwo : chat.userOne;
+
+    const newMessage = await Message.create({
+        text: message,
+        sender,
+        receiver,
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, true, true, "Message sent", newMessage));
 });

@@ -52,6 +52,7 @@ import {
     createChat,
     getChats,
     getConnections,
+    newMessage,
 } from "./chat/chat.controller.js";
 
 export {
@@ -103,4 +104,5 @@ export {
     createChat,
     getChats,
     getConnections,
+    newMessage,
 };
