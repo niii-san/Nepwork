@@ -13,7 +13,6 @@ import {
     FiSearch,
     FiX,
     FiSend,
-    FiPaperclip,
     FiTrash2,
     FiChevronDown,
 } from "react-icons/fi";
@@ -24,34 +23,26 @@ export default function Inbox() {
     const {
         chats,
         setChats,
-        chatsLoading,
         selectedChat,
         setSelectedChat,
         connections: users,
         setConnections,
-        connectionsLoading,
         addMessage,
     } = useChat();
-    const [currentChatIndex, setCurrentChatIndex] = useState(-1);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [n, setN] = useState(0);
     const [text, setText] = useState("");
 
     const formatLastSeen = (date) => {
         if (!date) return "Never seen";
-
         try {
             const parsedDate = date instanceof Date ? date : parseISO(date);
             if (isNaN(parsedDate)) return "Invalid date";
-
             const now = new Date();
             const hoursDifference = differenceInHours(now, parsedDate);
-
-            if (hoursDifference < 24) {
-                return format(parsedDate, "hh:mm a");
-            }
-            return format(parsedDate, "MM/dd/yyyy");
+            return hoursDifference < 24
+                ? format(parsedDate, "hh:mm a")
+                : format(parsedDate, "MM/dd/yyyy");
         } catch (error) {
             console.error("Error formatting last seen:", error);
             return "--";
@@ -59,27 +50,12 @@ export default function Inbox() {
     };
 
     const handleNewChat = (user) => {
-        let chatExistsIndex = -1;
-        chats.some((item, index) => {
-            if (
-                item.userOne._id === user.userId._id ||
-                item.userTwo._id === user.userId._id
-            ) {
-                chatExistsIndex = index;
-            } else {
-                chatExistsIndex = -1;
-            }
-            return (
-                item.userOne._id === user.userId._id ||
-                item.userTwo._id === user.userId._id
-            );
-        });
+        const chatExistsIndex = chats.findIndex((chat) =>
+            [chat.userOne._id, chat.userTwo._id].includes(user.userId._id),
+        );
 
         if (chatExistsIndex >= 0) {
             setSelectedChat(chats[chatExistsIndex]);
-            setCurrentChatIndex(chatExistsIndex);
-            setShowNewChatModal(false);
-            return;
         } else {
             setSelectedChat({
                 createdAt: null,
@@ -90,21 +66,19 @@ export default function Inbox() {
                 userOne: currentUser,
                 userTwo: user.userId,
             });
-
-            setShowNewChatModal(false);
-            return;
         }
+        setShowNewChatModal(false);
     };
 
-    const handleStartChat = async (chat) => {
+    const handleStartChat = async (chat, text) => {
         try {
             const response = await api.post("/chats/create-chat", {
                 receiverId: chat?.userTwo?._id,
+                text,
             });
             const newChat = response.data.data;
-            chats.unshift(newChat);
-            setSelectedChat(chats[0]);
-            setCurrentChatIndex(0);
+            setChats([newChat, ...chats]);
+            setSelectedChat(newChat);
         } catch (error) {
             toast.error("Failed to start chat");
             console.error(error);
@@ -112,6 +86,12 @@ export default function Inbox() {
     };
 
     const sendMessage = async () => {
+        if (!text.trim()) return;
+        if (!selectedChat?.createdAt) {
+            handleStartChat(selectedChat, text);
+            return;
+        }
+
         try {
             const response = await api.post(
                 `/chats/${selectedChat._id}/new-message`,
@@ -120,7 +100,6 @@ export default function Inbox() {
             const newMessage = response.data.data;
             selectedChat.messages.push(newMessage);
             setText("");
-            setN((p) => p + 1);
         } catch (error) {
             toast.error("Failed to send message!");
             console.error(error);
@@ -139,32 +118,36 @@ export default function Inbox() {
     useEffect(() => {
         if (socket) {
             socket.on("newMessage", handleNewMessage);
+            return () => socket.off("newMessage", handleNewMessage);
         }
     }, [socket]);
 
     useEffect(() => {
-        if (selectedChat?.messages) {
-            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [selectedChat?.messages, chats, n]);
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [selectedChat?.messages.length]);
 
     return (
-        <div className="flex h-[94vh] bg-gradient-to-br from-gray-50 to-blue-50">
-            {/* Left sidebar */}
+        <div className="flex h-screen bg-gray-50">
+            {/* Chat List Sidebar */}
             <div
-                className={`md:w-96 w-full h-full bg-white shadow-xl ${selectedChat ? "hidden md:block" : "block"
-                    }`}
+                className={`md:w-96 w-full h-full bg-white shadow-lg transition-transform ${selectedChat ? "hidden md:block" : "block"}`}
             >
-                <div className="p-6 border-b border-gray-200">
-                    <div className="flex justify-between items-center">
+                <div className="p-6 border-b border-gray-100">
+                    <div className="flex justify-between items-center mb-2">
                         <h1 className="text-2xl font-bold text-gray-800">
                             Messages
                         </h1>
+                        <button
+                            onClick={() => setShowNewChatModal(true)}
+                            className="p-2 bg-primary/80 text-white rounded-full hover:bg-primary-90 transition-all"
+                        >
+                            <FiPlus className="text-xl" />
+                        </button>
                     </div>
                 </div>
 
-                <div className="overflow-y-auto h-[]">
-                    {chats.map((chat, index) => {
+                <div className="overflow-y-auto h-[calc(100vh-140px)] custom-scrollbar">
+                    {chats.map((chat) => {
                         const otherUser =
                             chat.userOne._id === currentUser._id
                                 ? chat.userTwo
@@ -174,34 +157,35 @@ export default function Inbox() {
                                 key={chat._id}
                                 onClick={() => {
                                     setSelectedChat(chat);
-                                    setCurrentChatIndex(index);
                                 }}
-                                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${selectedChat?._id === chat._id
-                                        ? "bg-blue-50 hover:bg-blue-50"
+                                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-primary/20 transition-colors ${
+                                    selectedChat?._id === chat._id
+                                        ? "bg-primary/20"
                                         : ""
-                                    }`}
+                                }`}
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="relative">
                                         <div
-                                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${otherUser?.online
+                                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                                                otherUser?.online
                                                     ? "bg-green-500"
                                                     : "bg-gray-400"
-                                                } ring-2 ring-white`}
+                                            } ring-2 ring-white`}
                                         />
                                         <img
                                             src={
-                                                otherUser?.avatar ??
+                                                otherUser?.avatar ||
                                                 default_avatar
                                             }
                                             className="w-12 h-12 rounded-xl object-cover"
-                                            alt={otherUser?.name.firstName}
+                                            alt={`${otherUser?.name.firstName}'s avatar`}
                                         />
                                     </div>
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-800">
-                                            {otherUser?.name?.firstName}{" "}
-                                            {otherUser?.name?.lastName}
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-semibold text-gray-800 truncate">
+                                            {otherUser?.name.firstName}{" "}
+                                            {otherUser?.name.lastName}
                                         </h3>
                                         <p className="text-sm text-gray-500">
                                             {otherUser?.online
@@ -218,29 +202,21 @@ export default function Inbox() {
                             </div>
                         );
                     })}
-                    <button
-                        onClick={() => setShowNewChatModal(true)}
-                        className="px-6 absolute bottom-10 left-60 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 flex items-center "
-                    >
-                        <FiPlus className="text-lg" />
-                    </button>
                 </div>
             </div>
 
-            {/* Chat area */}
+            {/* Chat Window */}
             <div
-                className={`flex-1 h-full ${!selectedChat
-                        ? "hidden md:flex items-center justify-center"
-                        : "block"
-                    }`}
+                className={`flex-1 h-full ${!selectedChat ? "hidden md:flex items-center justify-center" : "block"}`}
             >
                 {selectedChat ? (
-                    <div className="h-full  overflow-y-scroll flex flex-col">
-                        <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center">
+                    <div className="h-full flex flex-col">
+                        {/* Chat Header */}
+                        <div className="p-4 border-b border-gray-100 bg-white flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <button
                                     onClick={() => setSelectedChat(null)}
-                                    className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                    className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
                                 >
                                     <FiArrowLeft className="text-xl text-gray-600" />
                                 </button>
@@ -248,37 +224,38 @@ export default function Inbox() {
                                     <img
                                         src={
                                             (selectedChat.userOne._id ===
-                                                currentUser._id
+                                            currentUser._id
                                                 ? selectedChat.userTwo
                                                 : selectedChat.userOne
-                                            )?.avatar ?? default_avatar
+                                            )?.avatar || default_avatar
                                         }
                                         className="w-12 h-12 rounded-xl object-cover"
                                         alt=""
                                     />
                                     <div
-                                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${(selectedChat.userOne._id ===
-                                                currentUser._id
+                                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                                            (selectedChat.userOne._id ===
+                                            currentUser._id
                                                 ? selectedChat.userTwo
                                                 : selectedChat.userOne
                                             )?.online
                                                 ? "bg-green-500"
                                                 : "bg-gray-400"
-                                            } ring-2 ring-white`}
+                                        } ring-2 ring-white`}
                                     />
                                 </div>
                                 <div>
                                     <h2 className="font-semibold text-gray-800">
                                         {
                                             (selectedChat.userOne._id ===
-                                                currentUser._id
+                                            currentUser._id
                                                 ? selectedChat.userTwo
                                                 : selectedChat.userOne
                                             )?.name.firstName
                                         }{" "}
                                         {
                                             (selectedChat.userOne._id ===
-                                                currentUser._id
+                                            currentUser._id
                                                 ? selectedChat.userTwo
                                                 : selectedChat.userOne
                                             )?.name.lastName
@@ -286,39 +263,39 @@ export default function Inbox() {
                                     </h2>
                                     <p className="text-sm text-gray-500">
                                         {(selectedChat.userOne._id ===
-                                            currentUser._id
+                                        currentUser._id
                                             ? selectedChat.userTwo
                                             : selectedChat.userOne
                                         )?.isTyping
                                             ? "typing..."
-                                            : (selectedChat.userOne._id ===
-                                                currentUser._id
-                                                ? selectedChat.userTwo
-                                                : selectedChat.userOne
-                                            )?.online
-                                                ? "Active now"
-                                                : "Offline"}
+                                            : "Online"}
                                     </p>
                                 </div>
                             </div>
-                            {selectedChat?.createdAt ? (
-                                <Button className="text-red-600 hover:bg-red-300 bg-none border-none">
-                                    <FiTrash2 className="mr-2" />
-                                    Chat
-                                </Button>
-                            ) : (
-                                <Button
-                                    className="text-gray-600 hover:bg-gray-300 bg-none border-none "
-                                    onClick={() => setSelectedChat(null)}
-                                >
-                                    <FiX className="mr-2" />
-                                    Close
-                                </Button>
-                            )}
+                            <Button
+                                className="text-gray-600 bg-none border-none hover:bg-gray-300"
+                                onClick={() =>
+                                    selectedChat.createdAt
+                                        ? null
+                                        : setSelectedChat(null)
+                                }
+                            >
+                                {selectedChat.createdAt ? (
+                                    <>
+                                        <FiTrash2 className="mr-2" />
+                                        Chat
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiX className="mr-2" /> Close
+                                    </>
+                                )}
+                            </Button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white">
-                            {selectedChat?.messages?.map((message, index) => (
+                        {/* Messages Container */}
+                        <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white custom-scrollbar">
+                            {selectedChat.messages?.map((message, index) => (
                                 <div key={message._id}>
                                     <MessageBubble
                                         message={message}
@@ -328,65 +305,50 @@ export default function Inbox() {
                                     />
                                     {index ===
                                         selectedChat.messages.length - 1 && (
-                                            <div ref={bottomRef} />
-                                        )}
+                                        <div ref={bottomRef} />
+                                    )}
                                 </div>
                             ))}
                         </div>
 
-                        {selectedChat && (
-                            <div className="p-4 border-t border-gray-200 bg-white">
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={text}
-                                        onChange={(e) =>
-                                            setText(e.target.value)
-                                        }
-                                        onKeyDown={(e) =>
-                                            e.key === "Enter" && sendMessage()
-                                        }
-                                        placeholder="Type your message..."
-                                        className="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-                                    />
-                                    {selectedChat?.createdAt ? (
-                                        <button
-                                            onClick={sendMessage}
-                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                                        >
-                                            <FiSend className="text-lg" />
-                                            <span className="hidden md:block">
-                                                Send
-                                            </span>
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() =>
-                                                handleStartChat(selectedChat)
-                                            }
-                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                                        >
-                                            <FiSend className="text-lg" />
-                                            <span className="hidden md:block">
-                                                Start
-                                            </span>
-                                        </button>
-                                    )}
-                                </div>
+                        {/* Message Input */}
+                        <div className="p-4 border-t border-gray-100 bg-white">
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    onKeyDown={(e) =>
+                                        e.key === "Enter" && sendMessage()
+                                    }
+                                    placeholder="Type your message..."
+                                    className="flex-1 p-3 border border-gray-200 rounded-xl focus:outline-none focus:primary/80 focus:ring-2 focus:ring-primary/50 transition-all"
+                                />
+                                <button
+                                    onClick={sendMessage}
+                                    className="px-5 py-3 bg-primary/80 text-white rounded-xl hover:bg-primary transition-colors flex items-center gap-2"
+                                >
+                                    <FiSend className="text-lg" />
+                                    <span className="hidden md:block">
+                                        {selectedChat.createdAt
+                                            ? "Send"
+                                            : "Start"}
+                                    </span>
+                                </button>
                             </div>
-                        )}
+                        </div>
                     </div>
                 ) : (
                     <div className="text-center p-8">
                         <div className="max-w-md mx-auto">
-                            <div className="mb-4 text-gray-400">
-                                <FiMessageSquare className="text-6xl mx-auto" />
+                            <div className="mb-6 text-gray-300">
+                                <FiMessageSquare className="text-7xl mx-auto" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                                No chat selected
+                            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                                Select a conversation
                             </h3>
                             <p className="text-gray-500">
-                                Choose an existing conversation or start a new
+                                Choose from your existing chats or start a new
                                 one
                             </p>
                         </div>
@@ -394,18 +356,18 @@ export default function Inbox() {
                 )}
             </div>
 
-            {/* Enhanced New Chat Modal */}
+            {/* New Chat Modal */}
             {showNewChatModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
-                        <div className="p-6 border-b border-gray-200">
+                    <div className="bg-white rounded-xl w-full max-w-lg shadow-xl overflow-hidden">
+                        <div className="p-6 border-b border-gray-100">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-2xl font-bold text-gray-800">
-                                    New Conversation
+                                    New Chat
                                 </h2>
                                 <button
                                     onClick={() => setShowNewChatModal(false)}
-                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                    className="p-2 hover:bg-gray-100 rounded-lg"
                                 >
                                     <FiX className="text-xl text-gray-600" />
                                 </button>
@@ -415,7 +377,7 @@ export default function Inbox() {
                                 <input
                                     type="text"
                                     placeholder="Search connections..."
-                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-primary/70 focus:ring-2 focus:ring-primary/50"
                                     value={searchQuery}
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
@@ -423,22 +385,16 @@ export default function Inbox() {
                                 />
                             </div>
                         </div>
-                        <div className="overflow-y-auto max-h-[60vh]">
+                        <div className="overflow-y-auto max-h-[60vh] custom-scrollbar">
                             {users
                                 .filter(
                                     (user) =>
-                                        user.userId.name.firstName
-                                            .toLowerCase()
-                                            .includes(
-                                                searchQuery.toLowerCase(),
-                                            ) ||
-                                        (user.userId.name.lastName
+                                        `${user.userId.name.firstName} ${user.userId.name.lastName}`
                                             .toLowerCase()
                                             .includes(
                                                 searchQuery.toLowerCase(),
                                             ) &&
-                                            user.userId._id !==
-                                            currentUser._id),
+                                        user.userId._id !== currentUser._id,
                                 )
                                 .map((user) => (
                                     <div
@@ -448,22 +404,23 @@ export default function Inbox() {
                                     >
                                         <div className="relative">
                                             <div
-                                                className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ${user.userId.online
+                                                className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ${
+                                                    user.userId.online
                                                         ? "bg-green-500"
                                                         : "bg-gray-400"
-                                                    } ring-2 ring-white`}
+                                                } ring-2 ring-white`}
                                             />
                                             <img
                                                 src={
-                                                    user.userId.avatar ??
+                                                    user.userId.avatar ||
                                                     default_avatar
                                                 }
                                                 className="w-10 h-10 rounded-lg object-cover"
                                                 alt=""
                                             />
                                         </div>
-                                        <div>
-                                            <h4 className="font-medium text-gray-800">
+                                        <div className="min-w-0">
+                                            <h4 className="font-medium text-gray-800 truncate">
                                                 {capitalize(
                                                     user.userId.name.firstName,
                                                 )}{" "}
@@ -471,9 +428,9 @@ export default function Inbox() {
                                                     user.userId.name.lastName,
                                                 )}
                                             </h4>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-gray-500 truncate">
                                                 {user.userId.jobTitle ||
-                                                    "No job title provided"}
+                                                    "No job title"}
                                             </p>
                                         </div>
                                     </div>
@@ -488,57 +445,47 @@ export default function Inbox() {
 
 function MessageBubble({ message, isCurrentUser }) {
     const [showOptions, setShowOptions] = useState(false);
+    const timestamp = format(message.timestamp, "hh:mm a");
 
     return (
         <div
-            className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4`}
+            className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4 group`}
         >
-            {isCurrentUser && (
-                <button
-                    onClick={() => setShowOptions(!showOptions)}
-                    className={`
-                    } p-1 hover:opacity-80 transition-opacity`}
-                >
-                    <FiChevronDown
-                        className={`text-lg text-gray-600
-                        }`}
-                    />
-                </button>
-            )}
-            <div className="relative max-w-[70%]">
+            <div className="relative max-w-[75%]">
                 <div
-                    className={`px-3 py-1 rounded-2xl ${isCurrentUser
-                            ? "bg-blue-600 text-white rounded-br-none"
+                    className={`relative px-4 py-2 rounded-2xl ${
+                        isCurrentUser
+                            ? "bg-primary/80 text-white rounded-br-none"
                             : "bg-white border border-gray-200 rounded-bl-none"
-                        } shadow-sm`}
+                    } shadow-sm transition-all duration-200`}
                 >
-                    <p className="leading-relaxed">{message.text}</p>
-                    <div className="flex items-center justify-end mt-1">
+                    <p className="break-words">{message.text}</p>
+                    <div className="mt-1 flex justify-end">
                         <span
-                            className={`text-xs ${isCurrentUser
-                                    ? "text-blue-100"
-                                    : "text-gray-500"
-                                }`}
+                            className={`text-xs ${isCurrentUser ? "text-gray-100" : "text-gray-500"}`}
                         >
-                            {format(message.timestamp, "hh:mm a")}
+                            {timestamp}
                         </span>
                     </div>
                 </div>
 
-                {showOptions && (
-                    <div
-                        className="w-full h-full"
-                        onClick={() => setShowOptions(false)}
+                {isCurrentUser && (
+                    <button
+                        onClick={() => setShowOptions(!showOptions)}
+                        className={`absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity ${
+                            showOptions ? "opacity-100" : ""
+                        }`}
                     >
-                        <div
-                            className={`absolute right-0 z-50
-                             mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden`}
-                        >
-                            <button className="w-full p-3 text-left hover:bg-gray-100 text-red-600 flex items-center gap-2">
-                                <FiTrash2 className="text-base" />
-                                Delete
-                            </button>
-                        </div>
+                        <FiChevronDown className="text-gray-500 hover:text-gray-700" />
+                    </button>
+                )}
+
+                {showOptions && (
+                    <div className="absolute -top-10 right-0 z-10 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                        <button className="w-full px-4 py-2 text-left hover:bg-gray-100 text-red-600 flex items-center gap-2">
+                            <FiTrash2 className="text-sm" />
+                            Delete
+                        </button>
                     </div>
                 )}
             </div>
