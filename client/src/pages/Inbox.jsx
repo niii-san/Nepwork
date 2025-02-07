@@ -140,7 +140,7 @@ export default function Inbox() {
     }, [socket]);
 
     return (
-        <div className="flex h-[90vh] bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="flex h-[94vh] bg-gradient-to-br from-gray-50 to-blue-50">
             {/* Left sidebar */}
             <div
                 className={`md:w-96 w-full h-full bg-white shadow-xl ${selectedChat ? "hidden md:block" : "block"
@@ -161,7 +161,7 @@ export default function Inbox() {
                     </div>
                 </div>
 
-                <div className="overflow-y-auto h-[calc(100vh-4rem)]">
+                <div className="overflow-y-auto h-[]">
                     {chats.map((chat, index) => {
                         const otherUser =
                             chat.userOne._id === currentUser._id
