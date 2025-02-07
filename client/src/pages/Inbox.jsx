@@ -2,64 +2,26 @@ import { useState, useEffect } from "react";
 import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
-
-const mockUsers = [
-    {
-        _id: "1",
-        name: { firstName: "John", lastName: "Doe" },
-        online: true,
-        lastSeen: new Date(),
-        avatar: "https://i.pravatar.cc/150?img=1",
-    },
-    {
-        _id: "2",
-        name: { firstName: "Alice", lastName: "Smith" },
-        online: false,
-        lastSeen: new Date(Date.now() - 86400000 * 2),
-        avatar: "https://i.pravatar.cc/150?img=2",
-    },
-    // Add more users...
-];
-
-// const mockChats = [
-//     {
-//         _id: "c1",
-//         userOne: "1",
-//         userTwo: "currentUser",
-//         messages: [
-//             {
-//                 _id: "m1",
-//                 text: "Hello!",
-//                 sender: "1",
-//                 receiver: "currentUser",
-//                 timestamp: new Date(),
-//             },
-//             {
-//                 _id: "m2",
-//                 text: "Hi there!",
-//                 sender: "currentUser",
-//                 receiver: "1",
-//                 timestamp: new Date(),
-//             },
-//         ],
-//         lastMessage: "m2",
-//     },
-//     // Add more chats...
-// ];
-//
+import capitalize from "../utils/capitalize.js";
 
 export default function Inbox() {
     const { userData: currentUser } = useAuth();
-    const { chats, setChats, selectedChat, setSelectedChat } = useChat();
-    console.log(chats);
-    const [users, setUsers] = useState(mockUsers);
+    const {
+        chats,
+        setChats,
+        chatsLoading,
+        selectedChat,
+        setSelectedChat,
+        connections: users,
+        setConnections,
+        connectionsLoading,
+    } = useChat();
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [newMessage, setNewMessage] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
 
     const formatLastSeen = (date) => {
-        if (!date) return "Never seen"; // Handle null/undefined case
+        if (!date) return "Never seen";
 
         try {
             const parsedDate = date instanceof Date ? date : parseISO(date);
@@ -79,16 +41,51 @@ export default function Inbox() {
     };
 
     const handleNewChat = (user) => {
-        const newChat = {
-            _id: `c${chats.length + 1}`,
-            userOne: currentUser._id,
-            userTwo: user._id,
-            messages: [],
-            lastMessage: null,
-        };
-        setChats([newChat, ...chats]);
-        setSelectedChat(newChat);
-        setShowNewChatModal(false);
+        let chatExistsIndex = -1;
+        chats.some((item, index) => {
+            if (
+                item.userOne._id === user.userId._id ||
+                item.userTwo._id === user.userId._id
+            ) {
+                chatExistsIndex = index;
+            } else {
+                chatExistsIndex = -1;
+            }
+            return (
+                item.userOne._id === user.userId._id ||
+                item.userTwo._id === user.userId._id
+            );
+        });
+
+        if (chatExistsIndex >= 0) {
+            setSelectedChat(chats[chatExistsIndex]);
+            setShowNewChatModal(false);
+            return;
+        } else {
+            console.log(user);
+            setSelectedChat({
+                createdAt: null,
+                updatedAt: null,
+                messages: null,
+                unreadOne: 0,
+                unreadTwo: 0,
+                userOne: currentUser,
+                userTwo: user.userId,
+            });
+
+            return;
+        }
+
+        // const newChat = {
+        //     _id: `c${chats.length + 1}`,
+        //     userOne: currentUser._id,
+        //     userTwo: user._id,
+        //     messages: [],
+        //     lastMessage: null,
+        // };
+        // setChats([newChat, ...chats]);
+        // setSelectedChat(newChat);
+        // setShowNewChatModal(false);
     };
 
     const sendMessage = () => {
@@ -119,12 +116,13 @@ export default function Inbox() {
 
     useEffect(() => {
         setChats();
+        setConnections();
     }, []);
     return (
         <div className="flex h-screen bg-gray-100">
             {/* Left sidebar */}
             <div
-                className={`md:w-1/3 w-full bg-white ${selectedChat ? "hidden md:block" : "block"}`}
+                className={`md:w-1/3 w-full h-[90%] bg-white ${selectedChat ? "hidden md:block" : "block"}`}
             >
                 <div className="p-4 border-b">
                     <div className="flex justify-between items-center">
@@ -144,7 +142,6 @@ export default function Inbox() {
                             chat.userOne._id === currentUser._id
                                 ? chat.userTwo
                                 : chat.userOne;
-                        console.log(otherUser);
                         return (
                             <div
                                 key={chat._id}
@@ -185,10 +182,10 @@ export default function Inbox() {
 
             {/* Chat area */}
             <div
-                className={`md:w-2/3 w-full ${!selectedChat ? "hidden md:flex items-center justify-center" : "block"}`}
+                className={`md:w-2/3 w-full  ${!selectedChat ? "hidden md:flex items-center justify-center" : "block"}`}
             >
                 {selectedChat ? (
-                    <div className="h-screen flex flex-col">
+                    <div className="h-[90%] flex flex-col">
                         <div className="p-4 border-b flex justify-between items-center">
                             <button
                                 onClick={() => setSelectedChat(null)}
@@ -230,9 +227,25 @@ export default function Inbox() {
                                             )?.name.lastName
                                         }
                                     </h2>
-                                    {isTyping && (
+                                    {(selectedChat.userOne._id ===
+                                        currentUser._id
+                                        ? selectedChat.userTwo
+                                        : selectedChat.userOne
+                                    )?.isTyping ? (
                                         <p className="text-sm text-gray-500">
                                             typing...
+                                        </p>
+                                    ) : (selectedChat.userOne._id ===
+                                        currentUser._id
+                                        ? selectedChat.userTwo
+                                        : selectedChat.userOne
+                                    )?.online ? (
+                                        <p className="text-sm text-gray-500">
+                                            Active
+                                        </p>
+                                    ) : (
+                                        <p className="text-sm text-gray-500">
+                                            Offline
                                         </p>
                                     )}
                                 </div>
@@ -243,7 +256,7 @@ export default function Inbox() {
                         </div>
 
                         <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-                            {selectedChat.messages.map((message) => (
+                            {selectedChat?.messages?.map((message) => (
                                 <MessageBubble
                                     key={message._id}
                                     message={message}
@@ -302,11 +315,18 @@ export default function Inbox() {
                             {users
                                 .filter(
                                     (user) =>
-                                        user.name.firstName
+                                        user.userId.name.firstName
                                             .toLowerCase()
                                             .includes(
                                                 searchQuery.toLowerCase(),
-                                            ) && user._id !== currentUser._id,
+                                            ) ||
+                                        (user.userId.name.lastName
+                                            .toLowerCase()
+                                            .includes(
+                                                searchQuery.toLowerCase(),
+                                            ) &&
+                                            user.userId._id !==
+                                            currentUser._id),
                                 )
                                 .map((user) => (
                                     <div
@@ -315,11 +335,21 @@ export default function Inbox() {
                                         className="p-2 hover:bg-gray-100 cursor-pointer rounded flex items-center gap-3"
                                     >
                                         <img
-                                            src={user.avatar}
+                                            src={
+                                                user.userId.avatar ??
+                                                default_avatar
+                                            }
                                             className="w-8 h-8 rounded-full"
                                             alt=""
                                         />
-                                        <span>{user.name.firstName}</span>
+                                        <span>
+                                            {capitalize(
+                                                user.userId.name.firstName,
+                                            )}{" "}
+                                            {capitalize(
+                                                user.userId.name.lastName,
+                                            )}
+                                        </span>
                                     </div>
                                 ))}
                         </div>
