@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { asyncHandler, ApiResponse, ApiError } from "../../utils/index.js";
 import { Chat } from "../../models/chat.model.js";
 import { User } from "../../models/user.model.js";
-import { populate } from "dotenv";
 
 export const createChat = asyncHandler(async (req, res) => {
     const senderId = req.user.id;
@@ -37,9 +36,15 @@ export const createChat = asyncHandler(async (req, res) => {
         userTwo: receiver._id,
     });
 
+    const selectOptions = "name _id avatar online lastSeen isTyping";
+    const populatedChat = await Chat.findById(chat._id)
+        .populate("userOne", selectOptions)
+        .populate("userTwo", selectOptions)
+        .populate("messages");
+
     return res
         .status(200)
-        .json(new ApiResponse(200, true, true, "Chat created", chat));
+        .json(new ApiResponse(200, true, true, "Chat created", populatedChat));
 });
 
 export const getChats = asyncHandler(async (req, res) => {

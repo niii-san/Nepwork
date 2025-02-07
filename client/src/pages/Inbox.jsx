@@ -4,6 +4,8 @@ import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
 import capitalize from "../utils/capitalize.js";
 import { Button } from "../components";
+import toast from "react-hot-toast";
+import api from "../utils/api.js";
 
 export default function Inbox() {
     const { userData: currentUser } = useAuth();
@@ -77,6 +79,21 @@ export default function Inbox() {
             setShowNewChatModal(false);
 
             return;
+        }
+    };
+
+    const handleStartChat = async (chat) => {
+        console.log(chat);
+        try {
+            const response = await api.post("/chats/create-chat", {
+                receiverId: chat?.userTwo?._id,
+            });
+            const newChat = response.data.data;
+            chats.unshift(newChat);
+            setSelectedChat(chats[0]);
+        } catch (error) {
+            toast.error("Failed to start chat");
+            console.error(error);
         }
     };
 
@@ -293,6 +310,7 @@ export default function Inbox() {
                             <Button
                                 variant="filled"
                                 className="w-[98%] mx-auto"
+                                onClick={() => handleStartChat(selectedChat)}
                             >
                                 Start chat
                             </Button>
