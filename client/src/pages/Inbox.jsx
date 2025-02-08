@@ -29,6 +29,7 @@ export default function Inbox() {
         setConnections,
         addMessage,
         addNewChat,
+        removeChat,
         setUserOffline,
         setUserOnline,
     } = useChat();
@@ -119,7 +120,6 @@ export default function Inbox() {
 
     const handleNewChat = (newChat) => {
         addNewChat(newChat);
-        console.log(newChat);
     };
 
     const handleUserOnline = ({ userId }) => {
@@ -135,7 +135,11 @@ export default function Inbox() {
 
         setDeleting(true);
         try {
-            await api.delete(`/chats/delete/${selectedChat?._id}`);
+            const response = await api.delete(
+                `/chats/delete/${selectedChat?._id}`,
+            );
+            removeChat(response.data.data._id);
+            setDeleteChatModal(false);
             toast.success("Chat deleted");
         } catch (error) {
             setDeleteErr(error.response.data.message);
@@ -146,7 +150,7 @@ export default function Inbox() {
     };
 
     const handleChatDelete = ({ chatId }) => {
-        console.log("Chat deleted", chatId);
+        removeChat(chatId);
     };
 
     useEffect(() => {

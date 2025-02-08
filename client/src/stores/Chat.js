@@ -33,6 +33,14 @@ export const useChat = create((set, get) => ({
         const { chats } = get();
         set({ chats: [chat, ...chats] });
     },
+    removeChat: (chatId) => {
+        const { chats, selectedChat } = get();
+        const newChats = chats.filter((chat) => chat._id !== chatId);
+        set({ chats: newChats });
+        if (selectedChat._id === chatId) {
+            set({ selectedChat: null });
+        }
+    },
     addMessage: (chatId, message) => {
         const { chats } = get();
         const newChats = chats.map((item) => {
