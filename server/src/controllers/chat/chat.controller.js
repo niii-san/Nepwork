@@ -179,16 +179,19 @@ export const deleteChat = asyncHandler(async (req, res) => {
     if (!mongoose.isValidObjectId(chatId)) {
         throw new ApiError(400, true, "Invalid chat id");
     }
+
     const chat = await Chat.findByIdAndDelete(chatId);
 
     if (!chat) {
         throw new ApiError(404, true, "Chat not found");
     }
 
-    // Other party socket id
-    const opSocketId = getSocketId(
-        chat.userOne._id === userId ? chat.userTwo._id : chat.userOne._id,
-    );
+    const otherPartyId =
+        chat.userOne.toString() === userId
+            ? chat.userTwo.toString()
+            : chat.userOne.toString();
+
+    const opSocketId = await getSocketId(otherPartyId);
 
     if (opSocketId) {
         io.to(opSocketId).emit("chatDelete", { chatId: chat._id });

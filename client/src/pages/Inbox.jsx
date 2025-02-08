@@ -145,6 +145,10 @@ export default function Inbox() {
         }
     };
 
+    const handleChatDelete = ({ chatId }) => {
+        console.log("Chat deleted", chatId);
+    };
+
     useEffect(() => {
         setChats();
         setConnections();
@@ -156,11 +160,13 @@ export default function Inbox() {
             socket.on("newChat", handleNewChat);
             socket.on("userOffline", handleUserOffline);
             socket.on("userOnline", handleUserOnline);
+            socket.on("chatDelete", handleChatDelete);
             return () => {
                 socket.off("newMessage", handleNewMessage);
                 socket.off("newChat", handleNewChat);
                 socket.off("userOffline", handleUserOffline);
                 socket.off("userOnline", handleUserOnline);
+                socket.off("chatDelete", handleChatDelete);
             };
         }
     }, [socket]);
