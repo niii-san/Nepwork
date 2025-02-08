@@ -243,13 +243,17 @@ export default function Inbox() {
                                                     default_avatar
                                                 }
                                                 className="w-12 h-12 rounded-xl object-cover"
-                                                alt={`${otherUser?.name.firstName}'s avatar`}
+                                                alt={`${otherUser?.name?.firstName}'s avatar`}
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h3 className="font-semibold text-gray-800 truncate">
-                                                {otherUser?.name.firstName}{" "}
-                                                {otherUser?.name.lastName}
+                                                {capitalize(
+                                                    otherUser?.name?.firstName,
+                                                )}{" "}
+                                                {capitalize(
+                                                    otherUser?.name?.lastName,
+                                                )}
                                             </h3>
                                             <p className="text-sm text-gray-500">
                                                 {otherUser?.online
