@@ -3,7 +3,7 @@ import { format, differenceInHours, parseISO } from "date-fns";
 import { useAuth, useChat } from "../stores";
 import default_avatar from "../assets/default_avatar.svg";
 import capitalize from "../utils/capitalize.js";
-import { Button, ConfirmModal, ConnectionUserList } from "../components";
+import { Button, ConfirmModal } from "../components";
 import toast from "react-hot-toast";
 import api from "../utils/api.js";
 import {
@@ -505,8 +505,9 @@ export default function Inbox() {
                                                     )}
                                                 </h4>
                                                 <p className="text-sm text-gray-500 truncate">
-                                                    {user.userId.jobTitle ||
-                                                        "No job title"}
+                                                    {user.userId.online
+                                                        ? "Active"
+                                                        : `Last seen ${formatLastSeen(user.userId.lastSeen)}`}
                                                 </p>
                                             </div>
                                         </div>
