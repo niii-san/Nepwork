@@ -82,7 +82,7 @@ export default function Inbox() {
             const newChat = response.data.data;
             setText("");
             addNewChat(newChat);
-            setSelectedChat(chats[0]);
+            setSelectedChat(newChat);
         } catch (error) {
             toast.error("Failed to start chat");
             console.error(error);

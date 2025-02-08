@@ -171,3 +171,20 @@ export const newMessage = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, true, true, "Message sent", newMessage));
 });
+
+export const deleteChat = asyncHandler(async (req, res) => {
+    const { chatId } = req.params;
+
+    if (!mongoose.isValidObjectId(chatId)) {
+        throw new ApiError(400, true, "Invalid chat id");
+    }
+    const chat = await Chat.findByIdAndDelete(chatId);
+
+    if (!chat) {
+        throw new ApiError(404, true, "Chat not found");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, true, true, "Chat deleted", chat));
+});

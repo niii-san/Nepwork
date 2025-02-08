@@ -12,5 +12,7 @@ export const chatRouter = Router();
 chatRouter.get("/", authenticate, getChats);
 chatRouter.get("/get-connections", authenticate, getConnections);
 
+chatRouter.delete("/delete/:chatId");
+
 chatRouter.post("/create-chat", authenticate, createChat);
 chatRouter.post("/:chatId/new-message", authenticate, newMessage);
