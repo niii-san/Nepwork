@@ -173,6 +173,7 @@ export const newMessage = asyncHandler(async (req, res) => {
 });
 
 export const deleteChat = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
     const { chatId } = req.params;
 
     if (!mongoose.isValidObjectId(chatId)) {
@@ -182,6 +183,15 @@ export const deleteChat = asyncHandler(async (req, res) => {
 
     if (!chat) {
         throw new ApiError(404, true, "Chat not found");
+    }
+
+    // Other party socket id
+    const opSocketId = getSocketId(
+        chat.userOne._id === userId ? chat.userTwo._id : chat.userOne._id,
+    );
+
+    if (opSocketId) {
+        io.to(opSocketId).emit("chatDelete", { chatId: chat._id });
     }
 
     return res
