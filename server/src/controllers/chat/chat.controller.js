@@ -171,3 +171,33 @@ export const newMessage = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, true, true, "Message sent", newMessage));
 });
+
+export const deleteChat = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const { chatId } = req.params;
+
+    if (!mongoose.isValidObjectId(chatId)) {
+        throw new ApiError(400, true, "Invalid chat id");
+    }
+
+    const chat = await Chat.findByIdAndDelete(chatId);
+
+    if (!chat) {
+        throw new ApiError(404, true, "Chat not found");
+    }
+
+    const otherPartyId =
+        chat.userOne.toString() === userId
+            ? chat.userTwo.toString()
+            : chat.userOne.toString();
+
+    const opSocketId = await getSocketId(otherPartyId);
+
+    if (opSocketId) {
+        io.to(opSocketId).emit("chatDelete", { chatId: chat._id });
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, true, true, "Chat deleted", chat));
+});

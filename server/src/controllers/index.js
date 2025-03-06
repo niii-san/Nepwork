@@ -50,6 +50,7 @@ import {
 import { setUserOffline, setUserOnline } from "./chat/userStatus.controller.js";
 import {
     createChat,
+    deleteChat,
     getChats,
     getConnections,
     newMessage,
@@ -105,4 +106,5 @@ export {
     getChats,
     getConnections,
     newMessage,
+    deleteChat,
 };
