@@ -1,10 +1,19 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button, Loader } from "../components";
 import { TbLogout } from "react-icons/tb";
-import { useAuth } from "../stores";
+import { useAuth, useSetting } from "../stores";
+import React from "react";
+
 
 function Settings() {
     const { userData } = useAuth();
+    const navigate = useNavigate()
+
+    React.useEffect(()=>{
+        navigate("/")
+        useSetting.getState().open()
+
+    },[])
 
     if (!userData) return <Loader />;
     return (
